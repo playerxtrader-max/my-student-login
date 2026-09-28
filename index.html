@@ -137,6 +137,66 @@
         }
         .an-month:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(16,185,129,0.5)); }
         .an-chip { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 6px; }
+
+        /* ===== Modern restyle: Dashboard / Journal / Goals ===== */
+        #tab-dashboard .glass-card, #tab-journal .glass-card, #tab-goals .glass-card {
+            background: linear-gradient(180deg, #1a2740 0%, #162032 100%);
+            border-color: #2C3A54; border-radius: 1.25rem; position: relative;
+        }
+        #tab-dashboard .dx-hero, #tab-journal > .glass-card:first-child, #tab-goals > .glass-card:first-child {
+            background: linear-gradient(135deg, #182640 0%, #111a2c 55%, #0f1828 100%);
+            overflow: hidden; box-shadow: 0 24px 48px -24px rgba(0,0,0,.7);
+        }
+        #tab-dashboard .dx-hero::before, #tab-journal > .glass-card:first-child::before, #tab-goals > .glass-card:first-child::before {
+            content:''; position:absolute; top:-120px; right:-80px; width:320px; height:320px; border-radius:50%;
+            background: radial-gradient(circle, rgba(197,160,89,.18), transparent 65%); pointer-events:none;
+        }
+        #tab-dashboard .dx-hero::after {
+            content:''; position:absolute; bottom:-140px; left:-60px; width:300px; height:300px; border-radius:50%;
+            background: radial-gradient(circle, rgba(6,182,212,.12), transparent 65%); pointer-events:none;
+        }
+        #tab-dashboard .dx-hero h2 { background: linear-gradient(90deg,#fff,#e8d5a8); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+        .dx-metrics > div { overflow:hidden; padding:1.2rem 1.25rem; }
+        .dx-metrics > div::before { content:''; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg,var(--a,#C5A059),transparent); }
+        .dx-metrics > div::after { position:absolute; right:1rem; top:1rem; font-size:1.25rem; opacity:.55; }
+        .dx-metrics > div:nth-child(1){--a:#9CA3AF} .dx-metrics > div:nth-child(1)::after{content:'📒'}
+        .dx-metrics > div:nth-child(2){--a:#06B6D4} .dx-metrics > div:nth-child(2)::after{content:'🎯'}
+        .dx-metrics > div:nth-child(3){--a:#8B5CF6} .dx-metrics > div:nth-child(3)::after{content:'⚖️'}
+        .dx-metrics > div:nth-child(4){--a:#C5A059} .dx-metrics > div:nth-child(4)::after{content:'📈'}
+        .dx-metrics > div:nth-child(5){--a:#10B981} .dx-metrics > div:nth-child(5)::after{content:'💰'}
+        .dx-metrics h3 { font-size:2rem; letter-spacing:-.02em; }
+
+        #tab-dashboard table thead, #tab-journal table thead { background:rgba(11,18,33,.6); }
+        #tab-dashboard tbody tr, #tab-journal tbody tr { transition: background .15s ease; }
+        #tab-dashboard tbody tr:hover, #tab-journal tbody tr:hover { background: rgba(197,160,89,.06); }
+        #tab-journal .overflow-x-auto { border-radius:1rem; }
+
+        #tab-journal input, #tab-journal select { background:#0f1828; border-radius:.8rem; }
+        #tab-journal input:focus, #tab-journal select:focus { box-shadow:0 0 0 3px rgba(197,160,89,.15); }
+        .jn-card { overflow:hidden; }
+        .jn-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:#6B7280; }
+        .jn-card[data-outcome="WIN"]::before { background:linear-gradient(180deg,#C5A059,#8a6d32); }
+        .jn-card[data-outcome="LOSS"]::before { background:linear-gradient(180deg,#F43F5E,#9f1239); }
+        .jn-card:hover { box-shadow:0 18px 40px -16px rgba(0,0,0,.7); }
+
+        #tab-goals > .grid > .glass-card { padding:1.6rem; }
+        #tab-goals > .grid > .glass-card:hover { border-color:rgba(197,160,89,.4); }
+        #tab-goals .h-4 { height:.8rem; background:#0f1828; }
+        #tab-goals .progress-bar { box-shadow:0 0 14px -2px currentColor; position:relative; }
+        #tab-goals #goal-progress-rr { color:rgba(197,160,89,.7); }
+        #tab-goals #goal-progress-wr { color:rgba(6,182,212,.7); }
+        #tab-goals #goal-progress-pnl { color:rgba(16,185,129,.7); }
+        #tab-goals .progress-bar::after {
+            content:''; position:absolute; inset:0;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+            transform:translateX(-100%); animation:gShimmer 2.6s ease-in-out infinite;
+        }
+        @keyframes gShimmer { to { transform:translateX(100%); } }
+        #tab-goals label.flex { border-radius:.9rem; padding:.9rem 1rem; transition:all .2s ease; }
+        #tab-goals label.flex:has(input:checked) { border-color:rgba(16,185,129,.5); background:rgba(16,185,129,.07); }
+        #tab-goals label.flex:has(input:checked) span { color:#94a3b8; text-decoration:line-through; text-decoration-color:rgba(148,163,184,.4); }
+        #tab-goals input[type=number] { background:#0f1828; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-sm relative">
@@ -274,7 +334,7 @@
         <!-- TAB 1: DASHBOARD -->
         <div id="tab-dashboard" class="space-y-6">
             <!-- Hero Banner -->
-            <div class="glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-brand-500/20 bg-gradient-to-r from-dark-card via-dark-card to-brand-950/20">
+            <div class="dx-hero glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-brand-500/20 bg-gradient-to-r from-dark-card via-dark-card to-brand-950/20">
                 <div class="space-y-2 z-10 w-full md:w-auto">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-950/80 border border-brand-500/40 text-[11px] font-mono text-brand-500">
                         <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span> <span id="banner-active-topic">ALL JOURNALS</span>
@@ -303,7 +363,7 @@
             </div>
 
             <!-- Key Metrics Overview Cards -->
-            <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="dx-metrics grid grid-cols-2 lg:grid-cols-5 gap-4">
                 <div class="glass-card p-5 rounded-2xl glass-card-hover">
                     <span class="text-xs text-slate-400 font-medium tracking-wider uppercase">Total Trades</span>
                     <h3 id="metric-total" class="text-3xl font-bold font-mono mt-2 text-white">0</h3>
@@ -418,7 +478,8 @@
             <!-- Journal Control Bar -->
             <div class="glass-card p-5 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
                 <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
+                    <p class="text-[10px] font-mono font-semibold tracking-[0.25em] text-brand-500 mb-1.5">TRADE LOG</p>
+                    <h2 class="text-2xl font-extrabold text-white flex items-center gap-2 tracking-tight">
                         Trading Setup Journal
                     </h2>
                     <p class="text-xs text-slate-400">บันทึกรายละเอียดการเทรดพร้อมรูปภาพกราฟเพื่อการทบทวน</p>
@@ -562,7 +623,8 @@
             
             <div class="glass-card p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                    <h2 class="text-xl font-extrabold text-white mb-1">Trading Goals & Tracking</h2>
+                    <p class="text-[10px] font-mono font-semibold tracking-[0.25em] text-brand-500 mb-1.5">GOALS &amp; DISCIPLINE</p>
+                    <h2 class="text-2xl font-extrabold text-white mb-1 tracking-tight">Trading Goals &amp; Tracking</h2>
                     <p class="text-xs text-slate-400">กำหนดเป้าหมายการเทรด และติดตามความคืบหน้าเพื่อรักษาทิศทางและวินัย</p>
                 </div>
                 
@@ -1479,7 +1541,7 @@
                         : `<div class="w-full h-12 bg-dark-panel mb-4 rounded-xl flex items-center justify-center border border-dark-border border-dashed text-slate-500 text-[10px]">ไม่มีรูปภาพประกอบ</div>`;
 
                     html += `
-                        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between glass-card-hover relative">
+                        <div data-outcome="${t.outcome}" class="jn-card glass-card p-5 rounded-2xl flex flex-col justify-between glass-card-hover relative">
                             <button onclick="deleteTrade('${t.id}')" class="absolute top-3 right-3 w-6 h-6 flex items-center justify-center rounded-full bg-dark-panel border border-dark-border text-slate-500 hover:text-rose-500 hover:border-rose-500 transition text-xs z-10">✕</button>
                             <div>
                                 ${imgPreview}
