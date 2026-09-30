@@ -24,25 +24,37 @@
                     },
                     colors: {
                         brand: {
-                            50: '#FDFBF7',
-                            100: '#F8F4E9',
-                            500: '#C5A059', // Gold
-                            600: '#B08D4B',
-                            900: '#4A3D24',
-                            950: '#2A2214',
+                            50: '#EEFCF3',
+                            100: '#D6F8E1',
+                            500: '#22C55E', // Neon Green
+                            600: '#16A34A',
+                            900: '#14532D',
+                            950: '#07170D',
                         },
                         dark: {
-                            bg: '#0B1221',      // Midnight Blue (Logo Background)
-                            card: '#162032',    // Secondary Background
-                            panel: '#1E2B42',   // Elevated Panel
-                            border: '#2C3A54',  // Subtle Border
-                            muted: '#9CA3AF',   // Muted text
+                            bg: '#020403',      // Pure Black (Logo Background)
+                            card: '#0A0F0A',    // Secondary Background
+                            panel: '#10160F',   // Elevated Panel
+                            border: '#1E3320',  // Subtle Green Border
+                            muted: '#6B8F6E',   // Muted green-gray text
                         },
                         accent: {
-                            win: '#C5A059',    // Gold
+                            win: '#22C55E',    // Green
                             loss: '#F43F5E',   // Crimson Loss
-                            be: '#6B7280',     // Gray
-                            cyan: '#06B6D4',   // Electric Cyan
+                            be: '#5B6B5C',     // Green-gray
+                            cyan: '#2DD4BF',   // Teal-green
+                        },
+                        slate: {
+                            50: '#EFFBF2',
+                            100: '#DFF7E6',
+                            200: '#B8ECC6',
+                            300: '#8FE0A8',
+                            400: '#5FBE7E',
+                            500: '#3F9860',
+                            600: '#2F7A4A',
+                            700: '#215A36',
+                            800: '#173F27',
+                            900: '#0F2A1A',
                         }
                     }
                 }
@@ -52,40 +64,40 @@
     
     <style>
         body { 
-            background-color: #0B1221; 
-            color: #F8F9FA; 
+            background-color: #020403; 
+            color: #B8F5C4; 
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         
         /* Glassmorphism & Custom Glows */
         .glass-card { 
-            background: #162032; 
-            border: 1px solid #2C3A54; 
+            background: #0A0F0A; 
+            border: 1px solid #1E3320; 
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
         .glass-card-hover {
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-card-hover:hover {
-            border-color: #C5A059;
+            border-color: #22C55E;
             transform: translateY(-2px);
-            box-shadow: 0 15px 35px -10px rgba(197, 160, 89, 0.15);
+            box-shadow: 0 15px 35px -10px rgba(34, 197, 94, 0.15);
         }
         
         .glow-brand {
-            box-shadow: 0 0 20px -3px rgba(197, 160, 89, 0.3);
+            box-shadow: 0 0 20px -3px rgba(34, 197, 94, 0.3);
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0B1221; }
-        ::-webkit-scrollbar-thumb { background: #2C3A54; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #4A3D24; }
+        ::-webkit-scrollbar-track { background: #020403; }
+        ::-webkit-scrollbar-thumb { background: #1E3320; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #14532D; }
         
         .tab-btn.active {
-            background-color: #1E2B42;
-            color: #C5A059;
-            border-left: 3px solid #C5A059;
+            background-color: #10160F;
+            color: #22C55E;
+            border-left: 3px solid #22C55E;
         }
 
         /* Progress Bar Animation */
@@ -95,44 +107,44 @@
 
         /* ===== Analytics & Statistics (card-based, no charts) ===== */
         .an-hero {
-            background: linear-gradient(135deg, #162032 0%, #111a2c 55%, #0f1828 100%);
-            border: 1px solid #2C3A54;
+            background: linear-gradient(135deg, #0A0F0A 0%, #050705 55%, #0D120D 100%);
+            border: 1px solid #1E3320;
             box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6);
         }
-        .an-sort-btn { color: #9CA3AF; }
-        .an-sort-btn:hover { color: #F8F9FA; }
-        .an-sort-btn.active { background: #C5A059; color: #0B1221; box-shadow: 0 4px 14px -4px rgba(197,160,89,0.5); }
+        .an-sort-btn { color: #6B8F6E; }
+        .an-sort-btn:hover { color: #CFF5DB; }
+        .an-sort-btn.active { background: #22C55E; color: #020403; box-shadow: 0 4px 14px -4px rgba(34,197,94,0.5); }
         .an-stat {
             position: relative; overflow: hidden;
-            background: linear-gradient(180deg, #1a2740 0%, #162032 100%);
-            border: 1px solid #2C3A54; border-radius: 1rem; padding: 1rem 1.1rem;
+            background: linear-gradient(180deg, #0F1710 0%, #0A0F0A 100%);
+            border: 1px solid #1E3320; border-radius: 1rem; padding: 1rem 1.1rem;
             transition: transform .25s ease, border-color .25s ease;
         }
-        .an-stat:hover { transform: translateY(-2px); border-color: rgba(197,160,89,0.5); }
+        .an-stat:hover { transform: translateY(-2px); border-color: rgba(34,197,94,0.5); }
         .an-stat::before {
             content: ''; position: absolute; left: 0; top: 0; height: 2px; width: 100%;
-            background: linear-gradient(90deg, var(--an-accent, #C5A059), transparent);
+            background: linear-gradient(90deg, var(--an-accent, #22C55E), transparent);
         }
         .an-hl {
             position: relative; overflow: hidden; border-radius: 1rem; padding: 1.1rem;
-            border: 1px solid #2C3A54;
-            background: radial-gradient(120% 120% at 100% 0%, var(--an-glow, rgba(197,160,89,0.12)) 0%, #162032 60%);
+            border: 1px solid #1E3320;
+            background: radial-gradient(120% 120% at 100% 0%, var(--an-glow, rgba(34,197,94,0.12)) 0%, #0A0F0A 60%);
             transition: transform .25s ease, border-color .25s ease;
         }
-        .an-hl:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(197,160,89,0.5)); }
+        .an-hl:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(34,197,94,0.5)); }
         .an-row {
             position: relative; border-radius: .85rem; padding: .7rem .8rem .8rem;
-            background: #1E2B42; border: 1px solid #2C3A54;
+            background: #10160F; border: 1px solid #1E3320;
             transition: border-color .2s ease, background .2s ease;
         }
-        .an-row:hover { border-color: rgba(197,160,89,0.45); background: #21304a; }
+        .an-row:hover { border-color: rgba(34,197,94,0.45); background: #132015; }
         .an-meter { height: 3px; border-radius: 999px; background: rgba(148,163,184,0.15); overflow: hidden; }
         .an-meter > span { display: block; height: 100%; border-radius: 999px; }
         .an-tile { border-radius: .85rem; padding: .7rem .8rem; border: 1px solid; transition: transform .2s ease; }
         .an-tile:hover { transform: translateY(-2px) scale(1.02); }
         .an-month {
-            border-radius: 1.1rem; padding: 1.2rem; border: 1px solid #2C3A54; position: relative; overflow: hidden;
-            background: radial-gradient(110% 110% at 100% 0%, var(--an-glow, rgba(16,185,129,0.10)) 0%, #162032 55%);
+            border-radius: 1.1rem; padding: 1.2rem; border: 1px solid #1E3320; position: relative; overflow: hidden;
+            background: radial-gradient(110% 110% at 100% 0%, var(--an-glow, rgba(16,185,129,0.10)) 0%, #0A0F0A 55%);
             transition: transform .25s ease, border-color .25s ease;
         }
         .an-month:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(16,185,129,0.5)); }
@@ -140,52 +152,52 @@
 
         /* ===== Modern restyle: Dashboard / Journal / Goals ===== */
         #tab-dashboard .glass-card, #tab-journal .glass-card, #tab-goals .glass-card {
-            background: linear-gradient(180deg, #1a2740 0%, #162032 100%);
-            border-color: #2C3A54; border-radius: 1.25rem; position: relative;
+            background: linear-gradient(180deg, #0F1710 0%, #0A0F0A 100%);
+            border-color: #1E3320; border-radius: 1.25rem; position: relative;
         }
         #tab-dashboard .dx-hero, #tab-journal > .glass-card:first-child, #tab-goals > .glass-card:first-child {
-            background: linear-gradient(135deg, #182640 0%, #111a2c 55%, #0f1828 100%);
+            background: linear-gradient(135deg, #0B120B 0%, #050705 55%, #0D120D 100%);
             overflow: hidden; box-shadow: 0 24px 48px -24px rgba(0,0,0,.7);
         }
         #tab-dashboard .dx-hero::before, #tab-journal > .glass-card:first-child::before, #tab-goals > .glass-card:first-child::before {
             content:''; position:absolute; top:-120px; right:-80px; width:320px; height:320px; border-radius:50%;
-            background: radial-gradient(circle, rgba(197,160,89,.18), transparent 65%); pointer-events:none;
+            background: radial-gradient(circle, rgba(34,197,94,.18), transparent 65%); pointer-events:none;
         }
         #tab-dashboard .dx-hero::after {
             content:''; position:absolute; bottom:-140px; left:-60px; width:300px; height:300px; border-radius:50%;
-            background: radial-gradient(circle, rgba(6,182,212,.12), transparent 65%); pointer-events:none;
+            background: radial-gradient(circle, rgba(45,212,191,.12), transparent 65%); pointer-events:none;
         }
-        #tab-dashboard .dx-hero h2 { background: linear-gradient(90deg,#fff,#e8d5a8); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        #tab-dashboard .dx-hero h2 { background: linear-gradient(90deg,#fff,#BBF7D0); -webkit-background-clip:text; background-clip:text; color:transparent; }
 
         .dx-metrics > div { overflow:hidden; padding:1.2rem 1.25rem; }
-        .dx-metrics > div::before { content:''; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg,var(--a,#C5A059),transparent); }
+        .dx-metrics > div::before { content:''; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg,var(--a,#22C55E),transparent); }
         .dx-metrics > div::after { position:absolute; right:1rem; top:1rem; font-size:1.25rem; opacity:.55; }
-        .dx-metrics > div:nth-child(1){--a:#9CA3AF} .dx-metrics > div:nth-child(1)::after{content:'📒'}
-        .dx-metrics > div:nth-child(2){--a:#06B6D4} .dx-metrics > div:nth-child(2)::after{content:'🎯'}
-        .dx-metrics > div:nth-child(3){--a:#8B5CF6} .dx-metrics > div:nth-child(3)::after{content:'⚖️'}
-        .dx-metrics > div:nth-child(4){--a:#C5A059} .dx-metrics > div:nth-child(4)::after{content:'📈'}
+        .dx-metrics > div:nth-child(1){--a:#6B8F6E} .dx-metrics > div:nth-child(1)::after{content:'📒'}
+        .dx-metrics > div:nth-child(2){--a:#2DD4BF} .dx-metrics > div:nth-child(2)::after{content:'🎯'}
+        .dx-metrics > div:nth-child(3){--a:#84CC16} .dx-metrics > div:nth-child(3)::after{content:'⚖️'}
+        .dx-metrics > div:nth-child(4){--a:#22C55E} .dx-metrics > div:nth-child(4)::after{content:'📈'}
         .dx-metrics > div:nth-child(5){--a:#10B981} .dx-metrics > div:nth-child(5)::after{content:'💰'}
         .dx-metrics h3 { font-size:2rem; letter-spacing:-.02em; }
 
         #tab-dashboard table thead, #tab-journal table thead { background:rgba(11,18,33,.6); }
         #tab-dashboard tbody tr, #tab-journal tbody tr { transition: background .15s ease; }
-        #tab-dashboard tbody tr:hover, #tab-journal tbody tr:hover { background: rgba(197,160,89,.06); }
+        #tab-dashboard tbody tr:hover, #tab-journal tbody tr:hover { background: rgba(34,197,94,.06); }
         #tab-journal .overflow-x-auto { border-radius:1rem; }
 
-        #tab-journal input, #tab-journal select { background:#0f1828; border-radius:.8rem; }
-        #tab-journal input:focus, #tab-journal select:focus { box-shadow:0 0 0 3px rgba(197,160,89,.15); }
+        #tab-journal input, #tab-journal select { background:#0D120D; border-radius:.8rem; }
+        #tab-journal input:focus, #tab-journal select:focus { box-shadow:0 0 0 3px rgba(34,197,94,.15); }
         .jn-card { overflow:hidden; }
-        .jn-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:#6B7280; }
-        .jn-card[data-outcome="WIN"]::before { background:linear-gradient(180deg,#C5A059,#8a6d32); }
+        .jn-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:#5B6B5C; }
+        .jn-card[data-outcome="WIN"]::before { background:linear-gradient(180deg,#22C55E,#15803D); }
         .jn-card[data-outcome="LOSS"]::before { background:linear-gradient(180deg,#F43F5E,#9f1239); }
         .jn-card:hover { box-shadow:0 18px 40px -16px rgba(0,0,0,.7); }
 
         #tab-goals > .grid > .glass-card { padding:1.6rem; }
-        #tab-goals > .grid > .glass-card:hover { border-color:rgba(197,160,89,.4); }
-        #tab-goals .h-4 { height:.8rem; background:#0f1828; }
+        #tab-goals > .grid > .glass-card:hover { border-color:rgba(34,197,94,.4); }
+        #tab-goals .h-4 { height:.8rem; background:#0D120D; }
         #tab-goals .progress-bar { box-shadow:0 0 14px -2px currentColor; position:relative; }
-        #tab-goals #goal-progress-rr { color:rgba(197,160,89,.7); }
-        #tab-goals #goal-progress-wr { color:rgba(6,182,212,.7); }
+        #tab-goals #goal-progress-rr { color:rgba(34,197,94,.7); }
+        #tab-goals #goal-progress-wr { color:rgba(45,212,191,.7); }
         #tab-goals #goal-progress-pnl { color:rgba(16,185,129,.7); }
         #tab-goals .progress-bar::after {
             content:''; position:absolute; inset:0;
@@ -195,52 +207,52 @@
         @keyframes gShimmer { to { transform:translateX(100%); } }
         #tab-goals label.flex { border-radius:.9rem; padding:.9rem 1rem; transition:all .2s ease; }
         #tab-goals label.flex:has(input:checked) { border-color:rgba(16,185,129,.5); background:rgba(16,185,129,.07); }
-        #tab-goals label.flex:has(input:checked) span { color:#94a3b8; text-decoration:line-through; text-decoration-color:rgba(148,163,184,.4); }
-        #tab-goals input[type=number] { background:#0f1828; }
+        #tab-goals label.flex:has(input:checked) span { color:#5FBE7E; text-decoration:line-through; text-decoration-color:rgba(148,163,184,.4); }
+        #tab-goals input[type=number] { background:#0D120D; }
 
         /* ===== Confluence chips ===== */
         .cf-chip { cursor: pointer; }
         .cf-chip-inner {
             display: inline-flex; align-items: center; gap: .4rem;
             padding: .4rem .8rem; border-radius: .7rem; font-size: 11px; font-weight: 600;
-            background: #0f1828; border: 1px solid #2C3A54; color: #94a3b8;
+            background: #0D120D; border: 1px solid #1E3320; color: #5FBE7E;
             transition: all .15s ease;
         }
         .cf-chip-inner::before { content: '○'; font-size: 9px; }
         .cf-chip:has(input:checked) .cf-chip-inner {
-            background: rgba(197,160,89,.15); border-color: rgba(197,160,89,.55); color: #C5A059;
+            background: rgba(34,197,94,.15); border-color: rgba(34,197,94,.55); color: #22C55E;
         }
-        .cf-chip:has(input:checked) .cf-chip-inner::before { content: '●'; color: #C5A059; }
+        .cf-chip:has(input:checked) .cf-chip-inner::before { content: '●'; color: #22C55E; }
 
         /* ===== Calendar ===== */
-        .cal-hero {
-            background: linear-gradient(135deg, #162032 0%, #111a2c 55%, #0f1828 100%);
-            border: 1px solid #2C3A54;
-            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6);
-        }
-        .cal-sum {
-            border-radius: .9rem; padding: .6rem .9rem; border: 1px solid #2C3A54;
-            background: #162032; text-align: center; min-width: 84px;
-        }
-        .cal-sum p:first-child { font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: #94a3b8; font-weight: 700; }
-        .cal-sum p:last-child { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 15px; margin-top: 2px; }
+        .cal-grid-wrap { display: flex; flex-direction: column; gap: .5rem; }
+        .cal-row { display: grid; grid-template-columns: repeat(7, 1fr) 0.9fr; gap: .5rem; }
+        .cal-row-head { margin-bottom: .1rem; }
         .cal-cell {
-            aspect-ratio: 1 / 0.85; border-radius: .85rem; padding: .5rem .55rem;
-            background: #1a2740; border: 1px solid #2C3A54; position: relative; overflow: hidden;
+            aspect-ratio: 1 / 0.82; border-radius: .8rem; padding: .5rem .6rem;
+            background: rgba(255,255,255,0.02); border: 1px solid #1E3320; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: space-between;
             transition: transform .15s ease, border-color .15s ease;
         }
-        .cal-cell.empty { background: transparent; border: none; }
+        .cal-cell.pad { background: transparent; border-color: transparent; }
+        .cal-cell.pad .cal-daynum { color: #2A3D2C; }
         .cal-cell.has-trades { cursor: pointer; }
-        .cal-cell.has-trades:hover { transform: translateY(-2px); border-color: rgba(197,160,89,.5); }
-        .cal-cell.is-today { border-color: rgba(6,182,212,.6); box-shadow: 0 0 0 1px rgba(6,182,212,.3); }
-        .cal-cell.win { background: linear-gradient(160deg, rgba(197,160,89,.16), #1a2740 65%); }
-        .cal-cell.loss { background: linear-gradient(160deg, rgba(244,63,94,.14), #1a2740 65%); }
-        .cal-cell.be { background: linear-gradient(160deg, rgba(148,163,184,.10), #1a2740 65%); }
-        .cal-cell.selected { border-color: #C5A059; box-shadow: 0 0 0 1px #C5A059; }
-        .cal-daynum { font-size: 11px; font-weight: 700; color: #cbd5e1; }
-        .cal-cell .cal-rr { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; }
-        .cal-cell .cal-n { font-size: 9px; color: #94a3b8; }
+        .cal-cell.has-trades:hover { transform: translateY(-2px); filter: brightness(1.12); }
+        .cal-cell.is-today:not(.pad) { border-color: rgba(34,197,94,.7); box-shadow: 0 0 0 1px rgba(34,197,94,.35); }
+        .cal-cell.win { background: linear-gradient(155deg, #16803D, #0E5C2C 80%); border-color: #1B9A4A; }
+        .cal-cell.loss { background: linear-gradient(155deg, #9F1239, #6E0D28 80%); border-color: #C11B4C; }
+        .cal-cell.be { background: linear-gradient(155deg, #2D3B2F, #1B241C 80%); border-color: #3A4D3C; }
+        .cal-cell.selected { outline: 2px solid #22C55E; outline-offset: 1px; }
+        .cal-daynum { font-size: 11px; font-weight: 700; color: #6B8F6E; }
+        .cal-cell.win .cal-daynum, .cal-cell.loss .cal-daynum { color: rgba(255,255,255,.75); }
+        .cal-cell .cal-pnl { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 800; color: #fff; text-align: center; }
+        .cal-cell .cal-n { font-size: 9px; color: rgba(255,255,255,.75); text-align: center; }
+        .cal-week-cell {
+            border-radius: .8rem; padding: .5rem .4rem; background: #0A0F0A; border: 1px solid #1E3320;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+        }
+        .cal-week-cell .cal-week-pnl { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; }
+        .cal-week-cell .cal-week-n { font-size: 9px; color: #6B8F6E; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-sm relative">
@@ -248,7 +260,7 @@
     <!-- ========================================== -->
     <!-- LOGIN OVERLAY SYSTEM (ระบบที่เพิ่มใหม่) -->
     <!-- ========================================== -->
-    <div id="login-overlay" class="fixed inset-0 z-[9999] bg-[#0B1221] flex items-center justify-center backdrop-blur-md">
+    <div id="login-overlay" class="fixed inset-0 z-[9999] bg-[#020403] flex items-center justify-center backdrop-blur-md">
         <div class="glass-card w-full max-w-md rounded-3xl p-8 space-y-6 border-dark-border relative overflow-hidden shadow-2xl">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-900 via-brand-500 to-brand-900"></div>
             
@@ -799,31 +811,55 @@
         <!-- TAB 5: TRADING CALENDAR -->
         <div id="tab-calendar" class="space-y-6 hidden">
 
-            <div class="cal-hero rounded-3xl p-6 md:p-8 relative overflow-hidden">
-                <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-5">
-                    <div class="flex items-center gap-4">
-                        <button onclick="changeCalMonth(-1)" class="w-10 h-10 rounded-xl bg-dark-bg/60 border border-dark-border flex items-center justify-center text-slate-300 hover:text-brand-500 hover:border-brand-500/50 transition">‹</button>
-                        <div>
-                            <p class="text-[10px] font-mono font-semibold tracking-[0.25em] text-brand-500 mb-1">TRADING CALENDAR</p>
-                            <h2 id="cal-month-label" class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">-</h2>
+            <div class="glass-card rounded-3xl p-6 md:p-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Trading Calendar</h2>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1 p-1 rounded-xl bg-dark-bg/70 border border-dark-border">
+                            <button onclick="changeCalMonth(-1)" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:text-brand-500 transition">‹</button>
+                            <span id="cal-month-label" class="px-3 text-sm font-extrabold text-white min-w-[120px] text-center">-</span>
+                            <button onclick="changeCalMonth(1)" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:text-brand-500 transition">›</button>
                         </div>
-                        <button onclick="changeCalMonth(1)" class="w-10 h-10 rounded-xl bg-dark-bg/60 border border-dark-border flex items-center justify-center text-slate-300 hover:text-brand-500 hover:border-brand-500/50 transition">›</button>
+                        <button onclick="goCalToday()" class="px-4 py-2 rounded-xl bg-brand-500 text-dark-bg text-xs font-extrabold hover:bg-brand-600 transition">Today</button>
                     </div>
-                    <div id="cal-month-summary" class="grid grid-cols-3 gap-3 w-full md:w-auto"></div>
                 </div>
-            </div>
 
-            <div class="glass-card rounded-2xl p-4 md:p-6">
-                <div class="grid grid-cols-7 gap-2 mb-2">
-                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-rose-400/80 py-1">อา</div>
-                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">จ</div>
-                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">อ</div>
-                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">พ</div>
-                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">พฤ</div>
-                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">ศ</div>
-                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-accent-cyan/80 py-1">ส</div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 py-6 mt-3 border-y border-dark-border">
+                    <div>
+                        <p class="text-[11px] text-slate-500 uppercase tracking-wider mb-1.5">Monthly P&amp;L</p>
+                        <p id="cal-stat-pnl" class="text-2xl font-mono font-extrabold text-white">-</p>
+                        <p id="cal-stat-bestworst" class="text-[11px] text-slate-500 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] text-slate-500 uppercase tracking-wider mb-1.5">Win Rate</p>
+                        <p id="cal-stat-wr" class="text-2xl font-mono font-extrabold text-white">-</p>
+                        <p id="cal-stat-wl" class="text-[11px] text-slate-500 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] text-slate-500 uppercase tracking-wider mb-1.5">Trades</p>
+                        <p id="cal-stat-trades" class="text-2xl font-mono font-extrabold text-brand-500">-</p>
+                        <p id="cal-stat-days" class="text-[11px] text-slate-500 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] text-slate-500 uppercase tracking-wider mb-1.5">Days</p>
+                        <p id="cal-stat-pldays" class="text-2xl font-mono font-extrabold text-white">-</p>
+                        <p class="text-[11px] text-slate-500 mt-1">profit / loss</p>
+                    </div>
                 </div>
-                <div id="cal-grid" class="grid grid-cols-7 gap-2"></div>
+
+                <div class="cal-grid-wrap mt-5">
+                    <div class="cal-row cal-row-head">
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-rose-400/80 py-1">Sun</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Mon</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Tue</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Wed</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Thu</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Fri</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-brand-500/80 py-1">Sat</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Week</div>
+                    </div>
+                    <div id="cal-grid"></div>
+                </div>
             </div>
 
             <div id="cal-day-panel" class="hidden glass-card rounded-2xl p-5 md:p-6">
@@ -833,8 +869,6 @@
                 </div>
                 <div id="cal-day-trades" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
             </div>
-
-            <div id="cal-empty-hint" class="hidden text-center py-6 text-xs text-slate-500">คลิกวันที่มีเทรดเพื่อดูรายละเอียด</div>
         </div>
     </main>
 
@@ -927,7 +961,7 @@
     <div id="trade-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center hidden z-50 p-4">
         <div class="glass-card w-full max-w-2xl rounded-3xl p-6 md:p-8 space-y-5 border-dark-border max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-dark-border pb-4">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <h3 id="trade-modal-title" class="text-lg font-bold text-white flex items-center gap-2">
                     บันทึกรายละเอียดการเทรด
                 </h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white text-xl">✕</button>
@@ -1079,7 +1113,7 @@
                 <!-- Submit Buttons -->
                 <div class="flex gap-3 pt-3 border-t border-dark-border">
                     <button type="button" onclick="closeModal()" class="w-1/2 py-3 rounded-xl bg-dark-panel text-slate-300 font-semibold text-xs hover:bg-slate-800 transition">ยกเลิก</button>
-                    <button type="submit" class="w-1/2 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-lg shadow-brand-900/50 transition">บันทึกข้อมูล</button>
+                    <button type="submit" id="trade-submit-btn" class="w-1/2 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-lg shadow-brand-900/50 transition">บันทึกข้อมูล</button>
                 </div>
             </form>
         </div>
@@ -1242,21 +1276,22 @@
         let calYear = new Date().getFullYear();
         let calMonth = new Date().getMonth();
         let calSelectedDay = null;
+        let editingTradeId = null;
 
         // Color Palettes
         const colors = {
-            win: 'rgba(197, 160, 89, 0.8)',
+            win: 'rgba(34, 197, 94, 0.8)',
             loss: 'rgba(244, 63, 94, 0.8)',
-            be: 'rgba(156, 163, 175, 0.8)',
-            borderWin: '#C5A059',
+            be: 'rgba(91, 107, 92, 0.8)',
+            borderWin: '#22C55E',
             borderLoss: '#F43F5E',
-            borderBE: '#9CA3AF',
-            cyan: 'rgba(6, 182, 212, 0.8)',
-            borderCyan: '#06B6D4'
+            borderBE: '#6B8F6E',
+            cyan: 'rgba(45, 212, 191, 0.8)',
+            borderCyan: '#2DD4BF'
         };
-        Chart.defaults.color = '#9CA3AF';
+        Chart.defaults.color = '#6B8F6E';
         Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
-        Chart.defaults.scale.grid.color = 'rgba(44, 58, 84, 0.3)';
+        Chart.defaults.scale.grid.color = 'rgba(30, 51, 32, 0.3)';
 
         /* ------------------ INITIALIZATION ------------------ */
         async function init() {
@@ -1549,11 +1584,66 @@
 
         /* ------------------ MODAL & FORM HANDLING ------------------ */
         function openModal() {
+            editingTradeId = null;
+            document.getElementById('trade-form').reset();
+            removeUploadedImage('before');
+            removeUploadedImage('after');
+            document.querySelectorAll('#field-confluence-container input[type=checkbox]').forEach(cb => cb.checked = false);
+            document.getElementById('field-date').value = new Date().toISOString().slice(0, 16);
+            document.getElementById('trade-modal-title').innerText = 'บันทึกรายละเอียดการเทรด';
+            document.getElementById('trade-submit-btn').innerText = 'บันทึกข้อมูล';
             document.getElementById('trade-modal').classList.remove('hidden');
             document.getElementById('field-topic').value = activeTopic === 'ALL' ? userSettings.topics[0] : activeTopic;
         }
 
+        function openEditModal(id) {
+            const t = trades.find(x => x.id === id);
+            if (!t) return;
+            editingTradeId = id;
+
+            document.getElementById('trade-form').reset();
+            removeUploadedImage('before');
+            removeUploadedImage('after');
+            document.querySelectorAll('#field-confluence-container input[type=checkbox]').forEach(cb => cb.checked = false);
+
+            document.getElementById('field-topic').value = t.topic;
+            document.getElementById('field-date').value = t.date;
+            document.getElementById('field-symbol').value = t.symbol;
+            document.getElementById('field-type').value = t.type;
+            document.getElementById('field-setup').value = t.setup;
+            document.getElementById('field-session').value = t.session;
+            if (t.tfEntry && t.tfEntry !== '-') document.getElementById('field-tf-entry').value = t.tfEntry;
+            if (t.tfHtf && t.tfHtf !== '-') document.getElementById('field-tf-htf').value = t.tfHtf;
+            document.getElementById('field-outcome').value = t.outcome;
+            document.getElementById('field-rr').value = t.rr;
+            document.getElementById('field-pnl').value = t.pnl;
+            document.getElementById('field-notes').value = t.notes || '';
+
+            (t.confluences || []).forEach(c => {
+                const cb = document.querySelector(`#field-confluence-container input[value="${CSS.escape(c)}"]`);
+                if (cb) cb.checked = true;
+            });
+
+            const beforeImg = t.imageBefore || t.image || '';
+            if (beforeImg) {
+                document.getElementById('field-image-before').value = beforeImg;
+                document.getElementById('image-preview-before-img').src = beforeImg;
+                document.getElementById('image-preview-before-container').classList.remove('hidden');
+            }
+            const afterImg = t.imageAfter || '';
+            if (afterImg) {
+                document.getElementById('field-image-after').value = afterImg;
+                document.getElementById('image-preview-after-img').src = afterImg;
+                document.getElementById('image-preview-after-container').classList.remove('hidden');
+            }
+
+            document.getElementById('trade-modal-title').innerText = `แก้ไขข้อมูลการเทรด · ${t.symbol}`;
+            document.getElementById('trade-submit-btn').innerText = 'บันทึกการแก้ไข';
+            document.getElementById('trade-modal').classList.remove('hidden');
+        }
+
         function closeModal() {
+            editingTradeId = null;
             document.getElementById('trade-modal').classList.add('hidden');
             document.getElementById('trade-form').reset();
             removeUploadedImage('before');
@@ -1565,8 +1655,7 @@
         async function handleFormSubmit(e) {
             e.preventDefault();
             
-            const newTrade = {
-                id: Date.now().toString(),
+            const tradeData = {
                 topic: document.getElementById('field-topic').value,
                 date: document.getElementById('field-date').value,
                 symbol: document.getElementById('field-symbol').value.toUpperCase(),
@@ -1584,12 +1673,19 @@
                 notes: document.getElementById('field-notes').value,
             };
 
-            trades.push(newTrade);
+            if (editingTradeId) {
+                const idx = trades.findIndex(t => t.id === editingTradeId);
+                if (idx !== -1) trades[idx] = { ...trades[idx], ...tradeData };
+            } else {
+                trades.push({ id: Date.now().toString(), ...tradeData });
+            }
+
             trades.sort((a, b) => new Date(b.date) - new Date(a.date));
             await saveTrades();
+            const wasEditing = !!editingTradeId;
             closeModal();
             renderAll();
-            showToast('บันทึกข้อมูลการเทรดสำเร็จ', 'success');
+            showToast(wasEditing ? 'แก้ไขข้อมูลการเทรดสำเร็จ' : 'บันทึกข้อมูลการเทรดสำเร็จ', 'success');
         }
 
         /* ------------------ NAVIGATION (TABS) ------------------ */
@@ -1686,13 +1782,13 @@
                     datasets: [{
                         label: 'Accumulated RR',
                         data: equityData,
-                        borderColor: '#C5A059',
-                        backgroundColor: 'rgba(197, 160, 89, 0.1)',
+                        borderColor: '#22C55E',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
                         borderWidth: 2,
                         fill: true,
                         tension: 0.3,
                         pointRadius: 2,
-                        pointBackgroundColor: '#C5A059'
+                        pointBackgroundColor: '#22C55E'
                     }]
                 },
                 options: {
@@ -1700,7 +1796,7 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: false, grid: { color: 'rgba(44, 58, 84, 0.5)' } },
+                        y: { beginAtZero: false, grid: { color: 'rgba(30, 51, 32, 0.5)' } },
                         x: { display: false }
                     }
                 }
@@ -1755,7 +1851,10 @@
 
                     html += `
                         <div data-outcome="${t.outcome}" class="jn-card glass-card p-5 rounded-2xl flex flex-col justify-between glass-card-hover relative">
-                            <button onclick="deleteTrade('${t.id}')" class="absolute top-3 right-3 w-6 h-6 flex items-center justify-center rounded-full bg-dark-panel border border-dark-border text-slate-500 hover:text-rose-500 hover:border-rose-500 transition text-xs z-10">✕</button>
+                            <div class="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+                                <button onclick="openEditModal('${t.id}')" class="w-6 h-6 flex items-center justify-center rounded-full bg-dark-panel border border-dark-border text-slate-500 hover:text-brand-500 hover:border-brand-500 transition text-[11px]">✎</button>
+                                <button onclick="deleteTrade('${t.id}')" class="w-6 h-6 flex items-center justify-center rounded-full bg-dark-panel border border-dark-border text-slate-500 hover:text-rose-500 hover:border-rose-500 transition text-xs">✕</button>
+                            </div>
                             <div>
                                 ${imgPreview}
                                 <div class="flex justify-between items-start mb-2">
@@ -1841,6 +1940,7 @@
                                 </div>
                             </td>
                             <td class="p-4 text-center">
+                                <button onclick="openEditModal('${t.id}')" class="text-brand-500 hover:underline text-[11px] mr-2">Edit</button>
                                 <button onclick="deleteTrade('${t.id}')" class="text-rose-500 hover:underline text-[11px]">Delete</button>
                             </td>
                         </tr>
@@ -1934,12 +2034,12 @@
                 </div>`;
 
             document.getElementById('an-summary').innerHTML =
-                statCard('Total Trades', total, 'จำนวนเทรดทั้งหมด', 'text-white', '#9CA3AF') +
-                statCard('Win Rate', `${winRate.toFixed(1)}%`, `ชนะ ${wins} จาก ${total} ไม้`, 'text-accent-cyan', '#06B6D4') +
-                statCard('Total RR', fmtRR(totalRR), 'ผลตอบแทนสะสม', rrColor(totalRR), '#C5A059') +
-                statCard('Avg RR / Trade', fmtRR(avgRR), 'ค่าเฉลี่ยต่อไม้', rrColor(avgRR), '#C5A059') +
+                statCard('Total Trades', total, 'จำนวนเทรดทั้งหมด', 'text-white', '#6B8F6E') +
+                statCard('Win Rate', `${winRate.toFixed(1)}%`, `ชนะ ${wins} จาก ${total} ไม้`, 'text-accent-cyan', '#2DD4BF') +
+                statCard('Total RR', fmtRR(totalRR), 'ผลตอบแทนสะสม', rrColor(totalRR), '#22C55E') +
+                statCard('Avg RR / Trade', fmtRR(avgRR), 'ค่าเฉลี่ยต่อไม้', rrColor(avgRR), '#22C55E') +
                 statCard('Net PNL', fmtMoney(netPnl), 'กำไร/ขาดทุนสุทธิ', pnlColor(netPnl), '#10B981') +
-                statCard('Profit Factor', profitFactor, 'กำไรรวม ÷ ขาดทุนรวม', 'text-white', '#8B5CF6');
+                statCard('Profit Factor', profitFactor, 'กำไรรวม ÷ ขาดทุนรวม', 'text-white', '#84CC16');
 
             /* ---------- 2) Highlights ---------- */
             const best = (obj, scoreFn) => {
@@ -1968,13 +2068,13 @@
             const hl = [];
             const bSetup = best(setups, g => wrPct(g) * 1000 + g.total);
             if (bSetup) hl.push(hlCard('🎯', 'Setup ที่แม่นที่สุด', bSetup, `${wrPct(setups[bSetup]).toFixed(1)}%`, 'text-accent-cyan',
-                `Win Rate · ${setups[bSetup].total} เทรด · ${fmtRR(setups[bSetup].rr)}`, 'rgba(6,182,212,0.14)', 'rgba(6,182,212,0.5)'));
+                `Win Rate · ${setups[bSetup].total} เทรด · ${fmtRR(setups[bSetup].rr)}`, 'rgba(45,212,191,0.14)', 'rgba(45,212,191,0.5)'));
             const bSym = best(symbols, g => g.rr);
             if (bSym) hl.push(hlCard('💱', 'คู่เงินที่ทำกำไรสูงสุด', bSym, fmtRR(symbols[bSym].rr), rrColor(symbols[bSym].rr),
-                `${symbols[bSym].total} เทรด · Win Rate ${wrPct(symbols[bSym]).toFixed(0)}%`, 'rgba(197,160,89,0.14)', 'rgba(197,160,89,0.5)'));
+                `${symbols[bSym].total} เทรด · Win Rate ${wrPct(symbols[bSym]).toFixed(0)}%`, 'rgba(34,197,94,0.14)', 'rgba(34,197,94,0.5)'));
             const bSes = best(sessions, g => g.rr);
             if (bSes) hl.push(hlCard('🕐', 'Session ที่ดีที่สุด', bSes, fmtRR(sessions[bSes].rr), rrColor(sessions[bSes].rr),
-                `${sessions[bSes].total} เทรด · Win Rate ${wrPct(sessions[bSes]).toFixed(0)}%`, 'rgba(139,92,246,0.14)', 'rgba(139,92,246,0.5)'));
+                `${sessions[bSes].total} เทรด · Win Rate ${wrPct(sessions[bSes]).toFixed(0)}%`, 'rgba(132,204,22,0.14)', 'rgba(132,204,22,0.5)'));
             const bDay = best(daily, g => g.rr);
             if (bDay) hl.push(hlCard('🔥', 'วันที่ดีที่สุด', dayLabel(bDay), fmtRR(daily[bDay].rr), rrColor(daily[bDay].rr),
                 `${daily[bDay].total} เทรด · PNL ${fmtMoney(daily[bDay].pnl)}`, 'rgba(16,185,129,0.14)', 'rgba(16,185,129,0.5)'));
@@ -1986,8 +2086,8 @@
                 rr: (a, b) => b[1].rr - a[1].rr,
                 n:  (a, b) => b[1].total - a[1].total
             };
-            const rankStyle = (i) => i === 0 ? 'background:linear-gradient(135deg,#C5A059,#8a6d32);color:#0B1221'
-                : (i === 1 ? 'background:#3b4a66;color:#e2e8f0' : (i === 2 ? 'background:#4a3d24;color:#e8d5a8' : 'background:#1a2537;color:#94a3b8'));
+            const rankStyle = (i) => i === 0 ? 'background:linear-gradient(135deg,#22C55E,#15803D);color:#020403'
+                : (i === 1 ? 'background:#233524;color:#D7F5DE' : (i === 2 ? 'background:#14532D;color:#BBF7D0' : 'background:#0E140F;color:#5FBE7E'));
 
             const renderRank = (elId, obj, barColor) => {
                 const entries = Object.entries(obj).sort(sorters[anSort]);
@@ -2015,9 +2115,9 @@
                     </div>`;
                 }).join('');
             };
-            renderRank('an-setup', setups, 'linear-gradient(90deg,#06B6D4,#22d3ee)');
-            renderRank('an-symbol', symbols, 'linear-gradient(90deg,#B08D4B,#C5A059)');
-            renderRank('an-session', sessions, 'linear-gradient(90deg,#8B5CF6,#a78bfa)');
+            renderRank('an-setup', setups, 'linear-gradient(90deg,#2DD4BF,#5EEAD4)');
+            renderRank('an-symbol', symbols, 'linear-gradient(90deg,#16A34A,#22C55E)');
+            renderRank('an-session', sessions, 'linear-gradient(90deg,#84CC16,#BEF264)');
 
             /* ---------- 4) Daily tiles ---------- */
             const dayKeys = Object.keys(daily).sort().reverse();
@@ -2025,7 +2125,7 @@
             const shownDays = anShowAllDays ? dayKeys : dayKeys.slice(0, LIMIT);
             document.getElementById('an-daily').innerHTML = shownDays.map(d => {
                 const g = daily[d];
-                const cls = g.rr > 0 ? 'border-color:rgba(197,160,89,0.35);background:rgba(197,160,89,0.09)'
+                const cls = g.rr > 0 ? 'border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.09)'
                     : (g.rr < 0 ? 'border-color:rgba(244,63,94,0.35);background:rgba(244,63,94,0.09)'
                     : 'border-color:rgba(148,163,184,0.25);background:rgba(148,163,184,0.07)');
                 const dateTxt = new Date(d + 'T00:00:00').toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
@@ -2096,6 +2196,14 @@
             renderCalendar();
         }
 
+        function goCalToday() {
+            const now = new Date();
+            calYear = now.getFullYear();
+            calMonth = now.getMonth();
+            calSelectedDay = null;
+            renderCalendar();
+        }
+
         function closeCalDayPanel() {
             calSelectedDay = null;
             document.getElementById('cal-day-panel').classList.add('hidden');
@@ -2114,14 +2222,19 @@
             const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
             const fmtRR = (v) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}R`;
             const fmtMoney = (v) => `${v >= 0 ? '+' : '-'}$${Math.abs(v).toFixed(2)}`;
+            const fmtMoneyShort = (v) => {
+                const abs = Math.abs(v);
+                const val = abs >= 1000 ? `${(abs / 1000).toFixed(abs >= 10000 ? 0 : 1)}k` : abs.toFixed(0);
+                return `${v >= 0 ? '+' : '-'}$${val}`;
+            };
             const rrColor = (v) => v > 0 ? 'text-brand-500' : (v < 0 ? 'text-rose-400' : 'text-slate-400');
 
-            const monthNames = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-            document.getElementById('cal-month-label').innerText = `${monthNames[calMonth]} ${calYear + 543}`;
+            const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            document.getElementById('cal-month-label').innerText = `${monthNames[calMonth]} ${calYear}`;
 
             const data = getFilteredTrades();
-            const pad = (n) => String(n).padStart(2, '0');
-            const monthPrefix = `${calYear}-${pad(calMonth + 1)}`;
+            const pad2 = (n) => String(n).padStart(2, '0');
+            const monthPrefix = `${calYear}-${pad2(calMonth + 1)}`;
 
             const byDay = {};
             data.forEach(t => {
@@ -2135,46 +2248,85 @@
                 if (t.outcome === 'WIN') g.wins++; else if (t.outcome === 'LOSS') g.losses++; else g.be++;
             });
 
-            // Month summary strip
-            const monthDays = Object.values(byDay);
-            const monthTrades = monthDays.reduce((s, g) => s + g.trades.length, 0);
-            const monthRR = monthDays.reduce((s, g) => s + g.rr, 0);
-            const monthWins = monthDays.reduce((s, g) => s + g.wins, 0);
-            const monthWR = monthTrades > 0 ? (monthWins / monthTrades * 100).toFixed(0) : '0';
-            document.getElementById('cal-month-summary').innerHTML = `
-                <div class="cal-sum"><p>Trades</p><p class="text-white">${monthTrades}</p></div>
-                <div class="cal-sum"><p>Win Rate</p><p class="text-accent-cyan">${monthWR}%</p></div>
-                <div class="cal-sum"><p>RR</p><p class="${rrColor(monthRR)}">${fmtRR(monthRR)}</p></div>
-            `;
+            /* ---- Header summary stats ---- */
+            const dayEntries = Object.entries(byDay);
+            const monthTrades = dayEntries.reduce((s, [, g]) => s + g.trades.length, 0);
+            const monthPnl = dayEntries.reduce((s, [, g]) => s + g.pnl, 0);
+            const monthWins = dayEntries.reduce((s, [, g]) => s + g.wins, 0);
+            const monthLosses = dayEntries.reduce((s, [, g]) => s + g.losses, 0);
+            const monthWR = monthTrades > 0 ? ((monthWins / monthTrades) * 100).toFixed(1) : '0.0';
+            const tradingDays = dayEntries.length;
+            const profitDays = dayEntries.filter(([, g]) => g.pnl > 0).length;
+            const lossDays = dayEntries.filter(([, g]) => g.pnl < 0).length;
+            const bestDay = dayEntries.length ? Math.max(...dayEntries.map(([, g]) => g.pnl)) : 0;
+            const worstDay = dayEntries.length ? Math.min(...dayEntries.map(([, g]) => g.pnl)) : 0;
 
-            // Build grid
+            const elPnl = document.getElementById('cal-stat-pnl');
+            elPnl.innerText = fmtMoney(monthPnl);
+            elPnl.className = `text-2xl font-mono font-extrabold ${monthPnl > 0 ? 'text-emerald-400' : (monthPnl < 0 ? 'text-rose-400' : 'text-white')}`;
+            document.getElementById('cal-stat-bestworst').innerHTML = `Best <span class="text-emerald-400 font-semibold">${fmtMoney(bestDay)}</span> &nbsp; Worst <span class="text-rose-400 font-semibold">${fmtMoney(worstDay)}</span>`;
+
+            document.getElementById('cal-stat-wr').innerText = `${monthWR}%`;
+            document.getElementById('cal-stat-wl').innerHTML = `<span class="text-emerald-400">${monthWins}W</span> / <span class="text-rose-400">${monthLosses}L</span>`;
+
+            document.getElementById('cal-stat-trades').innerText = monthTrades;
+            document.getElementById('cal-stat-days').innerText = `${tradingDays} trading days`;
+
+            document.getElementById('cal-stat-pldays').innerHTML = `<span class="text-emerald-400">${profitDays}</span> / <span class="text-rose-400">${lossDays}</span>`;
+
+            /* ---- Build padded 7xN week grid ---- */
             const firstDow = new Date(calYear, calMonth, 1).getDay();
             const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+            const daysInPrevMonth = new Date(calYear, calMonth, 0).getDate();
+            const totalCells = Math.ceil((firstDow + daysInMonth) / 7) * 7;
             const todayKey = new Date().toISOString().substring(0, 10);
 
-            let html = '';
-            for (let i = 0; i < firstDow; i++) html += `<div class="cal-cell empty"></div>`;
-
-            for (let d = 1; d <= daysInMonth; d++) {
-                const dayKey = `${monthPrefix}-${pad(d)}`;
-                const g = byDay[dayKey];
-                let cls = 'cal-cell';
-                if (dayKey === todayKey) cls += ' is-today';
-                if (dayKey === calSelectedDay) cls += ' selected';
-                let inner = `<span class="cal-daynum">${d}</span>`;
-                if (g) {
-                    cls += g.rr > 0 ? ' win has-trades' : (g.rr < 0 ? ' loss has-trades' : ' be has-trades');
-                    inner += `<div><p class="cal-rr ${rrColor(g.rr)}">${fmtRR(g.rr)}</p><p class="cal-n">${g.trades.length} เทรด</p></div>`;
-                    html += `<div class="${cls}" onclick="selectCalDay('${dayKey}')">${inner}</div>`;
-                } else {
-                    html += `<div class="${cls}">${inner}</div>`;
-                }
+            const cells = [];
+            for (let i = 0; i < firstDow; i++) {
+                cells.push({ num: daysInPrevMonth - firstDow + 1 + i, inMonth: false });
             }
-            gridEl.innerHTML = html;
+            for (let d = 1; d <= daysInMonth; d++) {
+                cells.push({ num: d, inMonth: true, dayKey: `${monthPrefix}-${pad2(d)}` });
+            }
+            let trailNum = 1;
+            while (cells.length < totalCells) {
+                cells.push({ num: trailNum++, inMonth: false });
+            }
 
-            // Day detail panel
+            let gridHtml = '';
+            for (let w = 0; w < cells.length / 7; w++) {
+                const weekCells = cells.slice(w * 7, w * 7 + 7);
+                let weekPnl = 0, weekN = 0;
+                let rowHtml = weekCells.map(cell => {
+                    if (!cell.inMonth) {
+                        return `<div class="cal-cell pad"><span class="cal-daynum">${cell.num}</span></div>`;
+                    }
+                    const g = byDay[cell.dayKey];
+                    let cls = 'cal-cell';
+                    if (cell.dayKey === todayKey) cls += ' is-today';
+                    if (cell.dayKey === calSelectedDay) cls += ' selected';
+                    if (!g) {
+                        return `<div class="${cls}"><span class="cal-daynum">${cell.num}</span></div>`;
+                    }
+                    weekPnl += g.pnl;
+                    weekN += g.trades.length;
+                    cls += g.pnl > 0 ? ' win has-trades' : (g.pnl < 0 ? ' loss has-trades' : ' be has-trades');
+                    return `<div class="${cls}" onclick="selectCalDay('${cell.dayKey}')">
+                        <span class="cal-daynum">${cell.num}</span>
+                        <div><p class="cal-pnl">${fmtMoneyShort(g.pnl)}</p><p class="cal-n">${g.trades.length} trade${g.trades.length > 1 ? 's' : ''}</p></div>
+                    </div>`;
+                }).join('');
+
+                const weekCellHtml = weekN > 0
+                    ? `<div class="cal-week-cell"><p class="cal-week-pnl ${weekPnl > 0 ? 'text-emerald-400' : (weekPnl < 0 ? 'text-rose-400' : 'text-slate-400')}">${fmtMoneyShort(weekPnl)}</p><p class="cal-week-n">${weekN} trades</p></div>`
+                    : `<div class="cal-week-cell"><p class="cal-week-n">—</p></div>`;
+
+                gridHtml += `<div class="cal-row">${rowHtml}${weekCellHtml}</div>`;
+            }
+            gridEl.innerHTML = gridHtml;
+
+            /* ---- Day detail panel ---- */
             const panel = document.getElementById('cal-day-panel');
-            const emptyHint = document.getElementById('cal-empty-hint');
             if (calSelectedDay && byDay[calSelectedDay]) {
                 const g = byDay[calSelectedDay];
                 const dateLabel = new Date(calSelectedDay + 'T00:00:00').toLocaleDateString('th-TH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -2194,7 +2346,10 @@
                                 <h4 class="text-sm font-black text-white font-mono">${esc(t.symbol)}</h4>
                                 <p class="text-[10px] text-slate-400">${esc(t.setup)} · ${t.tfEntry || '-'}/${t.tfHtf || '-'}</p>
                             </div>
-                            ${outcomeTag}
+                            <div class="flex items-center gap-2">
+                                ${outcomeTag}
+                                <button onclick="openEditModal('${t.id}')" class="w-5 h-5 flex items-center justify-center rounded-full bg-dark-panel border border-dark-border text-slate-500 hover:text-brand-500 hover:border-brand-500 transition text-[10px]">✎</button>
+                            </div>
                         </div>
                         ${(before || after) ? `<div class="grid grid-cols-2 gap-1.5 mb-2">
                             ${before ? `<img src="${before}" onclick="openLightbox('${before}')" class="h-16 w-full object-cover rounded-lg border border-dark-border cursor-pointer">` : `<div class="h-16 rounded-lg border border-dashed border-dark-border"></div>`}
@@ -2207,14 +2362,13 @@
                     </div>`;
                 }).join('');
                 panel.classList.remove('hidden');
-                emptyHint.classList.add('hidden');
             } else {
                 panel.classList.add('hidden');
-                emptyHint.classList.toggle('hidden', monthTrades === 0);
             }
         }
 
-        /* ------------------ 4. GOALS RENDERER ------------------ */
+        
+/* ------------------ 4. GOALS RENDERER ------------------ */
         function renderGoals() {
             const stats = getStats();
             
