@@ -197,6 +197,50 @@
         #tab-goals label.flex:has(input:checked) { border-color:rgba(16,185,129,.5); background:rgba(16,185,129,.07); }
         #tab-goals label.flex:has(input:checked) span { color:#94a3b8; text-decoration:line-through; text-decoration-color:rgba(148,163,184,.4); }
         #tab-goals input[type=number] { background:#0f1828; }
+
+        /* ===== Confluence chips ===== */
+        .cf-chip { cursor: pointer; }
+        .cf-chip-inner {
+            display: inline-flex; align-items: center; gap: .4rem;
+            padding: .4rem .8rem; border-radius: .7rem; font-size: 11px; font-weight: 600;
+            background: #0f1828; border: 1px solid #2C3A54; color: #94a3b8;
+            transition: all .15s ease;
+        }
+        .cf-chip-inner::before { content: '○'; font-size: 9px; }
+        .cf-chip:has(input:checked) .cf-chip-inner {
+            background: rgba(197,160,89,.15); border-color: rgba(197,160,89,.55); color: #C5A059;
+        }
+        .cf-chip:has(input:checked) .cf-chip-inner::before { content: '●'; color: #C5A059; }
+
+        /* ===== Calendar ===== */
+        .cal-hero {
+            background: linear-gradient(135deg, #162032 0%, #111a2c 55%, #0f1828 100%);
+            border: 1px solid #2C3A54;
+            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6);
+        }
+        .cal-sum {
+            border-radius: .9rem; padding: .6rem .9rem; border: 1px solid #2C3A54;
+            background: #162032; text-align: center; min-width: 84px;
+        }
+        .cal-sum p:first-child { font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: #94a3b8; font-weight: 700; }
+        .cal-sum p:last-child { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 15px; margin-top: 2px; }
+        .cal-cell {
+            aspect-ratio: 1 / 0.85; border-radius: .85rem; padding: .5rem .55rem;
+            background: #1a2740; border: 1px solid #2C3A54; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform .15s ease, border-color .15s ease;
+        }
+        .cal-cell.empty { background: transparent; border: none; }
+        .cal-cell.has-trades { cursor: pointer; }
+        .cal-cell.has-trades:hover { transform: translateY(-2px); border-color: rgba(197,160,89,.5); }
+        .cal-cell.is-today { border-color: rgba(6,182,212,.6); box-shadow: 0 0 0 1px rgba(6,182,212,.3); }
+        .cal-cell.win { background: linear-gradient(160deg, rgba(197,160,89,.16), #1a2740 65%); }
+        .cal-cell.loss { background: linear-gradient(160deg, rgba(244,63,94,.14), #1a2740 65%); }
+        .cal-cell.be { background: linear-gradient(160deg, rgba(148,163,184,.10), #1a2740 65%); }
+        .cal-cell.selected { border-color: #C5A059; box-shadow: 0 0 0 1px #C5A059; }
+        .cal-daynum { font-size: 11px; font-weight: 700; color: #cbd5e1; }
+        .cal-cell .cal-rr { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; }
+        .cal-cell .cal-n { font-size: 9px; color: #94a3b8; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-sm relative">
@@ -281,6 +325,9 @@
                 <button onclick="switchTab('goals')" id="nav-goals" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition">
                     <span>Trading Goals</span>
                 </button>
+                <button onclick="switchTab('calendar')" id="nav-calendar" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition">
+                    <span>Calendar</span>
+                </button>
             </nav>
         </div>
 
@@ -325,6 +372,7 @@
                 <button onclick="switchTab('journal')" class="px-3 py-1.5 rounded-lg bg-dark-panel text-xs text-slate-200 whitespace-nowrap">Journal</button>
                 <button onclick="switchTab('analytics')" class="px-3 py-1.5 rounded-lg bg-dark-panel text-xs text-slate-200 whitespace-nowrap">Stats</button>
                 <button onclick="switchTab('goals')" class="px-3 py-1.5 rounded-lg bg-dark-panel text-xs text-slate-200 whitespace-nowrap">Goals</button>
+                <button onclick="switchTab('calendar')" class="px-3 py-1.5 rounded-lg bg-dark-panel text-xs text-slate-200 whitespace-nowrap">Calendar</button>
                 <button onclick="openSettingsModal()" class="px-3 py-1.5 rounded-lg bg-dark-panel border border-dark-border text-xs text-slate-200 whitespace-nowrap">⚙️ Settings</button>
                 <!-- ปุ่ม Log out สำหรับ Mobile -->
                 <button onclick="handleLogout()" class="px-3 py-1.5 rounded-lg bg-rose-900/40 text-xs text-rose-400 whitespace-nowrap">Logout</button>
@@ -747,6 +795,47 @@
                 </div>
             </div>
         </div>
+
+        <!-- TAB 5: TRADING CALENDAR -->
+        <div id="tab-calendar" class="space-y-6 hidden">
+
+            <div class="cal-hero rounded-3xl p-6 md:p-8 relative overflow-hidden">
+                <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-5">
+                    <div class="flex items-center gap-4">
+                        <button onclick="changeCalMonth(-1)" class="w-10 h-10 rounded-xl bg-dark-bg/60 border border-dark-border flex items-center justify-center text-slate-300 hover:text-brand-500 hover:border-brand-500/50 transition">‹</button>
+                        <div>
+                            <p class="text-[10px] font-mono font-semibold tracking-[0.25em] text-brand-500 mb-1">TRADING CALENDAR</p>
+                            <h2 id="cal-month-label" class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">-</h2>
+                        </div>
+                        <button onclick="changeCalMonth(1)" class="w-10 h-10 rounded-xl bg-dark-bg/60 border border-dark-border flex items-center justify-center text-slate-300 hover:text-brand-500 hover:border-brand-500/50 transition">›</button>
+                    </div>
+                    <div id="cal-month-summary" class="grid grid-cols-3 gap-3 w-full md:w-auto"></div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-4 md:p-6">
+                <div class="grid grid-cols-7 gap-2 mb-2">
+                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-rose-400/80 py-1">อา</div>
+                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">จ</div>
+                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">อ</div>
+                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">พ</div>
+                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">พฤ</div>
+                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">ศ</div>
+                    <div class="text-center text-[10px] font-bold uppercase tracking-wider text-accent-cyan/80 py-1">ส</div>
+                </div>
+                <div id="cal-grid" class="grid grid-cols-7 gap-2"></div>
+            </div>
+
+            <div id="cal-day-panel" class="hidden glass-card rounded-2xl p-5 md:p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 id="cal-day-title" class="text-sm font-extrabold text-white"></h3>
+                    <button onclick="closeCalDayPanel()" class="text-slate-400 hover:text-white text-lg leading-none">✕</button>
+                </div>
+                <div id="cal-day-trades" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+            </div>
+
+            <div id="cal-empty-hint" class="hidden text-center py-6 text-xs text-slate-500">คลิกวันที่มีเทรดเพื่อดูรายละเอียด</div>
+        </div>
     </main>
 
     <!-- TOAST CONTAINER (สำหรับแสดง Toast ซ้อนกันได้) -->
@@ -772,7 +861,7 @@
         <div class="glass-card w-full max-w-lg rounded-3xl p-6 md:p-8 space-y-5 border-dark-border">
             <div class="flex justify-between items-center border-b border-dark-border pb-4">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    ⚙️ จัดการหัวข้อ (Topics) & ท่าเทรด (Setups)
+                    ⚙️ จัดการหัวข้อ (Topics) / ท่าเทรด (Setups) / Confluence
                 </h3>
                 <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white text-xl">✕</button>
             </div>
@@ -806,6 +895,22 @@
                         <div class="flex gap-2 pt-2 border-t border-dark-border/60">
                             <input type="text" id="input-new-setup" onkeydown="handleTagKeyDown(event, 'setup')" placeholder="พิมพ์ท่าเทรดใหม่ แล้วกด Enter..." class="flex-1 bg-dark-card border border-dark-border rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-brand-500">
                             <button type="button" onclick="addTagFromInput('setup')" class="px-3 py-1.5 bg-brand-950 text-brand-500 hover:bg-brand-900 border border-brand-500/30 rounded-lg text-xs font-semibold transition flex items-center gap-1">+ เพิ่ม</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confluence Section -->
+                <div>
+                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">รายการ Confluence Check</label>
+                    <p class="text-[10px] text-slate-500 mb-2">เงื่อนไขที่ใช้เช็กก่อนเข้าเทรด เช่น EMA ตัดกัน, ชนแนวรับ, แท่งเทียนกลับตัว</p>
+
+                    <div class="bg-dark-panel border border-dark-border rounded-xl p-3 space-y-3">
+                        <div id="confluence-chips-container" class="flex flex-wrap gap-2 min-h-[32px]">
+                            <!-- Generated dynamically -->
+                        </div>
+                        <div class="flex gap-2 pt-2 border-t border-dark-border/60">
+                            <input type="text" id="input-new-confluence" onkeydown="handleTagKeyDown(event, 'confluence')" placeholder="พิมพ์เงื่อนไขใหม่ แล้วกด Enter..." class="flex-1 bg-dark-card border border-dark-border rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-brand-500">
+                            <button type="button" onclick="addTagFromInput('confluence')" class="px-3 py-1.5 bg-brand-950 text-brand-500 hover:bg-brand-900 border border-brand-500/30 rounded-lg text-xs font-semibold transition flex items-center gap-1">+ เพิ่ม</button>
                         </div>
                     </div>
                 </div>
@@ -875,6 +980,35 @@
                     </div>
                 </div>
 
+                <!-- Row 2.5: Timeframes -->
+                <div class="grid grid-cols-2 gap-4 p-3.5 rounded-xl bg-dark-panel/50 border border-dark-border">
+                    <div>
+                        <label class="text-[11px] font-semibold text-brand-500 uppercase tracking-wider block mb-1">TF เข้าเทรด (Entry)</label>
+                        <select id="field-tf-entry" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono">
+                            <option value="M1">M1</option>
+                            <option value="M5">M5</option>
+                            <option value="M15" selected>M15</option>
+                            <option value="M30">M30</option>
+                            <option value="H1">H1</option>
+                            <option value="H4">H4</option>
+                            <option value="D1">D1</option>
+                            <option value="W1">W1</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-accent-cyan uppercase tracking-wider block mb-1">TF ดูเทรนด์ (HTF)</label>
+                        <select id="field-tf-htf" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono">
+                            <option value="M15">M15</option>
+                            <option value="M30">M30</option>
+                            <option value="H1">H1</option>
+                            <option value="H4" selected>H4</option>
+                            <option value="D1">D1</option>
+                            <option value="W1">W1</option>
+                            <option value="MN">MN</option>
+                        </select>
+                    </div>
+                </div>
+
                 <!-- Row 3: Result, RR, PnL -->
                 <div class="grid grid-cols-3 gap-4 p-4 rounded-xl bg-dark-panel/50 border border-dark-border">
                     <div>
@@ -901,21 +1035,40 @@
                     </div>
                 </div>
 
-                <!-- Row 4: Image File Upload & Notes -->
+                <!-- Confluence Check -->
+                <div>
+                    <label class="text-[11px] font-semibold text-brand-500 uppercase tracking-wider block mb-1">Confluence Check</label>
+                    <p class="text-[10px] text-slate-500 mb-2">เลือกเงื่อนไขที่ครบถ้วนจริงก่อนกดเข้าออเดอร์ไม้นี้</p>
+                    <div id="field-confluence-container" class="flex flex-wrap gap-2 p-3 rounded-xl bg-dark-panel/50 border border-dark-border min-h-[46px]">
+                        <!-- Populated Dynamically -->
+                    </div>
+                </div>
+
+                <!-- Row 4: Before / After Screenshots & Notes -->
                 <div class="space-y-4">
                     <div>
-                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">รูปภาพกราฟ (Upload Image)</label>
-                        <input type="file" id="field-image-file" accept="image/*" onchange="handleImageUpload(event)" class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-950 file:text-brand-500 file:border file:border-brand-500/30 hover:file:bg-brand-900/50 cursor-pointer">
-                        <input type="hidden" id="field-image"> <!-- Stores Base64 String -->
-                        
-                        <!-- Image Preview Container -->
-                        <div id="image-preview-container" class="hidden relative group w-36 h-24 rounded-xl overflow-hidden border border-dark-border mt-2">
-                            <img id="image-preview-img" src="" class="w-full h-full object-cover">
-                            <button type="button" onclick="removeUploadedImage()" class="absolute top-1 right-1 bg-rose-600/80 hover:bg-rose-600 text-white p-1 rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition">
-                                ✕
-                            </button>
+                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">📸 Before / After Screenshots</label>
+                        <p class="text-[10px] text-slate-500 mb-2">แนบภาพกราฟตอนกดเข้าเทรด และภาพตอนปิดออเดอร์เรียบร้อยแล้ว</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-300 block mb-1">ก่อนเข้าเทรด (Before)</span>
+                                <input type="file" id="field-image-before-file" accept="image/*" onchange="handleImageUpload(event, 'before')" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-brand-950 file:text-brand-500 file:border file:border-brand-500/30 hover:file:bg-brand-900/50 cursor-pointer">
+                                <input type="hidden" id="field-image-before">
+                                <div id="image-preview-before-container" class="hidden relative group w-full h-24 rounded-xl overflow-hidden border border-dark-border mt-2">
+                                    <img id="image-preview-before-img" src="" class="w-full h-full object-cover">
+                                    <button type="button" onclick="removeUploadedImage('before')" class="absolute top-1 right-1 bg-rose-600/80 hover:bg-rose-600 text-white p-1 rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition">✕</button>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-300 block mb-1">หลังปิดออเดอร์ (After)</span>
+                                <input type="file" id="field-image-after-file" accept="image/*" onchange="handleImageUpload(event, 'after')" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-brand-950 file:text-brand-500 file:border file:border-brand-500/30 hover:file:bg-brand-900/50 cursor-pointer">
+                                <input type="hidden" id="field-image-after">
+                                <div id="image-preview-after-container" class="hidden relative group w-full h-24 rounded-xl overflow-hidden border border-dark-border mt-2">
+                                    <img id="image-preview-after-img" src="" class="w-full h-full object-cover">
+                                    <button type="button" onclick="removeUploadedImage('after')" class="absolute top-1 right-1 bg-rose-600/80 hover:bg-rose-600 text-white p-1 rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition">✕</button>
+                                </div>
+                            </div>
                         </div>
-                        <p class="text-[10px] text-slate-500 mt-1">อัปโหลดไฟล์รูปภาพจากอุปกรณ์ของคุณ (ระบบจะย่อขนาดให้อัตโนมัติเพื่อประหยัดพื้นที่)</p>
                     </div>
                     <div>
                         <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">บันทึกช่วยจำ (Trading Notes / Mistakes)</label>
@@ -1076,14 +1229,19 @@
         
         let userSettings = {
             topics: ['General', 'พอร์ตหลัก', 'พอร์ตรอง', 'SMC'],
-            setups: ['Wyckoff Spring', 'Breakblock Entry', 'Liquidity Sweep', 'Order Block Fill']
+            setups: ['Wyckoff Spring', 'Breakblock Entry', 'Liquidity Sweep', 'Order Block Fill'],
+            confluences: ['EMA ตัดกัน', 'ชนแนวรับ/แนวต้าน', 'แท่งเทียนกลับตัว', 'Break of Structure', 'Fibonacci Retracement', 'Volume Spike']
         };
 
         let tempTopics = [];
         let tempSetups = [];
+        let tempConfluences = [];
         let activeTopic = 'ALL';
         let journalLayout = 'grid'; 
         let charts = {};
+        let calYear = new Date().getFullYear();
+        let calMonth = new Date().getMonth();
+        let calSelectedDay = null;
 
         // Color Palettes
         const colors = {
@@ -1112,13 +1270,18 @@
                 if (savedTrades) trades = savedTrades;
                 if (savedGoals) goals = savedGoals;
                 if (savedSettings) userSettings = savedSettings;
+                if (!userSettings.confluences || !userSettings.confluences.length) {
+                    userSettings.confluences = ['EMA ตัดกัน', 'ชนแนวรับ/แนวต้าน', 'แท่งเทียนกลับตัว', 'Break of Structure', 'Fibonacci Retracement', 'Volume Spike'];
+                }
 
                 let needsSave = false;
                 trades = trades.map(t => {
-                    if(!t.topic) {
-                        t.topic = 'General';
-                        needsSave = true;
-                    }
+                    if(!t.topic) { t.topic = 'General'; needsSave = true; }
+                    if(t.tfEntry === undefined) { t.tfEntry = '-'; needsSave = true; }
+                    if(t.tfHtf === undefined) { t.tfHtf = '-'; needsSave = true; }
+                    if(!t.confluences) { t.confluences = []; needsSave = true; }
+                    if(t.imageBefore === undefined) { t.imageBefore = t.image || ''; needsSave = true; }
+                    if(t.imageAfter === undefined) { t.imageAfter = ''; needsSave = true; }
                     return t;
                 });
                 if(needsSave) saveTrades();
@@ -1171,6 +1334,14 @@
                 setupHTML += `<option value="${cleanS}">${cleanS}</option>`;
             });
             fieldSetup.innerHTML = setupHTML;
+
+            const confContainer = document.getElementById('field-confluence-container');
+            if (confContainer) {
+                confContainer.innerHTML = (userSettings.confluences || []).map(c => {
+                    const cleanC = c.trim();
+                    return `<label class="cf-chip"><input type="checkbox" value="${cleanC}" class="hidden peer">&nbsp;<span class="cf-chip-inner">${cleanC}</span></label>`;
+                }).join('');
+            }
         }
 
         function changeGlobalTopic(newTopic) {
@@ -1185,6 +1356,7 @@
         function openSettingsModal() {
             tempTopics = [...userSettings.topics];
             tempSetups = [...userSettings.setups];
+            tempConfluences = [...(userSettings.confluences || [])];
             renderSettingsChips();
             document.getElementById('settings-modal').classList.remove('hidden');
         }
@@ -1193,6 +1365,7 @@
             document.getElementById('settings-modal').classList.add('hidden');
             document.getElementById('input-new-topic').value = '';
             document.getElementById('input-new-setup').value = '';
+            document.getElementById('input-new-confluence').value = '';
         }
 
         function renderSettingsChips() {
@@ -1220,10 +1393,22 @@
                     </span>
                 `).join('');
             }
+
+            const confluenceContainer = document.getElementById('confluence-chips-container');
+            if (tempConfluences.length === 0) {
+                confluenceContainer.innerHTML = `<span class="text-xs text-slate-500 py-1">ยังไม่มีเงื่อนไข Confluence</span>`;
+            } else {
+                confluenceContainer.innerHTML = tempConfluences.map((c, index) => `
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-950/40 text-accent-cyan border border-cyan-500/30 text-xs font-semibold">
+                        ${c}
+                        <button type="button" onclick="removeSettingsTag('confluence', ${index})" class="text-slate-400 hover:text-rose-400 transition font-bold ml-1">✕</button>
+                    </span>
+                `).join('');
+            }
         }
 
         function addTagFromInput(type) {
-            const inputId = type === 'topic' ? 'input-new-topic' : 'input-new-setup';
+            const inputId = type === 'topic' ? 'input-new-topic' : (type === 'setup' ? 'input-new-setup' : 'input-new-confluence');
             const input = document.getElementById(inputId);
             const val = input.value.trim();
 
@@ -1231,8 +1416,10 @@
 
             if (type === 'topic') {
                 if (!tempTopics.includes(val)) tempTopics.push(val);
-            } else {
+            } else if (type === 'setup') {
                 if (!tempSetups.includes(val)) tempSetups.push(val);
+            } else {
+                if (!tempConfluences.includes(val)) tempConfluences.push(val);
             }
 
             input.value = '';
@@ -1249,8 +1436,10 @@
         function removeSettingsTag(type, index) {
             if (type === 'topic') {
                 tempTopics.splice(index, 1);
-            } else {
+            } else if (type === 'setup') {
                 tempSetups.splice(index, 1);
+            } else {
+                tempConfluences.splice(index, 1);
             }
             renderSettingsChips();
         }
@@ -1267,6 +1456,7 @@
 
             userSettings.topics = [...tempTopics];
             userSettings.setups = [...tempSetups];
+            userSettings.confluences = [...tempConfluences];
 
             await localforage.setItem(SETTINGS_KEY, userSettings);
             populateSettingsDropdowns();
@@ -1275,7 +1465,8 @@
         }
 
         /* ------------------ IMAGE UPLOAD & COMPRESSION ------------------ */
-        function handleImageUpload(event) {
+        function handleImageUpload(event, target) {
+            target = target || 'before';
             const file = event.target.files[0];
             if (!file) return;
 
@@ -1301,18 +1492,19 @@
                     ctx.drawImage(img, 0, 0, width, height);
 
                     const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
-                    document.getElementById('field-image').value = compressedBase64;
-                    document.getElementById('image-preview-img').src = compressedBase64;
-                    document.getElementById('image-preview-container').classList.remove('hidden');
+                    document.getElementById(`field-image-${target}`).value = compressedBase64;
+                    document.getElementById(`image-preview-${target}-img`).src = compressedBase64;
+                    document.getElementById(`image-preview-${target}-container`).classList.remove('hidden');
                 };
             };
         }
 
-        function removeUploadedImage() {
-            const fileInput = document.getElementById('field-image-file');
+        function removeUploadedImage(target) {
+            target = target || 'before';
+            const fileInput = document.getElementById(`field-image-${target}-file`);
             if (fileInput) fileInput.value = '';
-            document.getElementById('field-image').value = '';
-            document.getElementById('image-preview-container').classList.add('hidden');
+            document.getElementById(`field-image-${target}`).value = '';
+            document.getElementById(`image-preview-${target}-container`).classList.add('hidden');
         }
 
         /* ------------------ LIGHTBOX CONTROLS ------------------ */
@@ -1336,6 +1528,7 @@
             renderJournalView();
             renderAnalytics();
             renderGoals();
+            renderCalendar();
         }
 
         function getFilteredTrades() {
@@ -1363,7 +1556,9 @@
         function closeModal() {
             document.getElementById('trade-modal').classList.add('hidden');
             document.getElementById('trade-form').reset();
-            removeUploadedImage();
+            removeUploadedImage('before');
+            removeUploadedImage('after');
+            document.querySelectorAll('#field-confluence-container input[type=checkbox]').forEach(cb => cb.checked = false);
             document.getElementById('field-date').value = new Date().toISOString().slice(0, 16);
         }
 
@@ -1378,10 +1573,14 @@
                 type: document.getElementById('field-type').value,
                 setup: document.getElementById('field-setup').value,
                 session: document.getElementById('field-session').value,
+                tfEntry: document.getElementById('field-tf-entry').value,
+                tfHtf: document.getElementById('field-tf-htf').value,
+                confluences: Array.from(document.querySelectorAll('#field-confluence-container input[type=checkbox]:checked')).map(cb => cb.value),
                 outcome: document.getElementById('field-outcome').value,
                 rr: parseFloat(document.getElementById('field-rr').value),
                 pnl: parseFloat(document.getElementById('field-pnl').value),
-                image: document.getElementById('field-image').value,
+                imageBefore: document.getElementById('field-image-before').value,
+                imageAfter: document.getElementById('field-image-after').value,
                 notes: document.getElementById('field-notes').value,
             };
 
@@ -1395,7 +1594,7 @@
 
         /* ------------------ NAVIGATION (TABS) ------------------ */
         function switchTab(tabId) {
-            ['dashboard', 'journal', 'analytics', 'goals'].forEach(id => {
+            ['dashboard', 'journal', 'analytics', 'goals', 'calendar'].forEach(id => {
                 document.getElementById(`tab-${id}`).classList.add('hidden');
                 document.getElementById(`nav-${id}`).classList.remove('active');
             });
@@ -1405,6 +1604,7 @@
             
             if (tabId === 'analytics') renderAnalytics();
             if (tabId === 'dashboard') updateDashboard();
+            if (tabId === 'calendar') renderCalendar();
         }
 
         function setJournalLayout(layout) {
@@ -1460,7 +1660,7 @@
                         <td class="p-3 text-right font-mono">${t.rr >= 0 ? '+'+t.rr : t.rr} R</td>
                         <td class="p-3 text-right font-mono ${t.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">$${t.pnl}</td>
                         <td class="p-3 text-center">
-                            ${t.image ? `<button onclick="openLightbox('${t.image}')" class="text-xs text-brand-500 hover:underline">📸 ดูรูป</button>` : '-'}
+                            ${(t.imageBefore || t.image) ? `<button onclick="openLightbox('${t.imageBefore || t.image}')" class="text-xs text-brand-500 hover:underline">📸 ดูรูป</button>` : '-'}
                         </td>
                     </tr>
                 `;
@@ -1533,12 +1733,25 @@
                     if(t.outcome === 'LOSS') outcomeTag = `<span class="px-2 py-1 rounded bg-rose-900/40 text-rose-500 font-bold border border-rose-500/30 text-[10px]">LOSS</span>`;
 
                     const typeColor = t.type === 'LONG' ? 'text-emerald-500' : 'text-rose-500';
-                    const imgPreview = t.image 
-                        ? `<div class="w-full h-40 bg-dark-panel mb-4 rounded-xl overflow-hidden border border-dark-border group relative cursor-pointer" onclick="openLightbox('${t.image}')">
-                               <img src="${t.image}" loading="lazy" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-300">
-                               <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition backdrop-blur-sm text-white font-bold text-xs">🔍 ดูรูปภาพขยาย</div>
-                           </div>` 
+                    const beforeImg = t.imageBefore || t.image || '';
+                    const afterImg = t.imageAfter || '';
+                    const imgTile = (src, tag) => src
+                        ? `<div class="relative rounded-xl overflow-hidden border border-dark-border h-28 bg-dark-panel group cursor-pointer" onclick="openLightbox('${src}')">
+                               <img src="${src}" loading="lazy" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-300">
+                               <span class="absolute bottom-1 left-1.5 text-[9px] font-bold text-white bg-black/60 px-1.5 py-0.5 rounded">${tag}</span>
+                               <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition backdrop-blur-sm text-white font-bold text-[10px]">🔍 ดูรูปขยาย</div>
+                           </div>`
+                        : `<div class="h-28 rounded-xl flex items-center justify-center border border-dark-border border-dashed text-slate-500 text-[10px] bg-dark-panel">ไม่มีภาพ ${tag}</div>`;
+                    const imgPreview = (beforeImg || afterImg)
+                        ? `<div class="grid grid-cols-2 gap-2 mb-4">${imgTile(beforeImg, 'BEFORE')}${imgTile(afterImg, 'AFTER')}</div>`
                         : `<div class="w-full h-12 bg-dark-panel mb-4 rounded-xl flex items-center justify-center border border-dark-border border-dashed text-slate-500 text-[10px]">ไม่มีรูปภาพประกอบ</div>`;
+                    const tfLine = `<div class="mb-2 flex items-center gap-1.5 flex-wrap">
+                        <span class="an-chip bg-dark-panel text-slate-300 border border-dark-border">Entry ${t.tfEntry && t.tfEntry !== '-' ? t.tfEntry : '-'}</span>
+                        <span class="an-chip bg-dark-panel text-slate-300 border border-dark-border">HTF ${t.tfHtf && t.tfHtf !== '-' ? t.tfHtf : '-'}</span>
+                    </div>`;
+                    const confluenceLine = (t.confluences && t.confluences.length)
+                        ? `<div class="mb-3 flex flex-wrap gap-1.5">${t.confluences.map(c => `<span class="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-cyan-500/10 text-accent-cyan border border-cyan-500/20">✓ ${c}</span>`).join('')}</div>`
+                        : '';
 
                     html += `
                         <div data-outcome="${t.outcome}" class="jn-card glass-card p-5 rounded-2xl flex flex-col justify-between glass-card-hover relative">
@@ -1559,6 +1772,8 @@
                                     <span class="text-[10px] text-slate-500 uppercase tracking-wider block mb-0.5">Setup / Topic</span>
                                     <p class="text-xs text-brand-500 font-semibold">${t.setup} <span class="text-slate-500 text-[10px] ml-1">(${t.topic})</span></p>
                                 </div>
+                                ${tfLine}
+                                ${confluenceLine}
                                 ${t.notes ? `
                                 <div class="mb-4 bg-dark-panel/50 p-3 rounded-xl border border-dark-border">
                                     <p class="text-[11px] text-slate-300 italic line-clamp-3">"${t.notes}"</p>
@@ -1591,6 +1806,7 @@
                                         <th class="p-4">Symbol</th>
                                         <th class="p-4">Type</th>
                                         <th class="p-4">Setup</th>
+                                        <th class="p-4">TF</th>
                                         <th class="p-4 text-center">Result</th>
                                         <th class="p-4 text-right">RR</th>
                                         <th class="p-4 text-right">PnL</th>
@@ -1613,11 +1829,16 @@
                             <td class="p-4 font-mono font-bold text-white">${t.symbol}</td>
                             <td class="p-4 ${t.type === 'LONG' ? 'text-emerald-400' : 'text-rose-400'}">${t.type}</td>
                             <td class="p-4">${t.setup}</td>
+                            <td class="p-4 font-mono text-[11px] text-slate-400">${t.tfEntry && t.tfEntry !== '-' ? t.tfEntry : '-'}/${t.tfHtf && t.tfHtf !== '-' ? t.tfHtf : '-'}</td>
                             <td class="p-4 text-center ${outcomeClass}">${t.outcome}</td>
                             <td class="p-4 text-right font-mono ${t.rr >= 0 ? 'text-brand-500' : 'text-rose-500'}">${t.rr >= 0 ? '+'+t.rr : t.rr} R</td>
                             <td class="p-4 text-right font-mono ${t.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">$${t.pnl}</td>
                             <td class="p-4 text-center">
-                                ${t.image ? `<button onclick="openLightbox('${t.image}')" class="text-xs text-brand-500 hover:underline">📸 View</button>` : '-'}
+                                <div class="flex items-center justify-center gap-2">
+                                    ${(t.imageBefore || t.image) ? `<button onclick="openLightbox('${t.imageBefore || t.image}')" class="text-[10px] text-brand-500 hover:underline">📸 Before</button>` : ''}
+                                    ${t.imageAfter ? `<button onclick="openLightbox('${t.imageAfter}')" class="text-[10px] text-accent-cyan hover:underline">📸 After</button>` : ''}
+                                    ${!(t.imageBefore || t.image || t.imageAfter) ? '-' : ''}
+                                </div>
                             </td>
                             <td class="p-4 text-center">
                                 <button onclick="deleteTrade('${t.id}')" class="text-rose-500 hover:underline text-[11px]">Delete</button>
@@ -1864,6 +2085,133 @@
                     </div>
                 </div>`;
             }).join('');
+        }
+
+        /* ------------------ 3b. CALENDAR RENDERER ------------------ */
+        function changeCalMonth(delta) {
+            calMonth += delta;
+            if (calMonth > 11) { calMonth = 0; calYear++; }
+            if (calMonth < 0) { calMonth = 11; calYear--; }
+            calSelectedDay = null;
+            renderCalendar();
+        }
+
+        function closeCalDayPanel() {
+            calSelectedDay = null;
+            document.getElementById('cal-day-panel').classList.add('hidden');
+            document.querySelectorAll('.cal-cell.selected').forEach(el => el.classList.remove('selected'));
+        }
+
+        function selectCalDay(dayKey) {
+            calSelectedDay = dayKey;
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const gridEl = document.getElementById('cal-grid');
+            if (!gridEl) return;
+
+            const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+            const fmtRR = (v) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}R`;
+            const fmtMoney = (v) => `${v >= 0 ? '+' : '-'}$${Math.abs(v).toFixed(2)}`;
+            const rrColor = (v) => v > 0 ? 'text-brand-500' : (v < 0 ? 'text-rose-400' : 'text-slate-400');
+
+            const monthNames = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+            document.getElementById('cal-month-label').innerText = `${monthNames[calMonth]} ${calYear + 543}`;
+
+            const data = getFilteredTrades();
+            const pad = (n) => String(n).padStart(2, '0');
+            const monthPrefix = `${calYear}-${pad(calMonth + 1)}`;
+
+            const byDay = {};
+            data.forEach(t => {
+                const dayKey = t.date.substring(0, 10);
+                if (!dayKey.startsWith(monthPrefix)) return;
+                if (!byDay[dayKey]) byDay[dayKey] = { trades: [], rr: 0, pnl: 0, wins: 0, losses: 0, be: 0 };
+                const g = byDay[dayKey];
+                g.trades.push(t);
+                g.rr += (t.rr || 0);
+                g.pnl += (t.pnl || 0);
+                if (t.outcome === 'WIN') g.wins++; else if (t.outcome === 'LOSS') g.losses++; else g.be++;
+            });
+
+            // Month summary strip
+            const monthDays = Object.values(byDay);
+            const monthTrades = monthDays.reduce((s, g) => s + g.trades.length, 0);
+            const monthRR = monthDays.reduce((s, g) => s + g.rr, 0);
+            const monthWins = monthDays.reduce((s, g) => s + g.wins, 0);
+            const monthWR = monthTrades > 0 ? (monthWins / monthTrades * 100).toFixed(0) : '0';
+            document.getElementById('cal-month-summary').innerHTML = `
+                <div class="cal-sum"><p>Trades</p><p class="text-white">${monthTrades}</p></div>
+                <div class="cal-sum"><p>Win Rate</p><p class="text-accent-cyan">${monthWR}%</p></div>
+                <div class="cal-sum"><p>RR</p><p class="${rrColor(monthRR)}">${fmtRR(monthRR)}</p></div>
+            `;
+
+            // Build grid
+            const firstDow = new Date(calYear, calMonth, 1).getDay();
+            const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+            const todayKey = new Date().toISOString().substring(0, 10);
+
+            let html = '';
+            for (let i = 0; i < firstDow; i++) html += `<div class="cal-cell empty"></div>`;
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dayKey = `${monthPrefix}-${pad(d)}`;
+                const g = byDay[dayKey];
+                let cls = 'cal-cell';
+                if (dayKey === todayKey) cls += ' is-today';
+                if (dayKey === calSelectedDay) cls += ' selected';
+                let inner = `<span class="cal-daynum">${d}</span>`;
+                if (g) {
+                    cls += g.rr > 0 ? ' win has-trades' : (g.rr < 0 ? ' loss has-trades' : ' be has-trades');
+                    inner += `<div><p class="cal-rr ${rrColor(g.rr)}">${fmtRR(g.rr)}</p><p class="cal-n">${g.trades.length} เทรด</p></div>`;
+                    html += `<div class="${cls}" onclick="selectCalDay('${dayKey}')">${inner}</div>`;
+                } else {
+                    html += `<div class="${cls}">${inner}</div>`;
+                }
+            }
+            gridEl.innerHTML = html;
+
+            // Day detail panel
+            const panel = document.getElementById('cal-day-panel');
+            const emptyHint = document.getElementById('cal-empty-hint');
+            if (calSelectedDay && byDay[calSelectedDay]) {
+                const g = byDay[calSelectedDay];
+                const dateLabel = new Date(calSelectedDay + 'T00:00:00').toLocaleDateString('th-TH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+                document.getElementById('cal-day-title').innerText = `${dateLabel} · ${g.trades.length} เทรด · ${fmtMoney(g.pnl)}`;
+                document.getElementById('cal-day-trades').innerHTML = g.trades.map(t => {
+                    const before = t.imageBefore || t.image || '';
+                    const after = t.imageAfter || '';
+                    const outcomeTag = t.outcome === 'WIN'
+                        ? `<span class="px-2 py-1 rounded bg-brand-900/40 text-brand-500 font-bold border border-brand-500/30 text-[10px]">WIN</span>`
+                        : t.outcome === 'LOSS'
+                        ? `<span class="px-2 py-1 rounded bg-rose-900/40 text-rose-500 font-bold border border-rose-500/30 text-[10px]">LOSS</span>`
+                        : `<span class="px-2 py-1 rounded bg-slate-800 text-slate-400 font-bold border border-slate-700 text-[10px]">BE</span>`;
+                    return `
+                    <div class="jn-card glass-card p-4 rounded-2xl" data-outcome="${t.outcome}">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="text-sm font-black text-white font-mono">${esc(t.symbol)}</h4>
+                                <p class="text-[10px] text-slate-400">${esc(t.setup)} · ${t.tfEntry || '-'}/${t.tfHtf || '-'}</p>
+                            </div>
+                            ${outcomeTag}
+                        </div>
+                        ${(before || after) ? `<div class="grid grid-cols-2 gap-1.5 mb-2">
+                            ${before ? `<img src="${before}" onclick="openLightbox('${before}')" class="h-16 w-full object-cover rounded-lg border border-dark-border cursor-pointer">` : `<div class="h-16 rounded-lg border border-dashed border-dark-border"></div>`}
+                            ${after ? `<img src="${after}" onclick="openLightbox('${after}')" class="h-16 w-full object-cover rounded-lg border border-dark-border cursor-pointer">` : `<div class="h-16 rounded-lg border border-dashed border-dark-border"></div>`}
+                        </div>` : ''}
+                        <div class="flex justify-between items-center pt-2 border-t border-dark-border">
+                            <span class="text-xs font-mono font-bold ${rrColor(t.rr)}">${fmtRR(t.rr)}</span>
+                            <span class="text-xs font-mono font-bold ${t.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${fmtMoney(t.pnl)}</span>
+                        </div>
+                    </div>`;
+                }).join('');
+                panel.classList.remove('hidden');
+                emptyHint.classList.add('hidden');
+            } else {
+                panel.classList.add('hidden');
+                emptyHint.classList.toggle('hidden', monthTrades === 0);
+            }
         }
 
         /* ------------------ 4. GOALS RENDERER ------------------ */
