@@ -107,16 +107,16 @@
 
         /* ===== Analytics & Statistics (card-based, no charts) ===== */
         .an-hero {
-            background: linear-gradient(135deg, #0A0F0A 0%, #050705 55%, #0D120D 100%);
+            background: #0A0F0A;
             border: 1px solid #1E3320;
-            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 16px -8px rgba(0,0,0,0.5);
         }
         .an-sort-btn { color: #6B8F6E; }
         .an-sort-btn:hover { color: #CFF5DB; }
         .an-sort-btn.active { background: #22C55E; color: #020403; box-shadow: 0 4px 14px -4px rgba(34,197,94,0.5); }
         .an-stat {
             position: relative; overflow: hidden;
-            background: linear-gradient(180deg, #0F1710 0%, #0A0F0A 100%);
+            background: #0A0F0A;
             border: 1px solid #1E3320; border-radius: 1rem; padding: 1rem 1.1rem;
             transition: transform .25s ease, border-color .25s ease;
         }
@@ -152,22 +152,14 @@
 
         /* ===== Modern restyle: Dashboard / Journal / Goals ===== */
         #tab-dashboard .glass-card, #tab-journal .glass-card, #tab-goals .glass-card {
-            background: linear-gradient(180deg, #0F1710 0%, #0A0F0A 100%);
+            background: #0A0F0A;
             border-color: #1E3320; border-radius: 1.25rem; position: relative;
         }
         #tab-dashboard .dx-hero, #tab-journal > .glass-card:first-child, #tab-goals > .glass-card:first-child {
-            background: linear-gradient(135deg, #0B120B 0%, #050705 55%, #0D120D 100%);
-            overflow: hidden; box-shadow: 0 24px 48px -24px rgba(0,0,0,.7);
+            background: #0A0F0A;
+            overflow: hidden; box-shadow: 0 4px 16px -8px rgba(0,0,0,0.5);
         }
-        #tab-dashboard .dx-hero::before, #tab-journal > .glass-card:first-child::before, #tab-goals > .glass-card:first-child::before {
-            content:''; position:absolute; top:-120px; right:-80px; width:320px; height:320px; border-radius:50%;
-            background: radial-gradient(circle, rgba(34,197,94,.18), transparent 65%); pointer-events:none;
-        }
-        #tab-dashboard .dx-hero::after {
-            content:''; position:absolute; bottom:-140px; left:-60px; width:300px; height:300px; border-radius:50%;
-            background: radial-gradient(circle, rgba(45,212,191,.12), transparent 65%); pointer-events:none;
-        }
-        #tab-dashboard .dx-hero h2 { background: linear-gradient(90deg,#fff,#BBF7D0); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        #tab-dashboard .dx-hero h2 { color: #fff; }
 
         .dx-metrics > div { overflow:hidden; padding:1.2rem 1.25rem; }
         .dx-metrics > div::before { content:''; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg,var(--a,#22C55E),transparent); }
@@ -578,8 +570,6 @@
 
             <!-- Header -->
             <div class="an-hero rounded-3xl p-6 md:p-8 relative overflow-hidden">
-                <div class="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl pointer-events-none"></div>
-                <div class="absolute -bottom-28 -left-10 w-64 h-64 rounded-full bg-accent-cyan/10 blur-3xl pointer-events-none"></div>
                 <div class="relative flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
                         <p class="text-[10px] font-mono font-semibold tracking-[0.25em] text-brand-500 mb-2">PERFORMANCE INSIGHTS</p>
