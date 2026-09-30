@@ -443,6 +443,29 @@
                 </div>
             </div>
 
+            <!-- Streak / Extremes Row -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-card p-4 rounded-2xl flex items-center gap-3 glass-card-hover">
+                    <span id="dash-streak-icon" class="text-2xl">➖</span>
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-wider">Current Streak</p>
+                        <p id="dash-streak-text" class="text-base font-bold font-mono text-slate-400">-</p>
+                    </div>
+                </div>
+                <div class="glass-card p-4 rounded-2xl glass-card-hover">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider">Best Trade</p>
+                    <p id="dash-best-trade" class="text-lg font-bold font-mono text-emerald-400 mt-1">$0</p>
+                </div>
+                <div class="glass-card p-4 rounded-2xl glass-card-hover">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider">Worst Trade</p>
+                    <p id="dash-worst-trade" class="text-lg font-bold font-mono text-rose-400 mt-1">$0</p>
+                </div>
+                <div class="glass-card p-4 rounded-2xl glass-card-hover">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider">Today's PnL</p>
+                    <p id="dash-today-pnl" class="text-lg font-bold font-mono text-white mt-1">$0</p>
+                </div>
+            </div>
+
             <!-- Charts Section -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Equity Curve Graph -->
@@ -466,31 +489,18 @@
                     <div>
                         <h4 class="text-base font-bold text-white mb-1">Vision & Philosophy</h4>
                         <p class="text-xs text-slate-400 mb-4">หลักการเพื่อความสำเร็จของนักเทรด</p>
-                        <div class="space-y-3 text-xs">
-                            <div class="p-3.5 rounded-xl bg-dark-panel border border-dark-border flex items-start gap-3">
-                                <span class="text-brand-500 font-bold text-base">01</span>
-                                <div>
-                                    <span class="font-semibold text-slate-200 block">การวิเคราะห์ที่เฉียบคม</span>
-                                    <span class="text-slate-400 text-[11px]">ทุกความสำเร็จในตลาดไม่ได้เกิดจากความบังเอิญ แต่เกิดจากการตัดสินใจที่เด็ดขาด</span>
-                                </div>
-                            </div>
-                            <div class="p-3.5 rounded-xl bg-dark-panel border border-dark-border flex items-start gap-3">
-                                <span class="text-brand-500 font-bold text-base">02</span>
-                                <div>
-                                    <span class="font-semibold text-slate-200 block">วินัยและความอดทน</span>
-                                    <span class="text-slate-400 text-[11px]">คือกุญแจสำคัญที่แยกนักเทรดที่ประสบความสำเร็จออกจากคนทั่วไป</span>
-                                </div>
-                            </div>
-                            <div class="p-3.5 rounded-xl bg-dark-panel border border-dark-border flex items-start gap-3">
-                                <span class="text-brand-500 font-bold text-base">03</span>
-                                <div>
-                                    <span class="font-semibold text-slate-200 block">การพัฒนาไม่หยุดนิ่ง</span>
-                                    <span class="text-slate-400 text-[11px]">ตลาดไม่เคยหยุดนิ่ง และการพัฒนาศักยภาพของเราก็เช่นกัน</span>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="dashboard-tips" class="space-y-3 text-xs"></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Activity Heatmap -->
+            <div class="glass-card p-6 rounded-2xl">
+                <div class="mb-4">
+                    <h4 class="text-base font-bold text-white">Activity · 14 วันล่าสุด</h4>
+                    <p class="text-xs text-slate-400">ภาพรวมผลงานรายวัน — เขียว = กำไร, แดง = ขาดทุน, เทา = ไม่มีเทรด</p>
+                </div>
+                <div id="dash-heatmap" class="grid grid-cols-7 gap-2"></div>
             </div>
 
             <!-- Recent Trades Quick Overview Table -->
@@ -670,7 +680,47 @@
 
         <!-- TAB 4: TRADING GOALS & PROGRESS -->
         <div id="tab-goals" class="space-y-6 hidden">
-            
+
+            <!-- Risk Guard -->
+            <div class="glass-card p-6 rounded-2xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">🛡️ Risk Guard</h3>
+                        <p class="text-[10px] text-slate-400 mt-1">ขีดจำกัดความเสี่ยงต่อวัน เพื่อป้องกันการเทรดเกินตัว</p>
+                    </div>
+                    <span id="risk-guard-status" class="self-start sm:self-auto px-3 py-1 rounded-full text-[11px] font-bold border border-brand-500/40 bg-brand-950/60 text-brand-500">✅ ปลอดภัยวันนี้</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-dark-panel border border-dark-border">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs text-slate-300 font-semibold">Max Daily Loss</span>
+                            <div class="flex items-center gap-1">
+                                <input type="number" id="risk-input-daily" value="100" class="w-16 bg-dark-card border border-dark-border rounded-lg px-2 py-1 text-[11px] text-white font-mono focus:border-brand-500 outline-none">
+                                <span class="text-[10px] text-slate-500">$</span>
+                            </div>
+                        </div>
+                        <p><span id="risk-current-daily" class="text-lg font-mono font-bold text-white">$0</span> <span class="text-xs text-slate-500">of $<span id="risk-target-daily">100</span></span></p>
+                        <div class="relative w-full h-2 bg-dark-card rounded-full overflow-hidden border border-dark-border mt-2">
+                            <div id="risk-progress-daily" class="absolute top-0 left-0 h-full rounded-full bg-brand-500 transition-all duration-500" style="width:0%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-dark-panel border border-dark-border">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs text-slate-300 font-semibold">Max Loss / Trade</span>
+                            <div class="flex items-center gap-1">
+                                <input type="number" id="risk-input-pertrade" value="50" class="w-16 bg-dark-card border border-dark-border rounded-lg px-2 py-1 text-[11px] text-white font-mono focus:border-brand-500 outline-none">
+                                <span class="text-[10px] text-slate-500">$</span>
+                            </div>
+                        </div>
+                        <p><span id="risk-current-pertrade" class="text-lg font-mono font-bold text-white">$0</span> <span class="text-xs text-slate-500">of $<span id="risk-target-pertrade">50</span></span></p>
+                        <div class="relative w-full h-2 bg-dark-card rounded-full overflow-hidden border border-dark-border mt-2">
+                            <div id="risk-progress-pertrade" class="absolute top-0 left-0 h-full rounded-full bg-brand-500 transition-all duration-500" style="width:0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="saveRiskLimits()" class="mt-4 px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs transition">บันทึกขีดจำกัด</button>
+            </div>
+
             <div class="glass-card p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
                     <p class="text-[10px] font-mono font-semibold tracking-[0.25em] text-brand-500 mb-1.5">GOALS &amp; DISCIPLINE</p>
@@ -774,24 +824,27 @@
 
             <!-- Discipline Checklist -->
             <div class="glass-card p-6 rounded-2xl mt-6">
-                <h3 class="text-sm font-bold text-white mb-1">กฎเหล็กเพื่อบรรลุเป้าหมาย (Discipline Checklist)</h3>
-                <p class="text-xs text-slate-400 mb-4">เตือนตัวเองก่อนกดเข้าออเดอร์ทุกครั้ง เพื่อรักษามาตรฐานการเทรด</p>
-                
-                <div class="space-y-2">
+                <div class="flex items-center justify-between mb-1 flex-wrap gap-2">
+                    <h3 class="text-sm font-bold text-white">กฎเหล็กเพื่อบรรลุเป้าหมาย (Discipline Checklist)</h3>
+                    <span id="discipline-streak" class="px-3 py-1 rounded-full text-[11px] font-bold bg-brand-950/60 border border-brand-500/40 text-brand-500">เริ่มทำวันนี้เพื่อสร้างสตรีค</span>
+                </div>
+                <p class="text-xs text-slate-400 mb-4">เตือนตัวเองก่อนกดเข้าออเดอร์ทุกครั้ง เพื่อรักษามาตรฐานการเทรด ติ๊กครบทุกข้อทุกวันเพื่อสร้างสตรีค</p>
+
+                <div id="discipline-list" class="space-y-2">
                     <label class="flex items-center gap-3 p-3 rounded-xl bg-dark-panel border border-dark-border cursor-pointer hover:border-brand-500/50 transition">
-                        <input type="checkbox" class="w-4 h-4 accent-brand-500 bg-dark-card border-dark-border rounded">
+                        <input type="checkbox" onchange="toggleDiscipline(0, this.checked)" class="w-4 h-4 accent-brand-500 bg-dark-card border-dark-border rounded">
                         <span class="text-xs text-slate-300 font-medium">เทรดตามแผนและ Setup ที่บันทึกไว้ในระบบเท่านั้น ไม่เทรดด้วยอารมณ์ (No FOMO)</span>
                     </label>
                     <label class="flex items-center gap-3 p-3 rounded-xl bg-dark-panel border border-dark-border cursor-pointer hover:border-brand-500/50 transition">
-                        <input type="checkbox" class="w-4 h-4 accent-brand-500 bg-dark-card border-dark-border rounded">
+                        <input type="checkbox" onchange="toggleDiscipline(1, this.checked)" class="w-4 h-4 accent-brand-500 bg-dark-card border-dark-border rounded">
                         <span class="text-xs text-slate-300 font-medium">คำนวณ Position Sizing และตั้ง Stop Loss ก่อนเปิดออเดอร์ทุกครั้ง (Risk Management)</span>
                     </label>
                     <label class="flex items-center gap-3 p-3 rounded-xl bg-dark-panel border border-dark-border cursor-pointer hover:border-brand-500/50 transition">
-                        <input type="checkbox" class="w-4 h-4 accent-brand-500 bg-dark-card border-dark-border rounded">
+                        <input type="checkbox" onchange="toggleDiscipline(2, this.checked)" class="w-4 h-4 accent-brand-500 bg-dark-card border-dark-border rounded">
                         <span class="text-xs text-slate-300 font-medium">ยอมรับผลความพ่ายแพ้ได้ หากโดน SL จะไม่หัวร้อนหรือโอเวอร์เทรดเพื่อเอาคืน (Acceptance)</span>
                     </label>
                     <label class="flex items-center gap-3 p-3 rounded-xl bg-dark-panel border border-dark-border cursor-pointer hover:border-brand-500/50 transition">
-                        <input type="checkbox" class="w-4 h-4 accent-brand-500 bg-dark-card border-dark-border rounded">
+                        <input type="checkbox" onchange="toggleDiscipline(3, this.checked)" class="w-4 h-4 accent-brand-500 bg-dark-card border-dark-border rounded">
                         <span class="text-xs text-slate-300 font-medium">บันทึก Journal ทุกไม้ไม่ว่าจะชนะหรือแพ้ เพื่อเป็น Data ในการพัฒนาตัวเองต่อไป (Consistency)</span>
                     </label>
                 </div>
@@ -1249,7 +1302,9 @@
         const SETTINGS_KEY = 'playerx_settings_v1';
 
         let trades = [];
-        let goals = { targetRR: 50, targetWR: 50, targetPNL: 1000 };
+        let goals = { targetRR: 50, targetWR: 50, targetPNL: 1000, maxDailyLoss: 100, maxLossPerTrade: 50 };
+        let disciplineLog = { logs: {} };
+        const DISCIPLINE_KEY = 'playerx_discipline_v1';
         
         let userSettings = {
             topics: ['General', 'พอร์ตหลัก', 'พอร์ตรอง', 'SMC'],
@@ -1295,6 +1350,10 @@
                 if (savedTrades) trades = savedTrades;
                 if (savedGoals) goals = savedGoals;
                 if (savedSettings) userSettings = savedSettings;
+                if (goals.maxDailyLoss === undefined) goals.maxDailyLoss = 100;
+                if (goals.maxLossPerTrade === undefined) goals.maxLossPerTrade = 50;
+                const savedDiscipline = await localforage.getItem(DISCIPLINE_KEY);
+                if (savedDiscipline) disciplineLog = savedDiscipline;
                 if (!userSettings.confluences || !userSettings.confluences.length) {
                     userSettings.confluences = ['EMA ตัดกัน', 'ชนแนวรับ/แนวต้าน', 'แท่งเทียนกลับตัว', 'Break of Structure', 'Fibonacci Retracement', 'Volume Spike'];
                 }
@@ -1554,6 +1613,9 @@
             renderAnalytics();
             renderGoals();
             renderCalendar();
+            renderDashboardTips();
+            renderRiskGuard();
+            renderDisciplineStreak();
         }
 
         function getFilteredTrades() {
@@ -1722,6 +1784,58 @@
             const elPnL = document.getElementById('metric-pnl');
             elPnL.innerText = `${stats.netPnL >= 0 ? '+' : ''}$${stats.netPnL}`;
             elPnL.className = `text-3xl font-bold font-mono mt-2 ${stats.netPnL >= 0 ? 'text-white' : 'text-rose-500'}`;
+
+            /* Streak */
+            let streakCount = 0, streakType = null;
+            for (const t of stats.data) {
+                if (t.outcome === 'BE') continue;
+                if (streakType === null) { streakType = t.outcome; streakCount = 1; }
+                else if (t.outcome === streakType) streakCount++;
+                else break;
+            }
+            const streakTextEl = document.getElementById('dash-streak-text');
+            const streakIconEl = document.getElementById('dash-streak-icon');
+            if (streakTextEl && streakIconEl) {
+                if (streakType === 'WIN') {
+                    streakTextEl.innerText = `${streakCount} Win${streakCount > 1 ? 's' : ''}`;
+                    streakTextEl.className = 'text-base font-bold font-mono text-emerald-400';
+                    streakIconEl.innerText = '🔥';
+                } else if (streakType === 'LOSS') {
+                    streakTextEl.innerText = `${streakCount} Loss${streakCount > 1 ? 'es' : ''}`;
+                    streakTextEl.className = 'text-base font-bold font-mono text-rose-400';
+                    streakIconEl.innerText = '❄️';
+                } else {
+                    streakTextEl.innerText = 'No streak yet';
+                    streakTextEl.className = 'text-base font-bold font-mono text-slate-400';
+                    streakIconEl.innerText = '➖';
+                }
+            }
+
+            /* Best / Worst trade */
+            const bestEl = document.getElementById('dash-best-trade');
+            const worstEl = document.getElementById('dash-worst-trade');
+            if (bestEl && worstEl) {
+                if (stats.data.length) {
+                    const best = Math.max(...stats.data.map(t => t.pnl));
+                    const worst = Math.min(...stats.data.map(t => t.pnl));
+                    bestEl.innerText = `${best >= 0 ? '+' : '-'}$${Math.abs(best).toFixed(2)}`;
+                    worstEl.innerText = `${worst >= 0 ? '+' : '-'}$${Math.abs(worst).toFixed(2)}`;
+                } else {
+                    bestEl.innerText = '$0';
+                    worstEl.innerText = '$0';
+                }
+            }
+
+            /* Today's PnL */
+            const todayEl = document.getElementById('dash-today-pnl');
+            if (todayEl) {
+                const todayKey = new Date().toISOString().substring(0, 10);
+                const todayPnl = stats.data.filter(t => t.date.startsWith(todayKey)).reduce((s, t) => s + t.pnl, 0);
+                todayEl.innerText = `${todayPnl >= 0 ? '+' : '-'}$${Math.abs(todayPnl).toFixed(2)}`;
+                todayEl.className = `text-lg font-bold font-mono mt-1 ${todayPnl > 0 ? 'text-emerald-400' : (todayPnl < 0 ? 'text-rose-400' : 'text-white')}`;
+            }
+
+            renderDashHeatmap();
 
             if (document.getElementById('banner-target-rr')) document.getElementById('banner-target-rr').innerText = `${goals.targetRR} R`;
             if (document.getElementById('banner-target-wr')) document.getElementById('banner-target-wr').innerText = `${goals.targetWR}%`;
@@ -2374,7 +2488,14 @@
             if (rrPercent > 100) rrPercent = 100;
             
             document.getElementById('goal-progress-rr').style.width = `${rrPercent}%`;
-            document.getElementById('goal-percent-rr').innerText = `${rrPercent.toFixed(1)}% Completed`;
+            const rrPercentEl = document.getElementById('goal-percent-rr');
+            if (parseFloat(stats.totalRR) >= goals.targetRR) {
+                rrPercentEl.innerText = 'บรรลุเป้าหมายแล้ว 🏆';
+                rrPercentEl.className = 'text-xs text-right font-mono text-brand-500 font-bold';
+            } else {
+                rrPercentEl.innerText = `${rrPercent.toFixed(1)}% Completed`;
+                rrPercentEl.className = 'text-xs text-right text-slate-400 font-mono';
+            }
 
             document.getElementById('goal-target-wr-display').innerText = goals.targetWR;
             document.getElementById('goal-current-wr').innerText = `${stats.winRate}%`;
@@ -2404,7 +2525,155 @@
             if (pnlPercent > 100) pnlPercent = 100;
 
             document.getElementById('goal-progress-pnl').style.width = `${pnlPercent}%`;
-            document.getElementById('goal-percent-pnl').innerText = `${pnlPercent.toFixed(1)}% Completed`;
+            const pnlPercentEl = document.getElementById('goal-percent-pnl');
+            if (currentMonthPnL >= goals.targetPNL) {
+                pnlPercentEl.innerText = 'บรรลุเป้าหมายแล้ว 🏆';
+                pnlPercentEl.className = 'text-xs text-right font-mono text-emerald-400 font-bold';
+            } else {
+                pnlPercentEl.innerText = `${pnlPercent.toFixed(1)}% Completed`;
+                pnlPercentEl.className = 'text-xs text-right text-slate-400 font-mono';
+            }
+        }
+
+        /* ------------------ DASHBOARD EXTRAS: TIPS / HEATMAP ------------------ */
+        const DASHBOARD_TIPS = [
+            { n: '01', t: 'การวิเคราะห์ที่เฉียบคม', d: 'ทุกความสำเร็จในตลาดไม่ได้เกิดจากความบังเอิญ แต่เกิดจากการตัดสินใจที่เด็ดขาด' },
+            { n: '02', t: 'วินัยและความอดทน', d: 'คือกุญแจสำคัญที่แยกนักเทรดที่ประสบความสำเร็จออกจากคนทั่วไป' },
+            { n: '03', t: 'การพัฒนาไม่หยุดนิ่ง', d: 'ตลาดไม่เคยหยุดนิ่ง และการพัฒนาศักยภาพของเราก็เช่นกัน' },
+            { n: '04', t: 'ตัดขาดทุนให้เร็ว', d: 'ไม่มีใครถูกทุกไม้ สิ่งสำคัญคือการจำกัดความเสียหายให้เล็กที่สุดในแต่ละครั้ง' },
+            { n: '05', t: 'อย่าเทรดเพื่อเอาคืน', d: 'Revenge Trading คือศัตรูตัวฉกาจของบัญชีเทรด หยุดพักเมื่อรู้สึกหัวร้อน' },
+            { n: '06', t: 'บันทึกทุกการตัดสินใจ', d: 'สิ่งที่วัดได้เท่านั้นที่พัฒนาได้ จง Journal ทุกไม้ไม่ว่าจะแพ้หรือชนะ' },
+            { n: '07', t: 'Position Size คือทุกอย่าง', d: 'เทรดใหญ่เกินไปแม้กลยุทธ์จะดี ก็ทำให้พอร์ตพังได้ในไม้เดียว' },
+            { n: '08', t: 'ทำตามระบบ ไม่ใช่อารมณ์', d: 'เมื่อ Setup ไม่ครบ อย่าฝืนเข้า รอจังหวะที่ใช่เสมอ' },
+            { n: '09', t: 'พักผ่อนก็คือกลยุทธ์', d: 'บางครั้งการไม่เทรดเลยคือการตัดสินใจที่ดีที่สุดของวันนั้น' },
+        ];
+
+        function renderDashboardTips() {
+            const el = document.getElementById('dashboard-tips');
+            if (!el) return;
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+            const picks = [0, 1, 2].map(i => DASHBOARD_TIPS[(dayOfYear + i) % DASHBOARD_TIPS.length]);
+            el.innerHTML = picks.map(p => `
+                <div class="p-3.5 rounded-xl bg-dark-panel border border-dark-border flex items-start gap-3">
+                    <span class="text-brand-500 font-bold text-base">${p.n}</span>
+                    <div>
+                        <span class="font-semibold text-slate-200 block">${p.t}</span>
+                        <span class="text-slate-400 text-[11px]">${p.d}</span>
+                    </div>
+                </div>`).join('');
+        }
+
+        function renderDashHeatmap() {
+            const el = document.getElementById('dash-heatmap');
+            if (!el) return;
+            const data = getFilteredTrades();
+            const byDay = {};
+            data.forEach(t => {
+                const k = t.date.substring(0, 10);
+                byDay[k] = (byDay[k] || 0) + t.pnl;
+            });
+            let html = '';
+            for (let i = 13; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const key = d.toISOString().substring(0, 10);
+                const pnl = byDay[key];
+                let cls = 'aspect-square rounded-lg border flex items-center justify-center text-[10px] font-mono font-bold ';
+                let title = key;
+                if (pnl === undefined) { cls += 'bg-dark-panel border-dark-border text-slate-600'; title += ' · ไม่มีเทรด'; }
+                else if (pnl > 0) { cls += 'bg-brand-500/80 border-brand-500 text-dark-bg'; title += ` · +$${pnl.toFixed(2)}`; }
+                else if (pnl < 0) { cls += 'bg-rose-500/80 border-rose-500 text-white'; title += ` · -$${Math.abs(pnl).toFixed(2)}`; }
+                else { cls += 'bg-slate-700/50 border-dark-border text-slate-300'; title += ' · $0.00'; }
+                html += `<div class="${cls}" title="${title}">${d.getDate()}</div>`;
+            }
+            el.innerHTML = html;
+        }
+
+        /* ------------------ GOALS EXTRAS: RISK GUARD ------------------ */
+        function renderRiskGuard() {
+            const dailyInput = document.getElementById('risk-input-daily');
+            if (!dailyInput) return;
+            dailyInput.value = goals.maxDailyLoss;
+            document.getElementById('risk-input-pertrade').value = goals.maxLossPerTrade;
+            document.getElementById('risk-target-daily').innerText = goals.maxDailyLoss;
+            document.getElementById('risk-target-pertrade').innerText = goals.maxLossPerTrade;
+
+            const todayKey = new Date().toISOString().substring(0, 10);
+            const todayTrades = getFilteredTrades().filter(t => t.date.startsWith(todayKey));
+            const todayNet = todayTrades.reduce((s, t) => s + t.pnl, 0);
+            const dailyLoss = todayNet < 0 ? Math.abs(todayNet) : 0;
+            const worstTradeToday = todayTrades.length ? Math.max(0, -Math.min(...todayTrades.map(t => t.pnl))) : 0;
+
+            const dailyPercent = Math.min(100, (dailyLoss / goals.maxDailyLoss) * 100);
+            const perTradePercent = Math.min(100, (worstTradeToday / goals.maxLossPerTrade) * 100);
+
+            document.getElementById('risk-current-daily').innerText = `$${dailyLoss.toFixed(2)}`;
+            document.getElementById('risk-current-pertrade').innerText = `$${worstTradeToday.toFixed(2)}`;
+
+            const dailyBar = document.getElementById('risk-progress-daily');
+            dailyBar.style.width = `${dailyPercent}%`;
+            dailyBar.className = `absolute top-0 left-0 h-full rounded-full transition-all duration-500 ${dailyPercent >= 100 ? 'bg-rose-500' : (dailyPercent >= 70 ? 'bg-rose-400' : 'bg-brand-500')}`;
+
+            const perTradeBar = document.getElementById('risk-progress-pertrade');
+            perTradeBar.style.width = `${perTradePercent}%`;
+            perTradeBar.className = `absolute top-0 left-0 h-full rounded-full transition-all duration-500 ${perTradePercent >= 100 ? 'bg-rose-500' : (perTradePercent >= 70 ? 'bg-rose-400' : 'bg-brand-500')}`;
+
+            const statusEl = document.getElementById('risk-guard-status');
+            if (dailyLoss >= goals.maxDailyLoss || worstTradeToday >= goals.maxLossPerTrade) {
+                statusEl.innerText = '⚠️ เกินขีดจำกัดวันนี้';
+                statusEl.className = 'self-start sm:self-auto px-3 py-1 rounded-full text-[11px] font-bold border border-rose-500/50 bg-rose-950/40 text-rose-400';
+            } else {
+                statusEl.innerText = '✅ ปลอดภัยวันนี้';
+                statusEl.className = 'self-start sm:self-auto px-3 py-1 rounded-full text-[11px] font-bold border border-brand-500/40 bg-brand-950/60 text-brand-500';
+            }
+        }
+
+        async function saveRiskLimits() {
+            goals.maxDailyLoss = parseFloat(document.getElementById('risk-input-daily').value) || 100;
+            goals.maxLossPerTrade = parseFloat(document.getElementById('risk-input-pertrade').value) || 50;
+            await localforage.setItem(GOALS_KEY, goals);
+            renderRiskGuard();
+            showToast('บันทึกขีดจำกัดความเสี่ยงเรียบร้อยแล้ว', 'success');
+        }
+
+        /* ------------------ GOALS EXTRAS: DISCIPLINE STREAK ------------------ */
+        async function toggleDiscipline(idx, checked) {
+            const todayKey = new Date().toISOString().substring(0, 10);
+            if (!disciplineLog.logs[todayKey]) disciplineLog.logs[todayKey] = [false, false, false, false];
+            disciplineLog.logs[todayKey][idx] = checked;
+            await localforage.setItem(DISCIPLINE_KEY, disciplineLog);
+            renderDisciplineStreak();
+        }
+
+        function renderDisciplineStreak() {
+            const list = document.getElementById('discipline-list');
+            if (!list) return;
+            const todayKey = new Date().toISOString().substring(0, 10);
+            const todayLog = disciplineLog.logs[todayKey] || [false, false, false, false];
+            list.querySelectorAll('input[type=checkbox]').forEach((cb, i) => {
+                cb.checked = !!todayLog[i];
+            });
+
+            let streak = 0;
+            let d = new Date();
+            while (true) {
+                const key = d.toISOString().substring(0, 10);
+                const log = disciplineLog.logs[key];
+                if (log && log.length === 4 && log.every(Boolean)) {
+                    streak++;
+                    d.setDate(d.getDate() - 1);
+                } else break;
+            }
+            const el = document.getElementById('discipline-streak');
+            if (el) {
+                if (streak > 0) {
+                    el.innerText = `🔥 ${streak} วันติดต่อกัน`;
+                    el.className = 'px-3 py-1 rounded-full text-[11px] font-bold bg-brand-950/60 border border-brand-500/40 text-brand-500';
+                } else {
+                    el.innerText = 'เริ่มทำวันนี้เพื่อสร้างสตรีค';
+                    el.className = 'px-3 py-1 rounded-full text-[11px] font-bold bg-dark-panel border border-dark-border text-slate-400';
+                }
+            }
         }
 
         async function saveGoals() {
