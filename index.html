@@ -24,37 +24,37 @@
                     },
                     colors: {
                         brand: {
-                            50: '#EEFCF3',
-                            100: '#D6F8E1',
-                            500: '#22C55E', // Neon Green
-                            600: '#16A34A',
-                            900: '#14532D',
-                            950: '#07170D',
+                            50: '#F3E8FF',
+                            100: '#E9D5FF',
+                            500: '#8B5CF6', // Violet
+                            600: '#7C3AED',
+                            900: '#4C1D95',
+                            950: '#1E1033',
                         },
                         dark: {
-                            bg: '#020403',      // Pure Black (Logo Background)
-                            card: '#0A0F0A',    // Secondary Background
-                            panel: '#10160F',   // Elevated Panel
-                            border: '#1E3320',  // Subtle Green Border
-                            muted: '#6B8F6E',   // Muted green-gray text
+                            bg: '#07050D',      // Near-Black Violet (Logo Background)
+                            card: '#0F0B18',    // Secondary Background
+                            panel: '#15101F',   // Elevated Panel
+                            border: '#28213A',  // Subtle Violet Border
+                            muted: '#8A85A6',   // Muted violet-gray text
                         },
                         accent: {
                             win: '#22C55E',    // Green
                             loss: '#F43F5E',   // Crimson Loss
-                            be: '#5B6B5C',     // Green-gray
-                            cyan: '#2DD4BF',   // Teal-green
+                            be: '#64748B',     // Neutral Gray
+                            cyan: '#3B82F6',   // Blue
                         },
                         slate: {
-                            50: '#EFFBF2',
-                            100: '#DFF7E6',
-                            200: '#B8ECC6',
-                            300: '#8FE0A8',
-                            400: '#5FBE7E',
-                            500: '#3F9860',
-                            600: '#2F7A4A',
-                            700: '#215A36',
-                            800: '#173F27',
-                            900: '#0F2A1A',
+                            50: '#F5F3FA',
+                            100: '#EAE7F5',
+                            200: '#D3CEE8',
+                            300: '#B4ACD6',
+                            400: '#8F84BB',
+                            500: '#6F6499',
+                            600: '#584F7A',
+                            700: '#443C5E',
+                            800: '#312B44',
+                            900: '#211D30',
                         }
                     }
                 }
@@ -64,40 +64,40 @@
     
     <style>
         body { 
-            background-color: #020403; 
-            color: #B8F5C4; 
+            background-color: #07050D; 
+            color: #E8E6F2; 
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         
         /* Glassmorphism & Custom Glows */
         .glass-card { 
-            background: #0A0F0A; 
-            border: 1px solid #1E3320; 
+            background: #0F0B18; 
+            border: 1px solid #28213A; 
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
         .glass-card-hover {
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-card-hover:hover {
-            border-color: #22C55E;
+            border-color: #8B5CF6;
             transform: translateY(-2px);
-            box-shadow: 0 15px 35px -10px rgba(34, 197, 94, 0.15);
+            box-shadow: 0 15px 35px -10px rgba(139, 92, 246, 0.15);
         }
         
         .glow-brand {
-            box-shadow: 0 0 20px -3px rgba(34, 197, 94, 0.3);
+            box-shadow: 0 0 20px -3px rgba(139, 92, 246, 0.3);
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #020403; }
-        ::-webkit-scrollbar-thumb { background: #1E3320; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #14532D; }
+        ::-webkit-scrollbar-track { background: #07050D; }
+        ::-webkit-scrollbar-thumb { background: #28213A; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4C1D95; }
         
         .tab-btn.active {
-            background-color: #10160F;
-            color: #22C55E;
-            border-left: 3px solid #22C55E;
+            background-color: #15101F;
+            color: #8B5CF6;
+            border-left: 3px solid #8B5CF6;
         }
 
         /* Progress Bar Animation */
@@ -107,44 +107,44 @@
 
         /* ===== Analytics & Statistics (card-based, no charts) ===== */
         .an-hero {
-            background: #0A0F0A;
-            border: 1px solid #1E3320;
+            background: #0F0B18;
+            border: 1px solid #28213A;
             box-shadow: 0 4px 16px -8px rgba(0,0,0,0.5);
         }
-        .an-sort-btn { color: #6B8F6E; }
-        .an-sort-btn:hover { color: #CFF5DB; }
-        .an-sort-btn.active { background: #22C55E; color: #020403; box-shadow: 0 4px 14px -4px rgba(34,197,94,0.5); }
+        .an-sort-btn { color: #8A85A6; }
+        .an-sort-btn:hover { color: #EDE9FE; }
+        .an-sort-btn.active { background: #8B5CF6; color: #07050D; box-shadow: 0 4px 14px -4px rgba(139,92,246,0.5); }
         .an-stat {
             position: relative; overflow: hidden;
-            background: #0A0F0A;
-            border: 1px solid #1E3320; border-radius: 1rem; padding: 1rem 1.1rem;
+            background: #0F0B18;
+            border: 1px solid #28213A; border-radius: 1rem; padding: 1rem 1.1rem;
             transition: transform .25s ease, border-color .25s ease;
         }
-        .an-stat:hover { transform: translateY(-2px); border-color: rgba(34,197,94,0.5); }
+        .an-stat:hover { transform: translateY(-2px); border-color: rgba(139,92,246,0.5); }
         .an-stat::before {
             content: ''; position: absolute; left: 0; top: 0; height: 2px; width: 100%;
-            background: linear-gradient(90deg, var(--an-accent, #22C55E), transparent);
+            background: linear-gradient(90deg, var(--an-accent, #8B5CF6), transparent);
         }
         .an-hl {
             position: relative; overflow: hidden; border-radius: 1rem; padding: 1.1rem;
-            border: 1px solid #1E3320;
-            background: radial-gradient(120% 120% at 100% 0%, var(--an-glow, rgba(34,197,94,0.12)) 0%, #0A0F0A 60%);
+            border: 1px solid #28213A;
+            background: radial-gradient(120% 120% at 100% 0%, var(--an-glow, rgba(139,92,246,0.12)) 0%, #0F0B18 60%);
             transition: transform .25s ease, border-color .25s ease;
         }
-        .an-hl:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(34,197,94,0.5)); }
+        .an-hl:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(139,92,246,0.5)); }
         .an-row {
             position: relative; border-radius: .85rem; padding: .7rem .8rem .8rem;
-            background: #10160F; border: 1px solid #1E3320;
+            background: #15101F; border: 1px solid #28213A;
             transition: border-color .2s ease, background .2s ease;
         }
-        .an-row:hover { border-color: rgba(34,197,94,0.45); background: #132015; }
+        .an-row:hover { border-color: rgba(139,92,246,0.45); background: #1C1729; }
         .an-meter { height: 3px; border-radius: 999px; background: rgba(148,163,184,0.15); overflow: hidden; }
         .an-meter > span { display: block; height: 100%; border-radius: 999px; }
         .an-tile { border-radius: .85rem; padding: .7rem .8rem; border: 1px solid; transition: transform .2s ease; }
         .an-tile:hover { transform: translateY(-2px) scale(1.02); }
         .an-month {
-            border-radius: 1.1rem; padding: 1.2rem; border: 1px solid #1E3320; position: relative; overflow: hidden;
-            background: radial-gradient(110% 110% at 100% 0%, var(--an-glow, rgba(16,185,129,0.10)) 0%, #0A0F0A 55%);
+            border-radius: 1.1rem; padding: 1.2rem; border: 1px solid #28213A; position: relative; overflow: hidden;
+            background: radial-gradient(110% 110% at 100% 0%, var(--an-glow, rgba(16,185,129,0.10)) 0%, #0F0B18 55%);
             transition: transform .25s ease, border-color .25s ease;
         }
         .an-month:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(16,185,129,0.5)); }
@@ -152,44 +152,44 @@
 
         /* ===== Modern restyle: Dashboard / Journal / Goals ===== */
         #tab-dashboard .glass-card, #tab-journal .glass-card, #tab-goals .glass-card {
-            background: #0A0F0A;
-            border-color: #1E3320; border-radius: 1.25rem; position: relative;
+            background: #0F0B18;
+            border-color: #28213A; border-radius: 1.25rem; position: relative;
         }
         #tab-dashboard .dx-hero, #tab-journal > .glass-card:first-child, #tab-goals > .glass-card:first-child {
-            background: #0A0F0A;
+            background: #0F0B18;
             overflow: hidden; box-shadow: 0 4px 16px -8px rgba(0,0,0,0.5);
         }
         #tab-dashboard .dx-hero h2 { color: #fff; }
 
         .dx-metrics > div { overflow:hidden; padding:1.2rem 1.25rem; }
-        .dx-metrics > div::before { content:''; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg,var(--a,#22C55E),transparent); }
+        .dx-metrics > div::before { content:''; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg,var(--a,#8B5CF6),transparent); }
         .dx-metrics > div::after { position:absolute; right:1rem; top:1rem; font-size:1.25rem; opacity:.55; }
-        .dx-metrics > div:nth-child(1){--a:#6B8F6E} .dx-metrics > div:nth-child(1)::after{content:'📒'}
-        .dx-metrics > div:nth-child(2){--a:#2DD4BF} .dx-metrics > div:nth-child(2)::after{content:'🎯'}
-        .dx-metrics > div:nth-child(3){--a:#84CC16} .dx-metrics > div:nth-child(3)::after{content:'⚖️'}
+        .dx-metrics > div:nth-child(1){--a:#8A85A6} .dx-metrics > div:nth-child(1)::after{content:'📒'}
+        .dx-metrics > div:nth-child(2){--a:#3B82F6} .dx-metrics > div:nth-child(2)::after{content:'🎯'}
+        .dx-metrics > div:nth-child(3){--a:#22C55E} .dx-metrics > div:nth-child(3)::after{content:'⚖️'}
         .dx-metrics > div:nth-child(4){--a:#22C55E} .dx-metrics > div:nth-child(4)::after{content:'📈'}
         .dx-metrics > div:nth-child(5){--a:#10B981} .dx-metrics > div:nth-child(5)::after{content:'💰'}
         .dx-metrics h3 { font-size:2rem; letter-spacing:-.02em; }
 
         #tab-dashboard table thead, #tab-journal table thead { background:rgba(11,18,33,.6); }
         #tab-dashboard tbody tr, #tab-journal tbody tr { transition: background .15s ease; }
-        #tab-dashboard tbody tr:hover, #tab-journal tbody tr:hover { background: rgba(34,197,94,.06); }
+        #tab-dashboard tbody tr:hover, #tab-journal tbody tr:hover { background: rgba(139,92,246,.06); }
         #tab-journal .overflow-x-auto { border-radius:1rem; }
 
-        #tab-journal input, #tab-journal select { background:#0D120D; border-radius:.8rem; }
-        #tab-journal input:focus, #tab-journal select:focus { box-shadow:0 0 0 3px rgba(34,197,94,.15); }
+        #tab-journal input, #tab-journal select { background:#15101F; border-radius:.8rem; }
+        #tab-journal input:focus, #tab-journal select:focus { box-shadow:0 0 0 3px rgba(139,92,246,.15); }
         .jn-card { overflow:hidden; }
-        .jn-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:#5B6B5C; }
+        .jn-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:#64748B; }
         .jn-card[data-outcome="WIN"]::before { background:linear-gradient(180deg,#22C55E,#15803D); }
         .jn-card[data-outcome="LOSS"]::before { background:linear-gradient(180deg,#F43F5E,#9f1239); }
         .jn-card:hover { box-shadow:0 18px 40px -16px rgba(0,0,0,.7); }
 
         #tab-goals > .grid > .glass-card { padding:1.6rem; }
-        #tab-goals > .grid > .glass-card:hover { border-color:rgba(34,197,94,.4); }
-        #tab-goals .h-4 { height:.8rem; background:#0D120D; }
+        #tab-goals > .grid > .glass-card:hover { border-color:rgba(139,92,246,.4); }
+        #tab-goals .h-4 { height:.8rem; background:#15101F; }
         #tab-goals .progress-bar { box-shadow:0 0 14px -2px currentColor; position:relative; }
         #tab-goals #goal-progress-rr { color:rgba(34,197,94,.7); }
-        #tab-goals #goal-progress-wr { color:rgba(45,212,191,.7); }
+        #tab-goals #goal-progress-wr { color:rgba(59,130,246,.7); }
         #tab-goals #goal-progress-pnl { color:rgba(16,185,129,.7); }
         #tab-goals .progress-bar::after {
             content:''; position:absolute; inset:0;
@@ -199,22 +199,22 @@
         @keyframes gShimmer { to { transform:translateX(100%); } }
         #tab-goals label.flex { border-radius:.9rem; padding:.9rem 1rem; transition:all .2s ease; }
         #tab-goals label.flex:has(input:checked) { border-color:rgba(16,185,129,.5); background:rgba(16,185,129,.07); }
-        #tab-goals label.flex:has(input:checked) span { color:#5FBE7E; text-decoration:line-through; text-decoration-color:rgba(148,163,184,.4); }
-        #tab-goals input[type=number] { background:#0D120D; }
+        #tab-goals label.flex:has(input:checked) span { color:#8F84BB; text-decoration:line-through; text-decoration-color:rgba(148,163,184,.4); }
+        #tab-goals input[type=number] { background:#15101F; }
 
         /* ===== Confluence chips ===== */
         .cf-chip { cursor: pointer; }
         .cf-chip-inner {
             display: inline-flex; align-items: center; gap: .4rem;
             padding: .4rem .8rem; border-radius: .7rem; font-size: 11px; font-weight: 600;
-            background: #0D120D; border: 1px solid #1E3320; color: #5FBE7E;
+            background: #15101F; border: 1px solid #28213A; color: #8F84BB;
             transition: all .15s ease;
         }
         .cf-chip-inner::before { content: '○'; font-size: 9px; }
         .cf-chip:has(input:checked) .cf-chip-inner {
-            background: rgba(34,197,94,.15); border-color: rgba(34,197,94,.55); color: #22C55E;
+            background: rgba(139,92,246,.15); border-color: rgba(139,92,246,.55); color: #8B5CF6;
         }
-        .cf-chip:has(input:checked) .cf-chip-inner::before { content: '●'; color: #22C55E; }
+        .cf-chip:has(input:checked) .cf-chip-inner::before { content: '●'; color: #8B5CF6; }
 
         /* ===== Calendar ===== */
         .cal-grid-wrap { display: flex; flex-direction: column; gap: .5rem; }
@@ -222,7 +222,7 @@
         .cal-row-head { margin-bottom: .1rem; }
         .cal-cell {
             aspect-ratio: 1 / 0.82; border-radius: .8rem; padding: .5rem .6rem;
-            background: rgba(255,255,255,0.02); border: 1px solid #1E3320; position: relative; overflow: hidden;
+            background: rgba(255,255,255,0.02); border: 1px solid #28213A; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: space-between;
             transition: transform .15s ease, border-color .15s ease;
         }
@@ -230,21 +230,21 @@
         .cal-cell.pad .cal-daynum { color: #2A3D2C; }
         .cal-cell.has-trades { cursor: pointer; }
         .cal-cell.has-trades:hover { transform: translateY(-2px); filter: brightness(1.12); }
-        .cal-cell.is-today:not(.pad) { border-color: rgba(34,197,94,.7); box-shadow: 0 0 0 1px rgba(34,197,94,.35); }
+        .cal-cell.is-today:not(.pad) { border-color: rgba(59,130,246,.7); box-shadow: 0 0 0 1px rgba(59,130,246,.35); }
         .cal-cell.win { background: linear-gradient(155deg, #16803D, #0E5C2C 80%); border-color: #1B9A4A; }
         .cal-cell.loss { background: linear-gradient(155deg, #9F1239, #6E0D28 80%); border-color: #C11B4C; }
         .cal-cell.be { background: linear-gradient(155deg, #2D3B2F, #1B241C 80%); border-color: #3A4D3C; }
-        .cal-cell.selected { outline: 2px solid #22C55E; outline-offset: 1px; }
-        .cal-daynum { font-size: 11px; font-weight: 700; color: #6B8F6E; }
+        .cal-cell.selected { outline: 2px solid #8B5CF6; outline-offset: 1px; }
+        .cal-daynum { font-size: 11px; font-weight: 700; color: #8A85A6; }
         .cal-cell.win .cal-daynum, .cal-cell.loss .cal-daynum { color: rgba(255,255,255,.75); }
         .cal-cell .cal-pnl { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 800; color: #fff; text-align: center; }
         .cal-cell .cal-n { font-size: 9px; color: rgba(255,255,255,.75); text-align: center; }
         .cal-week-cell {
-            border-radius: .8rem; padding: .5rem .4rem; background: #0A0F0A; border: 1px solid #1E3320;
+            border-radius: .8rem; padding: .5rem .4rem; background: #0F0B18; border: 1px solid #28213A;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
         }
         .cal-week-cell .cal-week-pnl { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; }
-        .cal-week-cell .cal-week-n { font-size: 9px; color: #6B8F6E; }
+        .cal-week-cell .cal-week-n { font-size: 9px; color: #8A85A6; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-sm relative">
@@ -252,7 +252,7 @@
     <!-- ========================================== -->
     <!-- LOGIN OVERLAY SYSTEM (ระบบที่เพิ่มใหม่) -->
     <!-- ========================================== -->
-    <div id="login-overlay" class="fixed inset-0 z-[9999] bg-[#020403] flex items-center justify-center backdrop-blur-md">
+    <div id="login-overlay" class="fixed inset-0 z-[9999] bg-[#07050D] flex items-center justify-center backdrop-blur-md">
         <div class="glass-card w-full max-w-md rounded-3xl p-8 space-y-6 border-dark-border relative overflow-hidden shadow-2xl">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-900 via-brand-500 to-brand-900"></div>
             
@@ -423,7 +423,7 @@
                 </div>
                 <div class="glass-card p-5 rounded-2xl glass-card-hover">
                     <span class="text-xs text-slate-400 font-medium tracking-wider uppercase">Win Rate</span>
-                    <h3 id="metric-winrate" class="text-3xl font-bold font-mono mt-2 text-brand-500">0%</h3>
+                    <h3 id="metric-winrate" class="text-3xl font-bold font-mono mt-2 text-white">0%</h3>
                     <p class="text-[11px] text-slate-500 mt-1">อัตราการชนะสะสม</p>
                 </div>
                 <div class="glass-card p-5 rounded-2xl glass-card-hover">
@@ -433,7 +433,7 @@
                 </div>
                 <div class="glass-card p-5 rounded-2xl glass-card-hover border-brand-500/30">
                     <span class="text-xs text-slate-400 font-medium tracking-wider uppercase">Total RR</span>
-                    <h3 id="metric-totalrr" class="text-3xl font-bold font-mono mt-2 text-brand-500">+0.0 R</h3>
+                    <h3 id="metric-totalrr" class="text-3xl font-bold font-mono mt-2 text-emerald-400">+0.0 R</h3>
                     <p class="text-[11px] text-slate-500 mt-1">ผลรวม RR สะสม</p>
                 </div>
                 <div class="glass-card p-5 rounded-2xl glass-card-hover col-span-2 lg:col-span-1">
@@ -650,6 +650,40 @@
                     </div>
                 </div>
 
+                <!-- Breakdown: Timeframe Entry / Timeframe HTF / Confluence -->
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div class="glass-card rounded-2xl p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h4 class="text-sm font-extrabold text-white">Timeframe เข้าเทรด (Entry)</h4>
+                                <p class="text-[11px] text-slate-500">Win Rate แยกตาม TF ที่ใช้หาจังหวะเข้า</p>
+                            </div>
+                            <span class="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-base">⏱️</span>
+                        </div>
+                        <div id="an-tf-entry" class="space-y-2"></div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h4 class="text-sm font-extrabold text-white">Timeframe ดูเทรนด์ (HTF)</h4>
+                                <p class="text-[11px] text-slate-500">Win Rate แยกตาม TF ที่ใช้ดูแนวโน้มใหญ่</p>
+                            </div>
+                            <span class="w-9 h-9 rounded-xl bg-accent-cyan/10 border border-accent-cyan/20 flex items-center justify-center text-base">🧭</span>
+                        </div>
+                        <div id="an-tf-htf" class="space-y-2"></div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h4 class="text-sm font-extrabold text-white">Confluence Check</h4>
+                                <p class="text-[11px] text-slate-500">Win Rate แยกตามเงื่อนไขที่เลือกก่อนเข้าเทรด</p>
+                            </div>
+                            <span class="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-base">✅</span>
+                        </div>
+                        <div id="an-confluence" class="space-y-2"></div>
+                    </div>
+                </div>
+
                 <!-- Daily tiles -->
                 <div class="glass-card rounded-2xl p-5 md:p-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
@@ -688,7 +722,7 @@
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">🛡️ Risk Guard</h3>
                         <p class="text-[10px] text-slate-400 mt-1">ขีดจำกัดความเสี่ยงต่อวัน เพื่อป้องกันการเทรดเกินตัว</p>
                     </div>
-                    <span id="risk-guard-status" class="self-start sm:self-auto px-3 py-1 rounded-full text-[11px] font-bold border border-brand-500/40 bg-brand-950/60 text-brand-500">✅ ปลอดภัยวันนี้</span>
+                    <span id="risk-guard-status" class="self-start sm:self-auto px-3 py-1 rounded-full text-[11px] font-bold border border-emerald-500/40 bg-emerald-950/40 text-emerald-400">✅ ปลอดภัยวันนี้</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="p-4 rounded-xl bg-dark-panel border border-dark-border">
@@ -826,7 +860,7 @@
             <div class="glass-card p-6 rounded-2xl mt-6">
                 <div class="flex items-center justify-between mb-1 flex-wrap gap-2">
                     <h3 class="text-sm font-bold text-white">กฎเหล็กเพื่อบรรลุเป้าหมาย (Discipline Checklist)</h3>
-                    <span id="discipline-streak" class="px-3 py-1 rounded-full text-[11px] font-bold bg-brand-950/60 border border-brand-500/40 text-brand-500">เริ่มทำวันนี้เพื่อสร้างสตรีค</span>
+                    <span id="discipline-streak" class="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-950/40 border border-emerald-500/40 text-emerald-400">เริ่มทำวันนี้เพื่อสร้างสตรีค</span>
                 </div>
                 <p class="text-xs text-slate-400 mb-4">เตือนตัวเองก่อนกดเข้าออเดอร์ทุกครั้ง เพื่อรักษามาตรฐานการเทรด ติ๊กครบทุกข้อทุกวันเพื่อสร้างสตรีค</p>
 
@@ -1091,7 +1125,7 @@
                     <div>
                         <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">ผลลัพธ์ (Outcome)</label>
                         <select id="field-outcome" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-bold">
-                            <option value="WIN" class="text-brand-500">WIN</option>
+                            <option value="WIN" class="text-emerald-400">WIN</option>
                             <option value="LOSS" class="text-rose-500">LOSS</option>
                             <option value="BE" class="text-slate-400">BREAK EVEN</option>
                         </select>
@@ -1330,11 +1364,11 @@
             be: 'rgba(91, 107, 92, 0.8)',
             borderWin: '#22C55E',
             borderLoss: '#F43F5E',
-            borderBE: '#6B8F6E',
-            cyan: 'rgba(45, 212, 191, 0.8)',
-            borderCyan: '#2DD4BF'
+            borderBE: '#8A85A6',
+            cyan: 'rgba(59, 130, 246, 0.8)',
+            borderCyan: '#3B82F6'
         };
-        Chart.defaults.color = '#6B8F6E';
+        Chart.defaults.color = '#8A85A6';
         Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
         Chart.defaults.scale.grid.color = 'rgba(30, 51, 32, 0.3)';
 
@@ -1483,7 +1517,7 @@
                 confluenceContainer.innerHTML = `<span class="text-xs text-slate-500 py-1">ยังไม่มีเงื่อนไข Confluence</span>`;
             } else {
                 confluenceContainer.innerHTML = tempConfluences.map((c, index) => `
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-950/40 text-accent-cyan border border-cyan-500/30 text-xs font-semibold">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-blue-950/40 text-accent-cyan border border-blue-500/30 text-xs font-semibold">
                         ${c}
                         <button type="button" onclick="removeSettingsTag('confluence', ${index})" class="text-slate-400 hover:text-rose-400 transition font-bold ml-1">✕</button>
                     </span>
@@ -1779,7 +1813,7 @@
             
             const elTotalRR = document.getElementById('metric-totalrr');
             elTotalRR.innerText = `${stats.totalRR >= 0 ? '+' : ''}${stats.totalRR} R`;
-            elTotalRR.className = `text-3xl font-bold font-mono mt-2 ${stats.totalRR >= 0 ? 'text-brand-500' : 'text-rose-500'}`;
+            elTotalRR.className = `text-3xl font-bold font-mono mt-2 ${stats.totalRR >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
             
             const elPnL = document.getElementById('metric-pnl');
             elPnL.innerText = `${stats.netPnL >= 0 ? '+' : ''}$${stats.netPnL}`;
@@ -1846,7 +1880,7 @@
             stats.data.slice(0, 5).forEach(t => {
                 const dateStr = new Date(t.date).toLocaleDateString('th-TH', { month:'short', day:'numeric' });
                 let outcomeClass = 'text-slate-400';
-                if(t.outcome === 'WIN') outcomeClass = 'text-brand-500 font-bold';
+                if(t.outcome === 'WIN') outcomeClass = 'text-emerald-400 font-bold';
                 if(t.outcome === 'LOSS') outcomeClass = 'text-rose-500 font-bold';
 
                 tbody.innerHTML += `
@@ -1929,7 +1963,7 @@
                 filteredData.forEach(t => {
                     const dateStr = new Date(t.date).toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
                     let outcomeTag = `<span class="px-2 py-1 rounded bg-slate-800 text-slate-400 font-bold border border-slate-700 text-[10px]">BE</span>`;
-                    if(t.outcome === 'WIN') outcomeTag = `<span class="px-2 py-1 rounded bg-brand-900/40 text-brand-500 font-bold border border-brand-500/30 text-[10px]">WIN</span>`;
+                    if(t.outcome === 'WIN') outcomeTag = `<span class="px-2 py-1 rounded bg-emerald-900/30 text-emerald-400 font-bold border border-emerald-500/30 text-[10px]">WIN</span>`;
                     if(t.outcome === 'LOSS') outcomeTag = `<span class="px-2 py-1 rounded bg-rose-900/40 text-rose-500 font-bold border border-rose-500/30 text-[10px]">LOSS</span>`;
 
                     const typeColor = t.type === 'LONG' ? 'text-emerald-500' : 'text-rose-500';
@@ -1950,7 +1984,7 @@
                         <span class="an-chip bg-dark-panel text-slate-300 border border-dark-border">HTF ${t.tfHtf && t.tfHtf !== '-' ? t.tfHtf : '-'}</span>
                     </div>`;
                     const confluenceLine = (t.confluences && t.confluences.length)
-                        ? `<div class="mb-3 flex flex-wrap gap-1.5">${t.confluences.map(c => `<span class="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-cyan-500/10 text-accent-cyan border border-cyan-500/20">✓ ${c}</span>`).join('')}</div>`
+                        ? `<div class="mb-3 flex flex-wrap gap-1.5">${t.confluences.map(c => `<span class="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-blue-500/10 text-accent-cyan border border-blue-500/20">✓ ${c}</span>`).join('')}</div>`
                         : '';
 
                     html += `
@@ -2022,7 +2056,7 @@
                 filteredData.forEach(t => {
                     const dateStr = new Date(t.date).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' });
                     let outcomeClass = 'text-slate-400';
-                    if(t.outcome === 'WIN') outcomeClass = 'text-brand-500 font-bold';
+                    if(t.outcome === 'WIN') outcomeClass = 'text-emerald-400 font-bold';
                     if(t.outcome === 'LOSS') outcomeClass = 'text-rose-500 font-bold';
 
                     html += `
@@ -2089,7 +2123,7 @@
             const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
             const fmtRR = (v) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}R`;
             const fmtMoney = (v) => `${v >= 0 ? '+' : '-'}$${Math.abs(v).toFixed(2)}`;
-            const rrColor = (v) => v > 0 ? 'text-brand-500' : (v < 0 ? 'text-rose-400' : 'text-slate-400');
+            const rrColor = (v) => v > 0 ? 'text-emerald-400' : (v < 0 ? 'text-rose-400' : 'text-slate-400');
             const pnlColor = (v) => v > 0 ? 'text-emerald-400' : (v < 0 ? 'text-rose-400' : 'text-slate-400');
             const wrPct = (g) => g.total > 0 ? (g.wins / g.total) * 100 : 0;
 
@@ -2119,6 +2153,27 @@
             const daily = groupBy('date_day');
             const monthly = groupBy('date_month');
 
+            const groupByArray = (key) => {
+                const group = {};
+                data.forEach(t => {
+                    const arr = t[key] || [];
+                    arr.forEach(val => {
+                        if (!group[val]) group[val] = { wins: 0, losses: 0, be: 0, total: 0, rr: 0, pnl: 0 };
+                        const g = group[val];
+                        g.total += 1;
+                        g.rr += (t.rr || 0);
+                        g.pnl += (t.pnl || 0);
+                        if (t.outcome === 'WIN') g.wins += 1;
+                        else if (t.outcome === 'LOSS') g.losses += 1;
+                        else g.be += 1;
+                    });
+                });
+                return group;
+            };
+            const tfEntries = groupBy('tfEntry'); delete tfEntries['-'];
+            const tfHtfs = groupBy('tfHtf'); delete tfHtfs['-'];
+            const confluenceGroups = groupByArray('confluences');
+
             /* ---------- 1) Summary strip ---------- */
             const total = data.length;
             const wins = data.filter(t => t.outcome === 'WIN').length;
@@ -2138,12 +2193,12 @@
                 </div>`;
 
             document.getElementById('an-summary').innerHTML =
-                statCard('Total Trades', total, 'จำนวนเทรดทั้งหมด', 'text-white', '#6B8F6E') +
-                statCard('Win Rate', `${winRate.toFixed(1)}%`, `ชนะ ${wins} จาก ${total} ไม้`, 'text-accent-cyan', '#2DD4BF') +
+                statCard('Total Trades', total, 'จำนวนเทรดทั้งหมด', 'text-white', '#8A85A6') +
+                statCard('Win Rate', `${winRate.toFixed(1)}%`, `ชนะ ${wins} จาก ${total} ไม้`, 'text-accent-cyan', '#3B82F6') +
                 statCard('Total RR', fmtRR(totalRR), 'ผลตอบแทนสะสม', rrColor(totalRR), '#22C55E') +
                 statCard('Avg RR / Trade', fmtRR(avgRR), 'ค่าเฉลี่ยต่อไม้', rrColor(avgRR), '#22C55E') +
                 statCard('Net PNL', fmtMoney(netPnl), 'กำไร/ขาดทุนสุทธิ', pnlColor(netPnl), '#10B981') +
-                statCard('Profit Factor', profitFactor, 'กำไรรวม ÷ ขาดทุนรวม', 'text-white', '#84CC16');
+                statCard('Profit Factor', profitFactor, 'กำไรรวม ÷ ขาดทุนรวม', 'text-white', '#22C55E');
 
             /* ---------- 2) Highlights ---------- */
             const best = (obj, scoreFn) => {
@@ -2172,13 +2227,13 @@
             const hl = [];
             const bSetup = best(setups, g => wrPct(g) * 1000 + g.total);
             if (bSetup) hl.push(hlCard('🎯', 'Setup ที่แม่นที่สุด', bSetup, `${wrPct(setups[bSetup]).toFixed(1)}%`, 'text-accent-cyan',
-                `Win Rate · ${setups[bSetup].total} เทรด · ${fmtRR(setups[bSetup].rr)}`, 'rgba(45,212,191,0.14)', 'rgba(45,212,191,0.5)'));
+                `Win Rate · ${setups[bSetup].total} เทรด · ${fmtRR(setups[bSetup].rr)}`, 'rgba(124,58,237,0.14)', 'rgba(124,58,237,0.5)'));
             const bSym = best(symbols, g => g.rr);
             if (bSym) hl.push(hlCard('💱', 'คู่เงินที่ทำกำไรสูงสุด', bSym, fmtRR(symbols[bSym].rr), rrColor(symbols[bSym].rr),
-                `${symbols[bSym].total} เทรด · Win Rate ${wrPct(symbols[bSym]).toFixed(0)}%`, 'rgba(34,197,94,0.14)', 'rgba(34,197,94,0.5)'));
+                `${symbols[bSym].total} เทรด · Win Rate ${wrPct(symbols[bSym]).toFixed(0)}%`, 'rgba(59,130,246,0.14)', 'rgba(59,130,246,0.5)'));
             const bSes = best(sessions, g => g.rr);
             if (bSes) hl.push(hlCard('🕐', 'Session ที่ดีที่สุด', bSes, fmtRR(sessions[bSes].rr), rrColor(sessions[bSes].rr),
-                `${sessions[bSes].total} เทรด · Win Rate ${wrPct(sessions[bSes]).toFixed(0)}%`, 'rgba(132,204,22,0.14)', 'rgba(132,204,22,0.5)'));
+                `${sessions[bSes].total} เทรด · Win Rate ${wrPct(sessions[bSes]).toFixed(0)}%`, 'rgba(139,92,246,0.14)', 'rgba(139,92,246,0.5)'));
             const bDay = best(daily, g => g.rr);
             if (bDay) hl.push(hlCard('🔥', 'วันที่ดีที่สุด', dayLabel(bDay), fmtRR(daily[bDay].rr), rrColor(daily[bDay].rr),
                 `${daily[bDay].total} เทรด · PNL ${fmtMoney(daily[bDay].pnl)}`, 'rgba(16,185,129,0.14)', 'rgba(16,185,129,0.5)'));
@@ -2190,8 +2245,8 @@
                 rr: (a, b) => b[1].rr - a[1].rr,
                 n:  (a, b) => b[1].total - a[1].total
             };
-            const rankStyle = (i) => i === 0 ? 'background:linear-gradient(135deg,#22C55E,#15803D);color:#020403'
-                : (i === 1 ? 'background:#233524;color:#D7F5DE' : (i === 2 ? 'background:#14532D;color:#BBF7D0' : 'background:#0E140F;color:#5FBE7E'));
+            const rankStyle = (i) => i === 0 ? 'background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:#07050D'
+                : (i === 1 ? 'background:#332B4D;color:#E9E4F7' : (i === 2 ? 'background:#4C1D95;color:#DDD6FE' : 'background:#171224;color:#8F84BB'));
 
             const renderRank = (elId, obj, barColor) => {
                 const entries = Object.entries(obj).sort(sorters[anSort]);
@@ -2204,7 +2259,7 @@
                             <div class="min-w-0 flex-1">
                                 <p class="text-sm font-bold text-white truncate" title="${esc(name)}">${esc(name)}</p>
                                 <div class="flex items-center gap-1.5 mt-1 flex-wrap">
-                                    <span class="an-chip bg-brand-500/15 text-brand-500">W ${g.wins}</span>
+                                    <span class="an-chip bg-emerald-500/15 text-emerald-400">W ${g.wins}</span>
                                     <span class="an-chip bg-rose-500/15 text-rose-400">L ${g.losses}</span>
                                     ${g.be ? `<span class="an-chip bg-slate-500/20 text-slate-300">BE ${g.be}</span>` : ''}
                                     <span class="text-[10px] text-slate-500">${g.total} เทรด</span>
@@ -2219,9 +2274,16 @@
                     </div>`;
                 }).join('');
             };
-            renderRank('an-setup', setups, 'linear-gradient(90deg,#2DD4BF,#5EEAD4)');
-            renderRank('an-symbol', symbols, 'linear-gradient(90deg,#16A34A,#22C55E)');
-            renderRank('an-session', sessions, 'linear-gradient(90deg,#84CC16,#BEF264)');
+            renderRank('an-setup', setups, 'linear-gradient(90deg,#7C3AED,#A78BFA)');
+            renderRank('an-symbol', symbols, 'linear-gradient(90deg,#3B82F6,#93C5FD)');
+            renderRank('an-session', sessions, 'linear-gradient(90deg,#22C55E,#86EFAC)');
+            renderRank('an-tf-entry', tfEntries, 'linear-gradient(90deg,#7C3AED,#A78BFA)');
+            renderRank('an-tf-htf', tfHtfs, 'linear-gradient(90deg,#3B82F6,#93C5FD)');
+            renderRank('an-confluence', confluenceGroups, 'linear-gradient(90deg,#8B5CF6,#86EFAC)');
+
+            if (Object.keys(tfEntries).length === 0) document.getElementById('an-tf-entry').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Timeframe (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
+            if (Object.keys(tfHtfs).length === 0) document.getElementById('an-tf-htf').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Timeframe (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
+            if (Object.keys(confluenceGroups).length === 0) document.getElementById('an-confluence').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Confluence (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
 
             /* ---------- 4) Daily tiles ---------- */
             const dayKeys = Object.keys(daily).sort().reverse();
@@ -2331,7 +2393,7 @@
                 const val = abs >= 1000 ? `${(abs / 1000).toFixed(abs >= 10000 ? 0 : 1)}k` : abs.toFixed(0);
                 return `${v >= 0 ? '+' : '-'}$${val}`;
             };
-            const rrColor = (v) => v > 0 ? 'text-brand-500' : (v < 0 ? 'text-rose-400' : 'text-slate-400');
+            const rrColor = (v) => v > 0 ? 'text-emerald-400' : (v < 0 ? 'text-rose-400' : 'text-slate-400');
 
             const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
             document.getElementById('cal-month-label').innerText = `${monthNames[calMonth]} ${calYear}`;
@@ -2439,7 +2501,7 @@
                     const before = t.imageBefore || t.image || '';
                     const after = t.imageAfter || '';
                     const outcomeTag = t.outcome === 'WIN'
-                        ? `<span class="px-2 py-1 rounded bg-brand-900/40 text-brand-500 font-bold border border-brand-500/30 text-[10px]">WIN</span>`
+                        ? `<span class="px-2 py-1 rounded bg-emerald-900/30 text-emerald-400 font-bold border border-emerald-500/30 text-[10px]">WIN</span>`
                         : t.outcome === 'LOSS'
                         ? `<span class="px-2 py-1 rounded bg-rose-900/40 text-rose-500 font-bold border border-rose-500/30 text-[10px]">LOSS</span>`
                         : `<span class="px-2 py-1 rounded bg-slate-800 text-slate-400 font-bold border border-slate-700 text-[10px]">BE</span>`;
@@ -2491,7 +2553,7 @@
             const rrPercentEl = document.getElementById('goal-percent-rr');
             if (parseFloat(stats.totalRR) >= goals.targetRR) {
                 rrPercentEl.innerText = 'บรรลุเป้าหมายแล้ว 🏆';
-                rrPercentEl.className = 'text-xs text-right font-mono text-brand-500 font-bold';
+                rrPercentEl.className = 'text-xs text-right font-mono text-emerald-400 font-bold';
             } else {
                 rrPercentEl.innerText = `${rrPercent.toFixed(1)}% Completed`;
                 rrPercentEl.className = 'text-xs text-right text-slate-400 font-mono';
@@ -2507,7 +2569,7 @@
             const wrStatus = document.getElementById('goal-status-wr');
             if (parseFloat(stats.winRate) >= goals.targetWR) {
                 wrStatus.innerText = "บรรลุเป้าหมายแล้ว 🏆";
-                wrStatus.className = "text-xs text-right font-mono text-cyan-400 font-bold";
+                wrStatus.className = "text-xs text-right font-mono text-emerald-400 font-bold";
             } else {
                 wrStatus.innerText = "ต่ำกว่าเป้าหมาย";
                 wrStatus.className = "text-xs text-right text-slate-400 font-mono";
@@ -2612,11 +2674,11 @@
 
             const dailyBar = document.getElementById('risk-progress-daily');
             dailyBar.style.width = `${dailyPercent}%`;
-            dailyBar.className = `absolute top-0 left-0 h-full rounded-full transition-all duration-500 ${dailyPercent >= 100 ? 'bg-rose-500' : (dailyPercent >= 70 ? 'bg-rose-400' : 'bg-brand-500')}`;
+            dailyBar.className = `absolute top-0 left-0 h-full rounded-full transition-all duration-500 ${dailyPercent >= 100 ? 'bg-rose-500' : (dailyPercent >= 70 ? 'bg-rose-400' : 'bg-emerald-500')}`;
 
             const perTradeBar = document.getElementById('risk-progress-pertrade');
             perTradeBar.style.width = `${perTradePercent}%`;
-            perTradeBar.className = `absolute top-0 left-0 h-full rounded-full transition-all duration-500 ${perTradePercent >= 100 ? 'bg-rose-500' : (perTradePercent >= 70 ? 'bg-rose-400' : 'bg-brand-500')}`;
+            perTradeBar.className = `absolute top-0 left-0 h-full rounded-full transition-all duration-500 ${perTradePercent >= 100 ? 'bg-rose-500' : (perTradePercent >= 70 ? 'bg-rose-400' : 'bg-emerald-500')}`;
 
             const statusEl = document.getElementById('risk-guard-status');
             if (dailyLoss >= goals.maxDailyLoss || worstTradeToday >= goals.maxLossPerTrade) {
@@ -2624,7 +2686,7 @@
                 statusEl.className = 'self-start sm:self-auto px-3 py-1 rounded-full text-[11px] font-bold border border-rose-500/50 bg-rose-950/40 text-rose-400';
             } else {
                 statusEl.innerText = '✅ ปลอดภัยวันนี้';
-                statusEl.className = 'self-start sm:self-auto px-3 py-1 rounded-full text-[11px] font-bold border border-brand-500/40 bg-brand-950/60 text-brand-500';
+                statusEl.className = 'self-start sm:self-auto px-3 py-1 rounded-full text-[11px] font-bold border border-emerald-500/40 bg-emerald-950/40 text-emerald-400';
             }
         }
 
@@ -2668,7 +2730,7 @@
             if (el) {
                 if (streak > 0) {
                     el.innerText = `🔥 ${streak} วันติดต่อกัน`;
-                    el.className = 'px-3 py-1 rounded-full text-[11px] font-bold bg-brand-950/60 border border-brand-500/40 text-brand-500';
+                    el.className = 'px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-950/40 border border-emerald-500/40 text-emerald-400';
                 } else {
                     el.innerText = 'เริ่มทำวันนี้เพื่อสร้างสตรีค';
                     el.className = 'px-3 py-1 rounded-full text-[11px] font-bold bg-dark-panel border border-dark-border text-slate-400';
