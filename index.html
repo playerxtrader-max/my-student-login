@@ -245,6 +245,16 @@
         }
         .cal-week-cell .cal-week-pnl { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 800; }
         .cal-week-cell .cal-week-n { font-size: 7px; color: #9CA3AF; }
+        /* ===== Loading Skeleton ===== */
+        .skeleton-pulse {
+            background: linear-gradient(90deg, #18181B 25%, #232326 37%, #18181B 63%);
+            background-size: 400% 100%;
+            animation: skeletonShine 1.4s ease infinite;
+        }
+        @keyframes skeletonShine {
+            0% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-sm relative">
@@ -361,7 +371,24 @@
     </aside>
 
     <!-- Main Content Body -->
-    <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 relative">
+
+        <!-- Tab Loading Skeleton Overlay -->
+        <div id="tab-loading-overlay" class="hidden absolute inset-0 z-50 bg-dark-bg p-4 md:p-8 space-y-6 overflow-hidden">
+            <div class="skeleton-pulse h-10 w-56 rounded-xl"></div>
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="skeleton-pulse h-24 rounded-2xl"></div>
+                <div class="skeleton-pulse h-24 rounded-2xl"></div>
+                <div class="skeleton-pulse h-24 rounded-2xl"></div>
+                <div class="skeleton-pulse h-24 rounded-2xl"></div>
+                <div class="skeleton-pulse h-24 rounded-2xl"></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="skeleton-pulse h-64 rounded-2xl lg:col-span-2"></div>
+                <div class="skeleton-pulse h-64 rounded-2xl"></div>
+            </div>
+            <div class="skeleton-pulse h-40 rounded-2xl"></div>
+        </div>
 
         <!-- Mobile Header Navigation -->
         <div class="flex lg:hidden flex-wrap gap-2 justify-between items-center bg-dark-card p-4 rounded-xl border border-dark-border mb-4">
@@ -549,7 +576,7 @@
 
                 <!-- Filters & Search -->
                 <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                    <input type="text" id="search-journal" oninput="renderJournalView()" placeholder="ค้นหา Symbol / Setup..." class="bg-dark-panel border border-dark-border rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500 flex-1 md:w-48">
+                    <input type="text" id="search-journal" oninput="renderJournalView()" placeholder="ค้นหาทุกไม้ (Symbol, Setup, Note, Confluence...)" class="bg-dark-panel border border-dark-border rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500 flex-1 md:w-64">
                     
                     <select id="filter-outcome" onchange="renderJournalView()" class="bg-dark-panel border border-dark-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
                         <option value="ALL">ผลลัพธ์ทั้งหมด</option>
@@ -986,6 +1013,25 @@
         </div>
     </div>
 
+    <!-- AUTO BACKUP REMINDER MODAL -->
+    <div id="backup-reminder-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center hidden z-[100] p-4">
+        <div class="glass-card w-full max-w-sm rounded-3xl p-6 text-center space-y-4 border-dark-border">
+            <div class="w-16 h-16 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center mx-auto mb-2">
+                <span class="text-3xl">📦</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">ถึงเวลาสำรองข้อมูลแล้ว</h3>
+            <p class="text-xs text-slate-400">
+                ข้อมูลเทรดทั้งหมดเก็บอยู่ในเบราว์เซอร์เครื่องนี้เท่านั้น หากไม่สำรองไว้ อาจสูญหายได้หากล้างแคชหรือเปลี่ยนเครื่อง
+                <br><br>
+                ผ่านมาแล้ว <b class="text-white" id="backup-reminder-days">0</b> วัน และมีเทรดใหม่ <b class="text-white" id="backup-reminder-trades">0</b> ไม้ ตั้งแต่สำรองข้อมูลครั้งล่าสุด
+            </p>
+            <div class="flex gap-3 pt-4 border-t border-dark-border">
+                <button onclick="dismissBackupReminder()" class="w-1/2 py-3 rounded-xl bg-dark-panel text-slate-300 font-semibold text-xs hover:bg-slate-800 transition">เตือนพรุ่งนี้</button>
+                <button onclick="exportData()" class="w-1/2 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-lg transition">Export ตอนนี้</button>
+            </div>
+        </div>
+    </div>
+
     <!-- SETTINGS MODAL (Topics & Setups - Dynamic Tag System) -->
     <div id="settings-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center hidden z-50 p-4">
         <div class="glass-card w-full max-w-lg rounded-3xl p-6 md:p-8 space-y-5 border-dark-border">
@@ -1136,6 +1182,22 @@
                             <option value="W1">W1</option>
                             <option value="MN">MN</option>
                         </select>
+                    </div>
+                </div>
+
+                <!-- Row 2.6: Entry / SL / TP Price -->
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Entry Price</label>
+                        <input type="number" id="field-entry-price" step="any" placeholder="0.00000" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-rose-400 uppercase tracking-wider block mb-1">Stop Loss</label>
+                        <input type="number" id="field-sl-price" step="any" placeholder="0.00000" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block mb-1">Take Profit</label>
+                        <input type="number" id="field-tp-price" step="any" placeholder="0.00000" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono">
                     </div>
                 </div>
 
@@ -1375,6 +1437,8 @@
         let calMonth = new Date().getMonth();
         let calSelectedDay = null;
         let editingTradeId = null;
+        let backupMeta = { lastBackupDate: null, tradeCountAtBackup: 0, lastDismissed: null };
+        const BACKUP_META_KEY = 'playerx_backup_meta_v1';
 
         // Color Palettes
         const colors = {
@@ -1419,12 +1483,24 @@
                     if(!t.confluences) { t.confluences = []; needsSave = true; }
                     if(t.imageBefore === undefined) { t.imageBefore = t.image || ''; needsSave = true; }
                     if(t.imageAfter === undefined) { t.imageAfter = ''; needsSave = true; }
+                    if(t.entryPrice === undefined) { t.entryPrice = ''; needsSave = true; }
+                    if(t.slPrice === undefined) { t.slPrice = ''; needsSave = true; }
+                    if(t.tpPrice === undefined) { t.tpPrice = ''; needsSave = true; }
                     return t;
                 });
                 if(needsSave) saveTrades();
 
+                const savedBackupMeta = await localforage.getItem(BACKUP_META_KEY);
+                if (savedBackupMeta) {
+                    backupMeta = savedBackupMeta;
+                } else {
+                    backupMeta = { lastBackupDate: new Date().toISOString(), tradeCountAtBackup: trades.length, lastDismissed: null };
+                    await localforage.setItem(BACKUP_META_KEY, backupMeta);
+                }
+
                 populateSettingsDropdowns();
                 renderAll();
+                checkBackupReminder();
             } catch (error) {
                 console.error("Error loading data from IndexedDB:", error);
                 showToast("พบปัญหาในการโหลดข้อมูล", "error");
@@ -1719,6 +1795,9 @@
             document.getElementById('field-session').value = t.session;
             if (t.tfEntry && t.tfEntry !== '-') document.getElementById('field-tf-entry').value = t.tfEntry;
             if (t.tfHtf && t.tfHtf !== '-') document.getElementById('field-tf-htf').value = t.tfHtf;
+            document.getElementById('field-entry-price').value = t.entryPrice || '';
+            document.getElementById('field-sl-price').value = t.slPrice || '';
+            document.getElementById('field-tp-price').value = t.tpPrice || '';
             document.getElementById('field-outcome').value = t.outcome;
             document.getElementById('field-rr').value = t.rr;
             document.getElementById('field-pnl').value = t.pnl;
@@ -1769,6 +1848,9 @@
                 session: document.getElementById('field-session').value,
                 tfEntry: document.getElementById('field-tf-entry').value,
                 tfHtf: document.getElementById('field-tf-htf').value,
+                entryPrice: document.getElementById('field-entry-price').value,
+                slPrice: document.getElementById('field-sl-price').value,
+                tpPrice: document.getElementById('field-tp-price').value,
                 confluences: Array.from(document.querySelectorAll('#field-confluence-container input[type=checkbox]:checked')).map(cb => cb.value),
                 outcome: document.getElementById('field-outcome').value,
                 rr: parseFloat(document.getElementById('field-rr').value),
@@ -1795,6 +1877,9 @@
 
         /* ------------------ NAVIGATION (TABS) ------------------ */
         function switchTab(tabId) {
+            const overlay = document.getElementById('tab-loading-overlay');
+            if (overlay) overlay.classList.remove('hidden');
+
             ['dashboard', 'journal', 'analytics', 'goals', 'calendar'].forEach(id => {
                 document.getElementById(`tab-${id}`).classList.add('hidden');
                 document.getElementById(`nav-${id}`).classList.remove('active');
@@ -1806,6 +1891,10 @@
             if (tabId === 'analytics') renderAnalytics();
             if (tabId === 'dashboard') updateDashboard();
             if (tabId === 'calendar') renderCalendar();
+
+            if (overlay) {
+                setTimeout(() => overlay.classList.add('hidden'), 220);
+            }
         }
 
         function setJournalLayout(layout) {
@@ -1967,7 +2056,11 @@
             const filterOutcome = document.getElementById('filter-outcome').value;
 
             const filteredData = getFilteredTrades().filter(t => {
-                const matchSearch = t.symbol.toLowerCase().includes(search) || t.setup.toLowerCase().includes(search);
+                const matchSearch = !search || [
+                    t.symbol, t.setup, t.session, t.topic, t.tfEntry, t.tfHtf,
+                    t.notes, t.entryPrice, t.slPrice, t.tpPrice,
+                    ...(t.confluences || [])
+                ].some(field => field && String(field).toLowerCase().includes(search));
                 const matchOutcome = filterOutcome === 'ALL' || t.outcome === filterOutcome;
                 return matchSearch && matchOutcome;
             });
@@ -2005,6 +2098,13 @@
                     const confluenceLine = (t.confluences && t.confluences.length)
                         ? `<div class="mb-3 flex flex-wrap gap-1.5">${t.confluences.map(c => `<span class="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-blue-500/10 text-accent-cyan border border-blue-500/20">✓ ${c}</span>`).join('')}</div>`
                         : '';
+                    const priceLine = (t.entryPrice || t.slPrice || t.tpPrice)
+                        ? `<div class="mb-3 flex items-center gap-3 text-[10px] font-mono flex-wrap">
+                            ${t.entryPrice ? `<span class="text-slate-300">Entry <b class="text-white">${t.entryPrice}</b></span>` : ''}
+                            ${t.slPrice ? `<span class="text-rose-400">SL <b>${t.slPrice}</b></span>` : ''}
+                            ${t.tpPrice ? `<span class="text-emerald-400">TP <b>${t.tpPrice}</b></span>` : ''}
+                        </div>`
+                        : '';
 
                     html += `
                         <div data-outcome="${t.outcome}" class="jn-card glass-card p-5 rounded-2xl flex flex-col justify-between glass-card-hover relative">
@@ -2029,6 +2129,7 @@
                                     <p class="text-xs text-brand-500 font-semibold">${t.setup} <span class="text-slate-500 text-[10px] ml-1">(${t.topic})</span></p>
                                 </div>
                                 ${tfLine}
+                                ${priceLine}
                                 ${confluenceLine}
                                 ${t.notes ? `
                                 <div class="mb-4 bg-dark-panel/50 p-3 rounded-xl border border-dark-border">
@@ -2815,6 +2916,35 @@
             a.download = `playerx_backup_${new Date().toISOString().slice(0,10)}.json`;
             a.click();
             showToast('ส่งออกข้อมูลสำเร็จแล้ว', 'success');
+            markBackupDone();
+        }
+
+        /* ------------------ AUTO BACKUP REMINDER ------------------ */
+        async function markBackupDone() {
+            backupMeta = { lastBackupDate: new Date().toISOString(), tradeCountAtBackup: trades.length, lastDismissed: null };
+            await localforage.setItem(BACKUP_META_KEY, backupMeta);
+            const modal = document.getElementById('backup-reminder-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function dismissBackupReminder() {
+            backupMeta.lastDismissed = new Date().toISOString();
+            await localforage.setItem(BACKUP_META_KEY, backupMeta);
+            document.getElementById('backup-reminder-modal').classList.add('hidden');
+        }
+
+        function checkBackupReminder() {
+            if (!backupMeta.lastBackupDate) return;
+            const now = new Date();
+            const daysSinceBackup = (now - new Date(backupMeta.lastBackupDate)) / 86400000;
+            const tradesSinceBackup = trades.length - (backupMeta.tradeCountAtBackup || 0);
+            const daysSinceDismiss = backupMeta.lastDismissed ? (now - new Date(backupMeta.lastDismissed)) / 86400000 : Infinity;
+
+            if ((daysSinceBackup >= 7 || tradesSinceBackup >= 20) && daysSinceDismiss >= 1) {
+                document.getElementById('backup-reminder-days').innerText = Math.floor(daysSinceBackup);
+                document.getElementById('backup-reminder-trades').innerText = tradesSinceBackup;
+                document.getElementById('backup-reminder-modal').classList.remove('hidden');
+            }
         }
 
         function importData(event) {
