@@ -26,17 +26,17 @@
                         brand: {
                             50: '#F3E8FF',
                             100: '#E9D5FF',
-                            500: '#8B5CF6', // Violet
+                            500: '#8B5CF6', // Violet (accent only)
                             600: '#7C3AED',
                             900: '#4C1D95',
                             950: '#1E1033',
                         },
                         dark: {
-                            bg: '#07050D',      // Near-Black Violet (Logo Background)
-                            card: '#0F0B18',    // Secondary Background
-                            panel: '#15101F',   // Elevated Panel
-                            border: '#28213A',  // Subtle Violet Border
-                            muted: '#8A85A6',   // Muted violet-gray text
+                            bg: '#09090B',      // Neutral Black (Logo Background)
+                            card: '#121214',    // Secondary Background
+                            panel: '#18181B',   // Elevated Panel
+                            border: '#27272A',  // Subtle Gray Border
+                            muted: '#9CA3AF',   // Muted gray text
                         },
                         accent: {
                             win: '#22C55E',    // Green
@@ -45,16 +45,16 @@
                             cyan: '#3B82F6',   // Blue
                         },
                         slate: {
-                            50: '#F5F3FA',
-                            100: '#EAE7F5',
-                            200: '#D3CEE8',
-                            300: '#B4ACD6',
-                            400: '#8F84BB',
-                            500: '#6F6499',
-                            600: '#584F7A',
-                            700: '#443C5E',
-                            800: '#312B44',
-                            900: '#211D30',
+                            50: '#F9FAFB',
+                            100: '#F3F4F6',
+                            200: '#E5E7EB',
+                            300: '#D1D5DB',
+                            400: '#9CA3AF',
+                            500: '#6B7280',
+                            600: '#4B5563',
+                            700: '#374151',
+                            800: '#1F2937',
+                            900: '#111827',
                         }
                     }
                 }
@@ -64,15 +64,15 @@
     
     <style>
         body { 
-            background-color: #07050D; 
-            color: #E8E6F2; 
+            background-color: #09090B; 
+            color: #E5E7EB; 
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         
         /* Glassmorphism & Custom Glows */
         .glass-card { 
-            background: #0F0B18; 
-            border: 1px solid #28213A; 
+            background: #121214; 
+            border: 1px solid #27272A; 
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
         .glass-card-hover {
@@ -90,12 +90,12 @@
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #07050D; }
-        ::-webkit-scrollbar-thumb { background: #28213A; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #09090B; }
+        ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #4C1D95; }
         
         .tab-btn.active {
-            background-color: #15101F;
+            background-color: #18181B;
             color: #8B5CF6;
             border-left: 3px solid #8B5CF6;
         }
@@ -107,17 +107,17 @@
 
         /* ===== Analytics & Statistics (card-based, no charts) ===== */
         .an-hero {
-            background: #0F0B18;
-            border: 1px solid #28213A;
+            background: #121214;
+            border: 1px solid #27272A;
             box-shadow: 0 4px 16px -8px rgba(0,0,0,0.5);
         }
-        .an-sort-btn { color: #8A85A6; }
-        .an-sort-btn:hover { color: #EDE9FE; }
-        .an-sort-btn.active { background: #8B5CF6; color: #07050D; box-shadow: 0 4px 14px -4px rgba(139,92,246,0.5); }
+        .an-sort-btn { color: #9CA3AF; }
+        .an-sort-btn:hover { color: #F3F4F6; }
+        .an-sort-btn.active { background: #8B5CF6; color: #09090B; box-shadow: 0 4px 14px -4px rgba(139,92,246,0.5); }
         .an-stat {
             position: relative; overflow: hidden;
-            background: #0F0B18;
-            border: 1px solid #28213A; border-radius: 1rem; padding: 1rem 1.1rem;
+            background: #121214;
+            border: 1px solid #27272A; border-radius: 1rem; padding: 1rem 1.1rem;
             transition: transform .25s ease, border-color .25s ease;
         }
         .an-stat:hover { transform: translateY(-2px); border-color: rgba(139,92,246,0.5); }
@@ -127,24 +127,24 @@
         }
         .an-hl {
             position: relative; overflow: hidden; border-radius: 1rem; padding: 1.1rem;
-            border: 1px solid #28213A;
-            background: radial-gradient(120% 120% at 100% 0%, var(--an-glow, rgba(139,92,246,0.12)) 0%, #0F0B18 60%);
+            border: 1px solid #27272A;
+            background: radial-gradient(120% 120% at 100% 0%, var(--an-glow, rgba(139,92,246,0.12)) 0%, #121214 60%);
             transition: transform .25s ease, border-color .25s ease;
         }
         .an-hl:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(139,92,246,0.5)); }
         .an-row {
             position: relative; border-radius: .85rem; padding: .7rem .8rem .8rem;
-            background: #15101F; border: 1px solid #28213A;
+            background: #18181B; border: 1px solid #27272A;
             transition: border-color .2s ease, background .2s ease;
         }
-        .an-row:hover { border-color: rgba(139,92,246,0.45); background: #1C1729; }
+        .an-row:hover { border-color: rgba(139,92,246,0.45); background: #1F1F23; }
         .an-meter { height: 3px; border-radius: 999px; background: rgba(148,163,184,0.15); overflow: hidden; }
         .an-meter > span { display: block; height: 100%; border-radius: 999px; }
         .an-tile { border-radius: .85rem; padding: .7rem .8rem; border: 1px solid; transition: transform .2s ease; }
         .an-tile:hover { transform: translateY(-2px) scale(1.02); }
         .an-month {
-            border-radius: 1.1rem; padding: 1.2rem; border: 1px solid #28213A; position: relative; overflow: hidden;
-            background: radial-gradient(110% 110% at 100% 0%, var(--an-glow, rgba(16,185,129,0.10)) 0%, #0F0B18 55%);
+            border-radius: 1.1rem; padding: 1.2rem; border: 1px solid #27272A; position: relative; overflow: hidden;
+            background: radial-gradient(110% 110% at 100% 0%, var(--an-glow, rgba(16,185,129,0.10)) 0%, #121214 55%);
             transition: transform .25s ease, border-color .25s ease;
         }
         .an-month:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(16,185,129,0.5)); }
@@ -152,11 +152,11 @@
 
         /* ===== Modern restyle: Dashboard / Journal / Goals ===== */
         #tab-dashboard .glass-card, #tab-journal .glass-card, #tab-goals .glass-card {
-            background: #0F0B18;
-            border-color: #28213A; border-radius: 1.25rem; position: relative;
+            background: #121214;
+            border-color: #27272A; border-radius: 1.25rem; position: relative;
         }
         #tab-dashboard .dx-hero, #tab-journal > .glass-card:first-child, #tab-goals > .glass-card:first-child {
-            background: #0F0B18;
+            background: #121214;
             overflow: hidden; box-shadow: 0 4px 16px -8px rgba(0,0,0,0.5);
         }
         #tab-dashboard .dx-hero h2 { color: #fff; }
@@ -164,7 +164,7 @@
         .dx-metrics > div { overflow:hidden; padding:1.2rem 1.25rem; }
         .dx-metrics > div::before { content:''; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg,var(--a,#8B5CF6),transparent); }
         .dx-metrics > div::after { position:absolute; right:1rem; top:1rem; font-size:1.25rem; opacity:.55; }
-        .dx-metrics > div:nth-child(1){--a:#8A85A6} .dx-metrics > div:nth-child(1)::after{content:'📒'}
+        .dx-metrics > div:nth-child(1){--a:#9CA3AF} .dx-metrics > div:nth-child(1)::after{content:'📒'}
         .dx-metrics > div:nth-child(2){--a:#3B82F6} .dx-metrics > div:nth-child(2)::after{content:'🎯'}
         .dx-metrics > div:nth-child(3){--a:#22C55E} .dx-metrics > div:nth-child(3)::after{content:'⚖️'}
         .dx-metrics > div:nth-child(4){--a:#22C55E} .dx-metrics > div:nth-child(4)::after{content:'📈'}
@@ -176,7 +176,7 @@
         #tab-dashboard tbody tr:hover, #tab-journal tbody tr:hover { background: rgba(139,92,246,.06); }
         #tab-journal .overflow-x-auto { border-radius:1rem; }
 
-        #tab-journal input, #tab-journal select { background:#15101F; border-radius:.8rem; }
+        #tab-journal input, #tab-journal select { background:#18181B; border-radius:.8rem; }
         #tab-journal input:focus, #tab-journal select:focus { box-shadow:0 0 0 3px rgba(139,92,246,.15); }
         .jn-card { overflow:hidden; }
         .jn-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:#64748B; }
@@ -186,7 +186,7 @@
 
         #tab-goals > .grid > .glass-card { padding:1.6rem; }
         #tab-goals > .grid > .glass-card:hover { border-color:rgba(139,92,246,.4); }
-        #tab-goals .h-4 { height:.8rem; background:#15101F; }
+        #tab-goals .h-4 { height:.8rem; background:#18181B; }
         #tab-goals .progress-bar { box-shadow:0 0 14px -2px currentColor; position:relative; }
         #tab-goals #goal-progress-rr { color:rgba(34,197,94,.7); }
         #tab-goals #goal-progress-wr { color:rgba(59,130,246,.7); }
@@ -199,15 +199,15 @@
         @keyframes gShimmer { to { transform:translateX(100%); } }
         #tab-goals label.flex { border-radius:.9rem; padding:.9rem 1rem; transition:all .2s ease; }
         #tab-goals label.flex:has(input:checked) { border-color:rgba(16,185,129,.5); background:rgba(16,185,129,.07); }
-        #tab-goals label.flex:has(input:checked) span { color:#8F84BB; text-decoration:line-through; text-decoration-color:rgba(148,163,184,.4); }
-        #tab-goals input[type=number] { background:#15101F; }
+        #tab-goals label.flex:has(input:checked) span { color:#9CA3AF; text-decoration:line-through; text-decoration-color:rgba(148,163,184,.4); }
+        #tab-goals input[type=number] { background:#18181B; }
 
         /* ===== Confluence chips ===== */
         .cf-chip { cursor: pointer; }
         .cf-chip-inner {
             display: inline-flex; align-items: center; gap: .4rem;
             padding: .4rem .8rem; border-radius: .7rem; font-size: 11px; font-weight: 600;
-            background: #15101F; border: 1px solid #28213A; color: #8F84BB;
+            background: #18181B; border: 1px solid #27272A; color: #9CA3AF;
             transition: all .15s ease;
         }
         .cf-chip-inner::before { content: '○'; font-size: 9px; }
@@ -222,7 +222,7 @@
         .cal-row-head { margin-bottom: .1rem; }
         .cal-cell {
             aspect-ratio: 1 / 0.82; border-radius: .8rem; padding: .5rem .6rem;
-            background: rgba(255,255,255,0.02); border: 1px solid #28213A; position: relative; overflow: hidden;
+            background: rgba(255,255,255,0.02); border: 1px solid #27272A; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: space-between;
             transition: transform .15s ease, border-color .15s ease;
         }
@@ -235,16 +235,16 @@
         .cal-cell.loss { background: linear-gradient(155deg, #9F1239, #6E0D28 80%); border-color: #C11B4C; }
         .cal-cell.be { background: linear-gradient(155deg, #2D3B2F, #1B241C 80%); border-color: #3A4D3C; }
         .cal-cell.selected { outline: 2px solid #8B5CF6; outline-offset: 1px; }
-        .cal-daynum { font-size: 11px; font-weight: 700; color: #8A85A6; }
+        .cal-daynum { font-size: 11px; font-weight: 700; color: #9CA3AF; }
         .cal-cell.win .cal-daynum, .cal-cell.loss .cal-daynum { color: rgba(255,255,255,.75); }
         .cal-cell .cal-pnl { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 800; color: #fff; text-align: center; }
         .cal-cell .cal-n { font-size: 9px; color: rgba(255,255,255,.75); text-align: center; }
         .cal-week-cell {
-            border-radius: .8rem; padding: .5rem .4rem; background: #0F0B18; border: 1px solid #28213A;
+            border-radius: .8rem; padding: .5rem .4rem; background: #121214; border: 1px solid #27272A;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
         }
         .cal-week-cell .cal-week-pnl { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; }
-        .cal-week-cell .cal-week-n { font-size: 9px; color: #8A85A6; }
+        .cal-week-cell .cal-week-n { font-size: 9px; color: #9CA3AF; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-sm relative">
@@ -252,7 +252,7 @@
     <!-- ========================================== -->
     <!-- LOGIN OVERLAY SYSTEM (ระบบที่เพิ่มใหม่) -->
     <!-- ========================================== -->
-    <div id="login-overlay" class="fixed inset-0 z-[9999] bg-[#07050D] flex items-center justify-center backdrop-blur-md">
+    <div id="login-overlay" class="fixed inset-0 z-[9999] bg-[#09090B] flex items-center justify-center backdrop-blur-md">
         <div class="glass-card w-full max-w-md rounded-3xl p-8 space-y-6 border-dark-border relative overflow-hidden shadow-2xl">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-900 via-brand-500 to-brand-900"></div>
             
@@ -1364,11 +1364,11 @@
             be: 'rgba(91, 107, 92, 0.8)',
             borderWin: '#22C55E',
             borderLoss: '#F43F5E',
-            borderBE: '#8A85A6',
+            borderBE: '#9CA3AF',
             cyan: 'rgba(59, 130, 246, 0.8)',
             borderCyan: '#3B82F6'
         };
-        Chart.defaults.color = '#8A85A6';
+        Chart.defaults.color = '#9CA3AF';
         Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
         Chart.defaults.scale.grid.color = 'rgba(30, 51, 32, 0.3)';
 
@@ -2193,7 +2193,7 @@
                 </div>`;
 
             document.getElementById('an-summary').innerHTML =
-                statCard('Total Trades', total, 'จำนวนเทรดทั้งหมด', 'text-white', '#8A85A6') +
+                statCard('Total Trades', total, 'จำนวนเทรดทั้งหมด', 'text-white', '#9CA3AF') +
                 statCard('Win Rate', `${winRate.toFixed(1)}%`, `ชนะ ${wins} จาก ${total} ไม้`, 'text-accent-cyan', '#3B82F6') +
                 statCard('Total RR', fmtRR(totalRR), 'ผลตอบแทนสะสม', rrColor(totalRR), '#22C55E') +
                 statCard('Avg RR / Trade', fmtRR(avgRR), 'ค่าเฉลี่ยต่อไม้', rrColor(avgRR), '#22C55E') +
@@ -2245,8 +2245,8 @@
                 rr: (a, b) => b[1].rr - a[1].rr,
                 n:  (a, b) => b[1].total - a[1].total
             };
-            const rankStyle = (i) => i === 0 ? 'background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:#07050D'
-                : (i === 1 ? 'background:#332B4D;color:#E9E4F7' : (i === 2 ? 'background:#4C1D95;color:#DDD6FE' : 'background:#171224;color:#8F84BB'));
+            const rankStyle = (i) => i === 0 ? 'background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:#09090B'
+                : (i === 1 ? 'background:#3F3F46;color:#E4E4E7' : (i === 2 ? 'background:#4C1D95;color:#D4D4D8' : 'background:#18181B;color:#9CA3AF'));
 
             const renderRank = (elId, obj, barColor) => {
                 const entries = Object.entries(obj).sort(sorters[anSort]);
