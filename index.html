@@ -217,11 +217,11 @@
         .cf-chip:has(input:checked) .cf-chip-inner::before { content: '●'; color: #8B5CF6; }
 
         /* ===== Calendar ===== */
-        .cal-grid-wrap { display: flex; flex-direction: column; gap: .5rem; }
-        .cal-row { display: grid; grid-template-columns: repeat(7, 1fr) 0.9fr; gap: .5rem; }
-        .cal-row-head { margin-bottom: .1rem; }
+        .cal-grid-wrap { display: flex; flex-direction: column; gap: .3rem; }
+        .cal-row { display: grid; grid-template-columns: repeat(7, 1fr) 0.8fr; gap: .3rem; }
+        .cal-row-head { margin-bottom: .05rem; }
         .cal-cell {
-            aspect-ratio: 1 / 0.82; border-radius: .8rem; padding: .5rem .6rem;
+            aspect-ratio: 1 / 0.56; border-radius: .55rem; padding: .3rem .35rem;
             background: rgba(255,255,255,0.02); border: 1px solid #27272A; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: space-between;
             transition: transform .15s ease, border-color .15s ease;
@@ -235,16 +235,16 @@
         .cal-cell.loss { background: linear-gradient(155deg, #9F1239, #6E0D28 80%); border-color: #C11B4C; }
         .cal-cell.be { background: linear-gradient(155deg, #2D3B2F, #1B241C 80%); border-color: #3A4D3C; }
         .cal-cell.selected { outline: 2px solid #8B5CF6; outline-offset: 1px; }
-        .cal-daynum { font-size: 11px; font-weight: 700; color: #9CA3AF; }
+        .cal-daynum { font-size: 9px; font-weight: 700; color: #9CA3AF; }
         .cal-cell.win .cal-daynum, .cal-cell.loss .cal-daynum { color: rgba(255,255,255,.75); }
-        .cal-cell .cal-pnl { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 800; color: #fff; text-align: center; }
-        .cal-cell .cal-n { font-size: 9px; color: rgba(255,255,255,.75); text-align: center; }
+        .cal-cell .cal-pnl { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 800; color: #fff; text-align: center; line-height: 1.1; }
+        .cal-cell .cal-n { font-size: 7px; color: rgba(255,255,255,.75); text-align: center; }
         .cal-week-cell {
-            border-radius: .8rem; padding: .5rem .4rem; background: #121214; border: 1px solid #27272A;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+            border-radius: .55rem; padding: .3rem .25rem; background: #121214; border: 1px solid #27272A;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
         }
-        .cal-week-cell .cal-week-pnl { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; }
-        .cal-week-cell .cal-week-n { font-size: 9px; color: #9CA3AF; }
+        .cal-week-cell .cal-week-pnl { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 800; }
+        .cal-week-cell .cal-week-n { font-size: 7px; color: #9CA3AF; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-sm relative">
@@ -616,6 +616,25 @@
                     <div id="an-highlights" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3"></div>
                 </div>
 
+                <!-- Period Comparison -->
+                <div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <h3 class="text-sm font-extrabold text-white tracking-wide">เปรียบเทียบช่วงเวลา</h3>
+                        <div class="h-px flex-1 bg-gradient-to-r from-dark-border to-transparent"></div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-5">
+                        <div class="flex items-center justify-between mb-4 text-[11px] font-semibold">
+                            <span class="text-slate-400">ตัวชี้วัด</span>
+                            <div class="flex items-center gap-6 sm:gap-10">
+                                <span id="an-compare-label-prev" class="text-slate-400 w-20 text-right">เดือนที่แล้ว</span>
+                                <span id="an-compare-label-curr" class="text-white w-20 text-right">เดือนนี้</span>
+                                <span class="text-slate-400 w-14 text-right">ผลต่าง</span>
+                            </div>
+                        </div>
+                        <div id="an-compare" class="space-y-1"></div>
+                    </div>
+                </div>
+
                 <!-- Breakdown: Setup / Symbol / Session -->
                 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
                     <div class="glass-card rounded-2xl p-5">
@@ -888,52 +907,52 @@
         <!-- TAB 5: TRADING CALENDAR -->
         <div id="tab-calendar" class="space-y-6 hidden">
 
-            <div class="glass-card rounded-3xl p-6 md:p-8">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Trading Calendar</h2>
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center gap-1 p-1 rounded-xl bg-dark-bg/70 border border-dark-border">
-                            <button onclick="changeCalMonth(-1)" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:text-brand-500 transition">‹</button>
-                            <span id="cal-month-label" class="px-3 text-sm font-extrabold text-white min-w-[120px] text-center">-</span>
-                            <button onclick="changeCalMonth(1)" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:text-brand-500 transition">›</button>
+            <div class="glass-card rounded-2xl p-4 md:p-5">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-1">
+                    <h2 class="text-lg md:text-xl font-extrabold text-white tracking-tight">Trading Calendar</h2>
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-1 p-0.5 rounded-lg bg-dark-bg/70 border border-dark-border">
+                            <button onclick="changeCalMonth(-1)" class="w-6 h-6 rounded-md flex items-center justify-center text-xs text-slate-300 hover:text-brand-500 transition">‹</button>
+                            <span id="cal-month-label" class="px-2 text-xs font-extrabold text-white min-w-[100px] text-center">-</span>
+                            <button onclick="changeCalMonth(1)" class="w-6 h-6 rounded-md flex items-center justify-center text-xs text-slate-300 hover:text-brand-500 transition">›</button>
                         </div>
-                        <button onclick="goCalToday()" class="px-4 py-2 rounded-xl bg-brand-500 text-dark-bg text-xs font-extrabold hover:bg-brand-600 transition">Today</button>
+                        <button onclick="goCalToday()" class="px-3 py-1.5 rounded-lg bg-brand-500 text-dark-bg text-[11px] font-extrabold hover:bg-brand-600 transition">Today</button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 py-6 mt-3 border-y border-dark-border">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-3 mt-1 border-y border-dark-border">
                     <div>
-                        <p class="text-[11px] text-slate-500 uppercase tracking-wider mb-1.5">Monthly P&amp;L</p>
-                        <p id="cal-stat-pnl" class="text-2xl font-mono font-extrabold text-white">-</p>
-                        <p id="cal-stat-bestworst" class="text-[11px] text-slate-500 mt-1">-</p>
+                        <p class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Monthly P&amp;L</p>
+                        <p id="cal-stat-pnl" class="text-base font-mono font-extrabold text-white">-</p>
+                        <p id="cal-stat-bestworst" class="text-[9px] text-slate-500 mt-0.5">-</p>
                     </div>
                     <div>
-                        <p class="text-[11px] text-slate-500 uppercase tracking-wider mb-1.5">Win Rate</p>
-                        <p id="cal-stat-wr" class="text-2xl font-mono font-extrabold text-white">-</p>
-                        <p id="cal-stat-wl" class="text-[11px] text-slate-500 mt-1">-</p>
+                        <p class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Win Rate</p>
+                        <p id="cal-stat-wr" class="text-base font-mono font-extrabold text-white">-</p>
+                        <p id="cal-stat-wl" class="text-[9px] text-slate-500 mt-0.5">-</p>
                     </div>
                     <div>
-                        <p class="text-[11px] text-slate-500 uppercase tracking-wider mb-1.5">Trades</p>
-                        <p id="cal-stat-trades" class="text-2xl font-mono font-extrabold text-brand-500">-</p>
-                        <p id="cal-stat-days" class="text-[11px] text-slate-500 mt-1">-</p>
+                        <p class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Trades</p>
+                        <p id="cal-stat-trades" class="text-base font-mono font-extrabold text-brand-500">-</p>
+                        <p id="cal-stat-days" class="text-[9px] text-slate-500 mt-0.5">-</p>
                     </div>
                     <div>
-                        <p class="text-[11px] text-slate-500 uppercase tracking-wider mb-1.5">Days</p>
-                        <p id="cal-stat-pldays" class="text-2xl font-mono font-extrabold text-white">-</p>
-                        <p class="text-[11px] text-slate-500 mt-1">profit / loss</p>
+                        <p class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Days</p>
+                        <p id="cal-stat-pldays" class="text-base font-mono font-extrabold text-white">-</p>
+                        <p class="text-[9px] text-slate-500 mt-0.5">profit / loss</p>
                     </div>
                 </div>
 
-                <div class="cal-grid-wrap mt-5">
+                <div class="cal-grid-wrap mt-3">
                     <div class="cal-row cal-row-head">
-                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-rose-400/80 py-1">Sun</div>
-                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Mon</div>
-                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Tue</div>
-                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Wed</div>
-                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Thu</div>
-                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Fri</div>
-                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-brand-500/80 py-1">Sat</div>
-                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Week</div>
+                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-rose-400/80 py-0.5">Sun</div>
+                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Mon</div>
+                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Tue</div>
+                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Wed</div>
+                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Thu</div>
+                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Fri</div>
+                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-brand-500/80 py-0.5">Sat</div>
+                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Week</div>
                     </div>
                     <div id="cal-grid"></div>
                 </div>
@@ -2238,6 +2257,44 @@
             if (bDay) hl.push(hlCard('🔥', 'วันที่ดีที่สุด', dayLabel(bDay), fmtRR(daily[bDay].rr), rrColor(daily[bDay].rr),
                 `${daily[bDay].total} เทรด · PNL ${fmtMoney(daily[bDay].pnl)}`, 'rgba(16,185,129,0.14)', 'rgba(16,185,129,0.5)'));
             document.getElementById('an-highlights').innerHTML = hl.join('');
+
+            /* ---------- 2b) Period Comparison: this month vs last month ---------- */
+            const monthKeysSorted = Object.keys(monthly).sort();
+            const currKey = monthKeysSorted[monthKeysSorted.length - 1];
+            const prevKey = monthKeysSorted[monthKeysSorted.length - 2];
+            const emptyPeriod = { wins: 0, losses: 0, be: 0, total: 0, rr: 0, pnl: 0 };
+            const currM = currKey ? monthly[currKey] : emptyPeriod;
+            const prevM = prevKey ? monthly[prevKey] : emptyPeriod;
+            const monthLabel = (key) => key ? new Date(key + '-01T00:00:00').toLocaleDateString('th-TH', { month: 'short', year: '2-digit' }) : '-';
+            document.getElementById('an-compare-label-prev').innerText = monthLabel(prevKey);
+            document.getElementById('an-compare-label-curr').innerText = monthLabel(currKey);
+
+            const compareRow = (label, currVal, prevVal, fmt, higherIsBetter = true) => {
+                const diff = currVal - prevVal;
+                const pct = prevVal !== 0 ? (diff / Math.abs(prevVal)) * 100 : (currVal !== 0 ? 100 : 0);
+                const improved = higherIsBetter ? diff > 0 : diff < 0;
+                const worsened = higherIsBetter ? diff < 0 : diff > 0;
+                const diffColor = improved ? 'text-emerald-400' : (worsened ? 'text-rose-400' : 'text-slate-400');
+                const arrow = diff > 0 ? '▲' : (diff < 0 ? '▼' : '—');
+                return `
+                <div class="flex items-center justify-between py-2.5 px-1 border-b border-dark-border/60 last:border-0">
+                    <span class="text-xs text-slate-300 font-medium">${label}</span>
+                    <div class="flex items-center gap-6 sm:gap-10">
+                        <span class="text-xs font-mono text-slate-400 w-20 text-right">${fmt(prevVal)}</span>
+                        <span class="text-xs font-mono font-bold text-white w-20 text-right">${fmt(currVal)}</span>
+                        <span class="text-[11px] font-mono font-semibold ${diffColor} w-14 text-right">${arrow} ${Math.abs(pct).toFixed(0)}%</span>
+                    </div>
+                </div>`;
+            };
+
+            const currWR = currM.total > 0 ? (currM.wins / currM.total) * 100 : 0;
+            const prevWR = prevM.total > 0 ? (prevM.wins / prevM.total) * 100 : 0;
+
+            document.getElementById('an-compare').innerHTML =
+                compareRow('จำนวนเทรด', currM.total, prevM.total, (v) => v.toFixed(0)) +
+                compareRow('Win Rate', currWR, prevWR, (v) => `${v.toFixed(1)}%`) +
+                compareRow('Total RR', currM.rr, prevM.rr, (v) => fmtRR(v)) +
+                compareRow('Net PNL', currM.pnl, prevM.pnl, (v) => fmtMoney(v));
 
             /* ---------- 3) Ranking lists ---------- */
             const sorters = {
