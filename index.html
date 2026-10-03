@@ -218,11 +218,11 @@
         .cf-chip:has(input:checked) .cf-chip-inner::before { content: '●'; color: #C5A059; }
 
         /* ===== Calendar ===== */
-        .cal-grid-wrap { display: flex; flex-direction: column; gap: .3rem; }
-        .cal-row { display: grid; grid-template-columns: repeat(7, 1fr) 0.8fr; gap: .3rem; }
-        .cal-row-head { margin-bottom: .05rem; }
+        .cal-grid-wrap { display: flex; flex-direction: column; gap: .4rem; }
+        .cal-row { display: grid; grid-template-columns: repeat(7, 1fr) 0.85fr; gap: .4rem; }
+        .cal-row-head { margin-bottom: .1rem; }
         .cal-cell {
-            aspect-ratio: 1 / 0.56; border-radius: .55rem; padding: .3rem .35rem;
+            aspect-ratio: 1 / 0.72; border-radius: .65rem; padding: .4rem .5rem;
             background: rgba(255,255,255,0.02); border: 1px solid #27272A; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: space-between;
             transition: transform .15s ease, border-color .15s ease;
@@ -236,16 +236,16 @@
         .cal-cell.loss { background: linear-gradient(155deg, #9F1239, #6E0D28 80%); border-color: #C11B4C; }
         .cal-cell.be { background: linear-gradient(155deg, #2D3B2F, #1B241C 80%); border-color: #3A4D3C; }
         .cal-cell.selected { outline: 2px solid #C5A059; outline-offset: 1px; }
-        .cal-daynum { font-size: 9px; font-weight: 700; color: #9CA3AF; }
+        .cal-daynum { font-size: 11px; font-weight: 700; color: #9CA3AF; }
         .cal-cell.win .cal-daynum, .cal-cell.loss .cal-daynum { color: rgba(255,255,255,.75); }
-        .cal-cell .cal-pnl { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 800; color: #fff; text-align: center; line-height: 1.1; }
-        .cal-cell .cal-n { font-size: 7px; color: rgba(255,255,255,.75); text-align: center; }
+        .cal-cell .cal-pnl { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 800; color: #fff; text-align: center; line-height: 1.15; }
+        .cal-cell .cal-n { font-size: 9px; color: rgba(255,255,255,.75); text-align: center; }
         .cal-week-cell {
-            border-radius: .55rem; padding: .3rem .25rem; background: #121214; border: 1px solid #27272A;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+            border-radius: .65rem; padding: .4rem .3rem; background: #121214; border: 1px solid #27272A;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
         }
-        .cal-week-cell .cal-week-pnl { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 800; }
-        .cal-week-cell .cal-week-n { font-size: 7px; color: #9CA3AF; }
+        .cal-week-cell .cal-week-pnl { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; }
+        .cal-week-cell .cal-week-n { font-size: 9px; color: #9CA3AF; }
         /* ===== Loading Skeleton ===== */
         .skeleton-pulse {
             background: linear-gradient(90deg, #18181B 25%, #232326 37%, #18181B 63%);
@@ -931,52 +931,52 @@
         <!-- TAB 5: TRADING CALENDAR -->
         <div id="tab-calendar" class="space-y-6 hidden">
 
-            <div class="glass-card rounded-2xl p-4 md:p-5">
+            <div class="glass-card rounded-2xl p-5 md:p-6">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-1">
-                    <h2 class="text-lg md:text-xl font-extrabold text-white tracking-tight">Trading Calendar</h2>
+                    <h2 class="text-xl md:text-2xl font-extrabold text-white tracking-tight">Trading Calendar</h2>
                     <div class="flex items-center gap-2">
-                        <div class="flex items-center gap-1 p-0.5 rounded-lg bg-dark-bg/70 border border-dark-border">
-                            <button onclick="changeCalMonth(-1)" class="w-6 h-6 rounded-md flex items-center justify-center text-xs text-slate-300 hover:text-brand-500 transition">‹</button>
-                            <span id="cal-month-label" class="px-2 text-xs font-extrabold text-white min-w-[100px] text-center">-</span>
-                            <button onclick="changeCalMonth(1)" class="w-6 h-6 rounded-md flex items-center justify-center text-xs text-slate-300 hover:text-brand-500 transition">›</button>
+                        <div class="flex items-center gap-1 p-1 rounded-lg bg-dark-bg/70 border border-dark-border">
+                            <button onclick="changeCalMonth(-1)" class="w-7 h-7 rounded-md flex items-center justify-center text-sm text-slate-300 hover:text-brand-500 transition">‹</button>
+                            <span id="cal-month-label" class="px-3 text-sm font-extrabold text-white min-w-[110px] text-center">-</span>
+                            <button onclick="changeCalMonth(1)" class="w-7 h-7 rounded-md flex items-center justify-center text-sm text-slate-300 hover:text-brand-500 transition">›</button>
                         </div>
-                        <button onclick="goCalToday()" class="px-3 py-1.5 rounded-lg bg-brand-500 text-dark-bg text-[11px] font-extrabold hover:bg-brand-600 transition">Today</button>
+                        <button onclick="goCalToday()" class="px-3.5 py-2 rounded-lg bg-brand-500 text-dark-bg text-xs font-extrabold hover:bg-brand-600 transition">Today</button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-3 mt-1 border-y border-dark-border">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 mt-2 border-y border-dark-border">
                     <div>
-                        <p class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Monthly P&amp;L</p>
-                        <p id="cal-stat-pnl" class="text-base font-mono font-extrabold text-white">-</p>
-                        <p id="cal-stat-bestworst" class="text-[9px] text-slate-500 mt-0.5">-</p>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-wider mb-1.5">Monthly P&amp;L</p>
+                        <p id="cal-stat-pnl" class="text-xl font-mono font-extrabold text-white">-</p>
+                        <p id="cal-stat-bestworst" class="text-[10px] text-slate-500 mt-1">-</p>
                     </div>
                     <div>
-                        <p class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Win Rate</p>
-                        <p id="cal-stat-wr" class="text-base font-mono font-extrabold text-white">-</p>
-                        <p id="cal-stat-wl" class="text-[9px] text-slate-500 mt-0.5">-</p>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-wider mb-1.5">Win Rate</p>
+                        <p id="cal-stat-wr" class="text-xl font-mono font-extrabold text-white">-</p>
+                        <p id="cal-stat-wl" class="text-[10px] text-slate-500 mt-1">-</p>
                     </div>
                     <div>
-                        <p class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Trades</p>
-                        <p id="cal-stat-trades" class="text-base font-mono font-extrabold text-brand-500">-</p>
-                        <p id="cal-stat-days" class="text-[9px] text-slate-500 mt-0.5">-</p>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-wider mb-1.5">Trades</p>
+                        <p id="cal-stat-trades" class="text-xl font-mono font-extrabold text-brand-500">-</p>
+                        <p id="cal-stat-days" class="text-[10px] text-slate-500 mt-1">-</p>
                     </div>
                     <div>
-                        <p class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Days</p>
-                        <p id="cal-stat-pldays" class="text-base font-mono font-extrabold text-white">-</p>
-                        <p class="text-[9px] text-slate-500 mt-0.5">profit / loss</p>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-wider mb-1.5">Days</p>
+                        <p id="cal-stat-pldays" class="text-xl font-mono font-extrabold text-white">-</p>
+                        <p class="text-[10px] text-slate-500 mt-1">profit / loss</p>
                     </div>
                 </div>
 
-                <div class="cal-grid-wrap mt-3">
+                <div class="cal-grid-wrap mt-4">
                     <div class="cal-row cal-row-head">
-                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-rose-400/80 py-0.5">Sun</div>
-                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Mon</div>
-                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Tue</div>
-                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Wed</div>
-                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Thu</div>
-                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Fri</div>
-                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-brand-500/80 py-0.5">Sat</div>
-                        <div class="text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 py-0.5">Week</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-rose-400/80 py-1">Sun</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Mon</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Tue</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Wed</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Thu</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Fri</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-brand-500/80 py-1">Sat</div>
+                        <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Week</div>
                     </div>
                     <div id="cal-grid"></div>
                 </div>
@@ -2149,54 +2149,94 @@
                 html += `</div>`;
                 container.innerHTML = html;
             } else {
+                const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
                 let html = `
                     <div class="glass-card rounded-2xl overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs whitespace-nowrap">
-                                <thead class="bg-dark-panel text-slate-400 font-mono text-[11px] uppercase tracking-wider border-b border-dark-border">
+                            <table class="w-full text-left text-xs whitespace-nowrap border-collapse">
+                                <thead class="bg-dark-panel text-slate-400 font-mono text-[10px] uppercase tracking-wider border-b border-dark-border sticky top-0 z-10">
                                     <tr>
-                                        <th class="p-4">Date</th>
-                                        <th class="p-4">Topic</th>
-                                        <th class="p-4">Symbol</th>
-                                        <th class="p-4">Type</th>
-                                        <th class="p-4">Setup</th>
-                                        <th class="p-4">TF</th>
-                                        <th class="p-4 text-center">Result</th>
-                                        <th class="p-4 text-right">RR</th>
-                                        <th class="p-4 text-right">PnL</th>
-                                        <th class="p-4 text-center">Screenshot</th>
-                                        <th class="p-4 text-center">Action</th>
+                                        <th class="p-3 pl-4">Date</th>
+                                        <th class="p-3">Symbol</th>
+                                        <th class="p-3">Topic</th>
+                                        <th class="p-3">Setup</th>
+                                        <th class="p-3">TF</th>
+                                        <th class="p-3">Session</th>
+                                        <th class="p-3">Entry / SL / TP</th>
+                                        <th class="p-3 text-center">Confluence</th>
+                                        <th class="p-3 text-center">Result</th>
+                                        <th class="p-3 text-right">RR</th>
+                                        <th class="p-3 text-right">PnL</th>
+                                        <th class="p-3 text-center">Notes</th>
+                                        <th class="p-3 text-center">Chart</th>
+                                        <th class="p-3 text-center pr-4">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-dark-border text-slate-300">
+                                <tbody class="divide-y divide-dark-border/60 text-slate-300">
                 `;
                 filteredData.forEach(t => {
                     const dateStr = new Date(t.date).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' });
-                    let outcomeClass = 'text-slate-400';
-                    if(t.outcome === 'WIN') outcomeClass = 'text-emerald-400 font-bold';
-                    if(t.outcome === 'LOSS') outcomeClass = 'text-rose-500 font-bold';
+                    let outcomeBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">BE</span>`;
+                    let rowBorder = 'border-l-2 border-slate-700';
+                    if (t.outcome === 'WIN') {
+                        outcomeBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-900/40 text-emerald-400 border border-emerald-500/30">WIN</span>`;
+                        rowBorder = 'border-l-2 border-emerald-500/70';
+                    } else if (t.outcome === 'LOSS') {
+                        outcomeBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-900/40 text-rose-400 border border-rose-500/30">LOSS</span>`;
+                        rowBorder = 'border-l-2 border-rose-500/70';
+                    }
+
+                    const hasPrice = t.entryPrice || t.slPrice || t.tpPrice;
+                    const priceCell = hasPrice
+                        ? `<div class="flex flex-col gap-0.5 font-mono text-[10px] leading-tight">
+                            ${t.entryPrice ? `<span class="text-white">E ${t.entryPrice}</span>` : ''}
+                            ${t.slPrice ? `<span class="text-rose-400">SL ${t.slPrice}</span>` : ''}
+                            ${t.tpPrice ? `<span class="text-emerald-400">TP ${t.tpPrice}</span>` : ''}
+                           </div>`
+                        : '<span class="text-slate-600">-</span>';
+
+                    const confCount = (t.confluences || []).length;
+                    const confTitle = confCount ? esc(t.confluences.join(', ')) : 'ไม่มีข้อมูล Confluence';
+                    const confCell = confCount
+                        ? `<span title="${confTitle}" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 text-accent-cyan border border-blue-500/20 text-[10px] font-semibold cursor-help">✓ ${confCount}</span>`
+                        : '<span class="text-slate-600">-</span>';
+
+                    const notesCell = t.notes
+                        ? `<span title="${esc(t.notes)}" class="cursor-help text-base">📝</span>`
+                        : '<span class="text-slate-600">-</span>';
+
+                    const beforeImg = t.imageBefore || t.image || '';
+                    const afterImg = t.imageAfter || '';
+                    const chartCell = (beforeImg || afterImg)
+                        ? `<div class="flex items-center justify-center gap-1.5">
+                            ${beforeImg ? `<button onclick="openLightbox('${beforeImg}')" title="Before" class="w-6 h-6 rounded-md bg-dark-panel border border-dark-border hover:border-brand-500 text-[10px] flex items-center justify-center transition">B</button>` : ''}
+                            ${afterImg ? `<button onclick="openLightbox('${afterImg}')" title="After" class="w-6 h-6 rounded-md bg-dark-panel border border-dark-border hover:border-brand-500 text-[10px] flex items-center justify-center transition">A</button>` : ''}
+                           </div>`
+                        : '<span class="text-slate-600 block text-center">-</span>';
 
                     html += `
-                        <tr class="hover:bg-dark-panel/30 transition">
-                            <td class="p-4">${dateStr}</td>
-                            <td class="p-4"><span class="bg-dark-panel px-2 py-1 rounded text-[10px]">${t.topic}</span></td>
-                            <td class="p-4 font-mono font-bold text-white">${t.symbol}</td>
-                            <td class="p-4 ${t.type === 'LONG' ? 'text-emerald-400' : 'text-rose-400'}">${t.type}</td>
-                            <td class="p-4">${t.setup}</td>
-                            <td class="p-4 font-mono text-[11px] text-slate-400">${t.tfEntry && t.tfEntry !== '-' ? t.tfEntry : '-'}/${t.tfHtf && t.tfHtf !== '-' ? t.tfHtf : '-'}</td>
-                            <td class="p-4 text-center ${outcomeClass}">${t.outcome}</td>
-                            <td class="p-4 text-right font-mono ${t.rr >= 0 ? 'text-brand-500' : 'text-rose-500'}">${t.rr >= 0 ? '+'+t.rr : t.rr} R</td>
-                            <td class="p-4 text-right font-mono ${t.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">$${t.pnl}</td>
-                            <td class="p-4 text-center">
-                                <div class="flex items-center justify-center gap-2">
-                                    ${(t.imageBefore || t.image) ? `<button onclick="openLightbox('${t.imageBefore || t.image}')" class="text-[10px] text-brand-500 hover:underline">📸 Before</button>` : ''}
-                                    ${t.imageAfter ? `<button onclick="openLightbox('${t.imageAfter}')" class="text-[10px] text-accent-cyan hover:underline">📸 After</button>` : ''}
-                                    ${!(t.imageBefore || t.image || t.imageAfter) ? '-' : ''}
+                        <tr class="hover:bg-dark-panel/40 transition ${rowBorder}">
+                            <td class="p-3 pl-4 text-slate-400 text-[11px]">${dateStr}</td>
+                            <td class="p-3">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="font-mono font-bold text-white">${esc(t.symbol)}</span>
+                                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${t.type === 'LONG' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}">${t.type}</span>
                                 </div>
                             </td>
-                            <td class="p-4 text-center">
-                                <button onclick="openEditModal('${t.id}')" class="text-brand-500 hover:underline text-[11px] mr-2">Edit</button>
-                                <button onclick="deleteTrade('${t.id}')" class="text-rose-500 hover:underline text-[11px]">Delete</button>
+                            <td class="p-3"><span class="bg-dark-panel px-2 py-1 rounded text-[10px] text-slate-300">${esc(t.topic)}</span></td>
+                            <td class="p-3 text-slate-300">${esc(t.setup)}</td>
+                            <td class="p-3 font-mono text-[10px] text-slate-400">${t.tfEntry && t.tfEntry !== '-' ? t.tfEntry : '-'}<span class="text-slate-600">/</span>${t.tfHtf && t.tfHtf !== '-' ? t.tfHtf : '-'}</td>
+                            <td class="p-3 text-slate-400 text-[11px]">${esc(t.session || '-')}</td>
+                            <td class="p-3">${priceCell}</td>
+                            <td class="p-3 text-center">${confCell}</td>
+                            <td class="p-3 text-center">${outcomeBadge}</td>
+                            <td class="p-3 text-right font-mono font-semibold ${t.rr >= 0 ? 'text-emerald-400' : 'text-rose-500'}">${t.rr >= 0 ? '+'+t.rr : t.rr}R</td>
+                            <td class="p-3 text-right font-mono font-semibold ${t.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">$${t.pnl}</td>
+                            <td class="p-3 text-center">${notesCell}</td>
+                            <td class="p-3 text-center">${chartCell}</td>
+                            <td class="p-3 text-center pr-4">
+                                <button onclick="openEditModal('${t.id}')" class="text-brand-500 hover:underline text-[11px] mr-2 font-semibold">Edit</button>
+                                <button onclick="deleteTrade('${t.id}')" class="text-rose-500 hover:underline text-[11px] font-semibold">Delete</button>
                             </td>
                         </tr>
                     `;
