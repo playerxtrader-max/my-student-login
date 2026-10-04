@@ -693,27 +693,17 @@
                     </div>
                 </div>
 
-                <!-- Breakdown: Timeframe Entry / Timeframe HTF / Confluence -->
-                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <!-- Breakdown: Timeframe / Confluence -->
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <div class="glass-card rounded-2xl p-5">
                         <div class="flex items-center justify-between mb-4">
                             <div>
-                                <h4 class="text-sm font-extrabold text-white">Timeframe เข้าเทรด (Entry)</h4>
-                                <p class="text-[11px] text-slate-500">Win Rate แยกตาม TF ที่ใช้หาจังหวะเข้า</p>
+                                <h4 class="text-sm font-extrabold text-white">Timeframe</h4>
+                                <p class="text-[11px] text-slate-500">Win Rate แยกตาม Timeframe ที่ใช้วิเคราะห์ (นับทุก TF ที่เลือกไว้ในไม้นั้น)</p>
                             </div>
                             <span class="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-base">⏱️</span>
                         </div>
-                        <div id="an-tf-entry" class="space-y-2"></div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <div>
-                                <h4 class="text-sm font-extrabold text-white">Timeframe ดูเทรนด์ (HTF)</h4>
-                                <p class="text-[11px] text-slate-500">Win Rate แยกตาม TF ที่ใช้ดูแนวโน้มใหญ่</p>
-                            </div>
-                            <span class="w-9 h-9 rounded-xl bg-accent-cyan/10 border border-accent-cyan/20 flex items-center justify-center text-base">🧭</span>
-                        </div>
-                        <div id="an-tf-htf" class="space-y-2"></div>
+                        <div id="an-timeframe" class="space-y-2"></div>
                     </div>
                     <div class="glass-card rounded-2xl p-5">
                         <div class="flex items-center justify-between mb-4">
@@ -1153,32 +1143,20 @@
                     </div>
                 </div>
 
-                <!-- Row 2.5: Timeframes -->
-                <div class="grid grid-cols-2 gap-4 p-3.5 rounded-xl bg-dark-panel/50 border border-dark-border">
-                    <div>
-                        <label class="text-[11px] font-semibold text-brand-500 uppercase tracking-wider block mb-1">TF เข้าเทรด (Entry)</label>
-                        <select id="field-tf-entry" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono">
-                            <option value="M1">M1</option>
-                            <option value="M5">M5</option>
-                            <option value="M15" selected>M15</option>
-                            <option value="M30">M30</option>
-                            <option value="H1">H1</option>
-                            <option value="H4">H4</option>
-                            <option value="D1">D1</option>
-                            <option value="W1">W1</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-semibold text-accent-cyan uppercase tracking-wider block mb-1">TF ดูเทรนด์ (HTF)</label>
-                        <select id="field-tf-htf" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono">
-                            <option value="M15">M15</option>
-                            <option value="M30">M30</option>
-                            <option value="H1">H1</option>
-                            <option value="H4" selected>H4</option>
-                            <option value="D1">D1</option>
-                            <option value="W1">W1</option>
-                            <option value="MN">MN</option>
-                        </select>
+                <!-- Row 2.5: Timeframes (Multi-select) -->
+                <div>
+                    <label class="text-[11px] font-semibold text-brand-500 uppercase tracking-wider block mb-1">Timeframe ที่ใช้วิเคราะห์ (เลือกได้มากกว่า 1 อัน)</label>
+                    <p class="text-[10px] text-slate-500 mb-2">เลือกทุก Timeframe ที่ใช้ประกอบการตัดสินใจไม้นี้ เช่น M15 สำหรับหาจังหวะเข้า และ H4, D1 สำหรับดูแนวโน้ม</p>
+                    <div id="field-timeframes-container" class="flex flex-wrap gap-2 p-3 rounded-xl bg-dark-panel/50 border border-dark-border">
+                        <label class="cf-chip"><input type="checkbox" value="M1" class="hidden peer"><span class="cf-chip-inner">M1</span></label>
+                        <label class="cf-chip"><input type="checkbox" value="M5" class="hidden peer"><span class="cf-chip-inner">M5</span></label>
+                        <label class="cf-chip"><input type="checkbox" value="M15" class="hidden peer" checked><span class="cf-chip-inner">M15</span></label>
+                        <label class="cf-chip"><input type="checkbox" value="M30" class="hidden peer"><span class="cf-chip-inner">M30</span></label>
+                        <label class="cf-chip"><input type="checkbox" value="H1" class="hidden peer"><span class="cf-chip-inner">H1</span></label>
+                        <label class="cf-chip"><input type="checkbox" value="H4" class="hidden peer" checked><span class="cf-chip-inner">H4</span></label>
+                        <label class="cf-chip"><input type="checkbox" value="D1" class="hidden peer"><span class="cf-chip-inner">D1</span></label>
+                        <label class="cf-chip"><input type="checkbox" value="W1" class="hidden peer"><span class="cf-chip-inner">W1</span></label>
+                        <label class="cf-chip"><input type="checkbox" value="MN" class="hidden peer"><span class="cf-chip-inner">MN</span></label>
                     </div>
                 </div>
 
@@ -1477,6 +1455,13 @@
                     if(!t.topic) { t.topic = 'General'; needsSave = true; }
                     if(t.tfEntry === undefined) { t.tfEntry = '-'; needsSave = true; }
                     if(t.tfHtf === undefined) { t.tfHtf = '-'; needsSave = true; }
+                    if(t.timeframes === undefined) {
+                        const tfs = [];
+                        if (t.tfEntry && t.tfEntry !== '-') tfs.push(t.tfEntry);
+                        if (t.tfHtf && t.tfHtf !== '-' && t.tfHtf !== t.tfEntry) tfs.push(t.tfHtf);
+                        t.timeframes = tfs;
+                        needsSave = true;
+                    }
                     if(!t.confluences) { t.confluences = []; needsSave = true; }
                     if(t.imageBefore === undefined) { t.imageBefore = t.image || ''; needsSave = true; }
                     if(t.imageAfter === undefined) { t.imageAfter = ''; needsSave = true; }
@@ -1790,8 +1775,9 @@
             document.getElementById('field-type').value = t.type;
             document.getElementById('field-setup').value = t.setup;
             document.getElementById('field-session').value = t.session;
-            if (t.tfEntry && t.tfEntry !== '-') document.getElementById('field-tf-entry').value = t.tfEntry;
-            if (t.tfHtf && t.tfHtf !== '-') document.getElementById('field-tf-htf').value = t.tfHtf;
+            document.querySelectorAll('#field-timeframes-container input[type=checkbox]').forEach(cb => {
+                cb.checked = (t.timeframes || []).includes(cb.value);
+            });
             document.getElementById('field-entry-price').value = t.entryPrice || '';
             document.getElementById('field-sl-price').value = t.slPrice || '';
             document.getElementById('field-tp-price').value = t.tpPrice || '';
@@ -1843,8 +1829,7 @@
                 type: document.getElementById('field-type').value,
                 setup: document.getElementById('field-setup').value,
                 session: document.getElementById('field-session').value,
-                tfEntry: document.getElementById('field-tf-entry').value,
-                tfHtf: document.getElementById('field-tf-htf').value,
+                timeframes: Array.from(document.querySelectorAll('#field-timeframes-container input[type=checkbox]:checked')).map(cb => cb.value),
                 entryPrice: document.getElementById('field-entry-price').value,
                 slPrice: document.getElementById('field-sl-price').value,
                 tpPrice: document.getElementById('field-tp-price').value,
@@ -2054,9 +2039,9 @@
 
             const filteredData = getFilteredTrades().filter(t => {
                 const matchSearch = !search || [
-                    t.symbol, t.setup, t.session, t.topic, t.tfEntry, t.tfHtf,
+                    t.symbol, t.setup, t.session, t.topic,
                     t.notes, t.entryPrice, t.slPrice, t.tpPrice,
-                    ...(t.confluences || [])
+                    ...(t.confluences || []), ...(t.timeframes || [])
                 ].some(field => field && String(field).toLowerCase().includes(search));
                 const matchOutcome = filterOutcome === 'ALL' || t.outcome === filterOutcome;
                 return matchSearch && matchOutcome;
@@ -2088,10 +2073,9 @@
                     const imgPreview = (beforeImg || afterImg)
                         ? `<div class="grid grid-cols-2 gap-2 mb-4">${imgTile(beforeImg, 'BEFORE')}${imgTile(afterImg, 'AFTER')}</div>`
                         : `<div class="w-full h-12 bg-dark-panel mb-4 rounded-xl flex items-center justify-center border border-dark-border border-dashed text-slate-500 text-[10px]">ไม่มีรูปภาพประกอบ</div>`;
-                    const tfLine = `<div class="mb-2 flex items-center gap-1.5 flex-wrap">
-                        <span class="an-chip bg-dark-panel text-slate-300 border border-dark-border">Entry ${t.tfEntry && t.tfEntry !== '-' ? t.tfEntry : '-'}</span>
-                        <span class="an-chip bg-dark-panel text-slate-300 border border-dark-border">HTF ${t.tfHtf && t.tfHtf !== '-' ? t.tfHtf : '-'}</span>
-                    </div>`;
+                    const tfLine = (t.timeframes && t.timeframes.length)
+                        ? `<div class="mb-2 flex items-center gap-1.5 flex-wrap">${t.timeframes.map(tf => `<span class="an-chip bg-dark-panel text-slate-300 border border-dark-border">${tf}</span>`).join('')}</div>`
+                        : `<div class="mb-2 flex items-center gap-1.5 flex-wrap"><span class="an-chip bg-dark-panel text-slate-500 border border-dark-border">ไม่มี Timeframe</span></div>`;
                     const confluenceLine = (t.confluences && t.confluences.length)
                         ? `<div class="mb-3 flex flex-wrap gap-1.5">${t.confluences.map(c => `<span class="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-blue-500/10 text-accent-cyan border border-blue-500/20">✓ ${c}</span>`).join('')}</div>`
                         : '';
@@ -2225,7 +2209,7 @@
                             </td>
                             <td class="p-3"><span class="bg-dark-panel px-2 py-1 rounded text-[10px] text-slate-300">${esc(t.topic)}</span></td>
                             <td class="p-3 text-slate-300">${esc(t.setup)}</td>
-                            <td class="p-3 font-mono text-[10px] text-slate-400">${t.tfEntry && t.tfEntry !== '-' ? t.tfEntry : '-'}<span class="text-slate-600">/</span>${t.tfHtf && t.tfHtf !== '-' ? t.tfHtf : '-'}</td>
+                            <td class="p-3 font-mono text-[10px] text-slate-400">${(t.timeframes && t.timeframes.length) ? t.timeframes.join(' / ') : '-'}</td>
                             <td class="p-3 text-slate-400 text-[11px]">${esc(t.session || '-')}</td>
                             <td class="p-3">${priceCell}</td>
                             <td class="p-3 text-center">${confCell}</td>
@@ -2327,8 +2311,7 @@
                 });
                 return group;
             };
-            const tfEntries = groupBy('tfEntry'); delete tfEntries['-'];
-            const tfHtfs = groupBy('tfHtf'); delete tfHtfs['-'];
+            const timeframeGroups = groupByArray('timeframes');
             const confluenceGroups = groupByArray('confluences');
 
             /* ---------- 1) Summary strip ---------- */
@@ -2472,12 +2455,10 @@
             renderRank('an-setup', setups, 'linear-gradient(90deg,#B08D4B,#D9BD86)');
             renderRank('an-symbol', symbols, 'linear-gradient(90deg,#3B82F6,#93C5FD)');
             renderRank('an-session', sessions, 'linear-gradient(90deg,#22C55E,#86EFAC)');
-            renderRank('an-tf-entry', tfEntries, 'linear-gradient(90deg,#B08D4B,#D9BD86)');
-            renderRank('an-tf-htf', tfHtfs, 'linear-gradient(90deg,#3B82F6,#93C5FD)');
+            renderRank('an-timeframe', timeframeGroups, 'linear-gradient(90deg,#B08D4B,#D9BD86)');
             renderRank('an-confluence', confluenceGroups, 'linear-gradient(90deg,#C5A059,#86EFAC)');
 
-            if (Object.keys(tfEntries).length === 0) document.getElementById('an-tf-entry').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Timeframe (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
-            if (Object.keys(tfHtfs).length === 0) document.getElementById('an-tf-htf').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Timeframe (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
+            if (Object.keys(timeframeGroups).length === 0) document.getElementById('an-timeframe').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Timeframe (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
             if (Object.keys(confluenceGroups).length === 0) document.getElementById('an-confluence').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Confluence (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
 
             /* ---------- 4) Daily tiles ---------- */
@@ -2705,7 +2686,7 @@
                         <div class="flex justify-between items-start mb-2">
                             <div>
                                 <h4 class="text-sm font-black text-white font-mono">${esc(t.symbol)}</h4>
-                                <p class="text-[10px] text-slate-400">${esc(t.setup)} · ${t.tfEntry || '-'}/${t.tfHtf || '-'}</p>
+                                <p class="text-[10px] text-slate-400">${esc(t.setup)} · ${(t.timeframes && t.timeframes.length) ? t.timeframes.join('/') : '-'}</p>
                             </div>
                             <div class="flex items-center gap-2">
                                 ${outcomeTag}
