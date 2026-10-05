@@ -432,6 +432,10 @@
                         <span class="text-[9px] text-slate-400 uppercase tracking-widest">Target PNL</span>
                         <span id="banner-target-pnl" class="text-lg font-black text-emerald-500 font-mono mt-0.5">$1000</span>
                     </div>
+                    <div class="hidden lg:flex flex-col items-center justify-center p-3 rounded-2xl bg-dark-panel/90 border border-dark-border w-28 text-center cursor-pointer hover:bg-dark-panel transition" onclick="openSettingsModal()" title="ตั้งค่าเงินทุนเริ่มต้นแต่ละหมวดหมู่ในปุ่มตั้งค่า">
+                        <span class="text-[9px] text-slate-400 uppercase tracking-widest">Balance</span>
+                        <span id="banner-balance" class="text-lg font-black text-white font-mono mt-0.5">$0</span>
+                    </div>
                     <button onclick="openModal()" class="px-5 py-4 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white font-extrabold text-xs transition shadow-lg shadow-brand-900/50 flex items-center justify-center gap-2 h-full flex-1 md:flex-none">
                         บันทึกการเทรดใหม่
                     </button>
@@ -693,8 +697,8 @@
                     </div>
                 </div>
 
-                <!-- Breakdown: Timeframe / Confluence -->
-                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                <!-- Breakdown: Timeframe / Confluence / Buy-Sell -->
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
                     <div class="glass-card rounded-2xl p-5">
                         <div class="flex items-center justify-between mb-4">
                             <div>
@@ -714,6 +718,16 @@
                             <span class="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-base">✅</span>
                         </div>
                         <div id="an-confluence" class="space-y-2"></div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h4 class="text-sm font-extrabold text-white">ทิศทาง (Buy / Sell)</h4>
+                                <p class="text-[11px] text-slate-500">Win Rate เปรียบเทียบฝั่ง Long (Buy) กับ Short (Sell)</p>
+                            </div>
+                            <span class="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-base">⚖️</span>
+                        </div>
+                        <div id="an-type" class="space-y-2"></div>
                     </div>
                 </div>
 
@@ -1399,12 +1413,14 @@
         let userSettings = {
             topics: ['General', 'พอร์ตหลัก', 'พอร์ตรอง', 'SMC'],
             setups: ['Wyckoff Spring', 'Breakblock Entry', 'Liquidity Sweep', 'Order Block Fill'],
-            confluences: ['EMA ตัดกัน', 'ชนแนวรับ/แนวต้าน', 'แท่งเทียนกลับตัว', 'Break of Structure', 'Fibonacci Retracement', 'Volume Spike']
+            confluences: ['EMA ตัดกัน', 'ชนแนวรับ/แนวต้าน', 'แท่งเทียนกลับตัว', 'Break of Structure', 'Fibonacci Retracement', 'Volume Spike'],
+            topicBalances: {}
         };
 
         let tempTopics = [];
         let tempSetups = [];
         let tempConfluences = [];
+        let tempTopicBalances = {};
         let activeTopic = 'ALL';
         let journalLayout = 'grid'; 
         let charts = {};
@@ -1449,6 +1465,7 @@
                 if (!userSettings.confluences || !userSettings.confluences.length) {
                     userSettings.confluences = ['EMA ตัดกัน', 'ชนแนวรับ/แนวต้าน', 'แท่งเทียนกลับตัว', 'Break of Structure', 'Fibonacci Retracement', 'Volume Spike'];
                 }
+                if (!userSettings.topicBalances) userSettings.topicBalances = {};
 
                 let needsSave = false;
                 trades = trades.map(t => {
@@ -1552,8 +1569,13 @@
             tempTopics = [...userSettings.topics];
             tempSetups = [...userSettings.setups];
             tempConfluences = [...(userSettings.confluences || [])];
+            tempTopicBalances = { ...(userSettings.topicBalances || {}) };
             renderSettingsChips();
             document.getElementById('settings-modal').classList.remove('hidden');
+        }
+
+        function updateTempTopicBalance(topic, value) {
+            tempTopicBalances[topic] = parseFloat(value) || 0;
         }
 
         function closeSettingsModal() {
@@ -1570,11 +1592,14 @@
             if (tempTopics.length === 0) {
                 topicsContainer.innerHTML = `<span class="text-xs text-slate-500 py-1">ยังไม่มีหมวดหมู่</span>`;
             } else {
+                topicsContainer.className = 'space-y-2';
                 topicsContainer.innerHTML = tempTopics.map((topic, index) => `
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-brand-950 text-brand-500 border border-brand-500/30 text-xs font-semibold">
-                        ${topic}
+                    <div class="flex items-center gap-2 bg-brand-950/60 border border-brand-500/30 rounded-xl px-3 py-2">
+                        <span class="text-brand-500 text-xs font-semibold flex-1 truncate">${topic}</span>
+                        <span class="text-[10px] text-slate-500">เงินทุนเริ่มต้น $</span>
+                        <input type="number" value="${tempTopicBalances[topic] || 0}" oninput="updateTempTopicBalance('${topic.replace(/'/g, "\\'")}', this.value)" class="w-24 bg-dark-card border border-dark-border rounded-lg px-2 py-1 text-[11px] text-white font-mono focus:outline-none focus:border-brand-500">
                         <button type="button" onclick="removeSettingsTag('topic', ${index})" class="text-slate-400 hover:text-rose-400 transition font-bold ml-1">✕</button>
-                    </span>
+                    </div>
                 `).join('');
             }
 
@@ -1610,7 +1635,7 @@
             if (!val) return;
 
             if (type === 'topic') {
-                if (!tempTopics.includes(val)) tempTopics.push(val);
+                if (!tempTopics.includes(val)) { tempTopics.push(val); if (tempTopicBalances[val] === undefined) tempTopicBalances[val] = 0; }
             } else if (type === 'setup') {
                 if (!tempSetups.includes(val)) tempSetups.push(val);
             } else {
@@ -1652,10 +1677,14 @@
             userSettings.topics = [...tempTopics];
             userSettings.setups = [...tempSetups];
             userSettings.confluences = [...tempConfluences];
+            const cleanedBalances = {};
+            tempTopics.forEach(t => { cleanedBalances[t] = tempTopicBalances[t] || 0; });
+            userSettings.topicBalances = cleanedBalances;
 
             await localforage.setItem(SETTINGS_KEY, userSettings);
             populateSettingsDropdowns();
             closeSettingsModal();
+            updateDashboard();
             showToast("บันทึกการตั้งค่าเรียบร้อยแล้ว", "success");
         }
 
@@ -1895,7 +1924,18 @@
         /* ------------------ 1. DASHBOARD RENDERER ------------------ */
         function updateDashboard() {
             const stats = getStats();
-            
+
+            const balances = userSettings.topicBalances || {};
+            const startingBalance = activeTopic === 'ALL'
+                ? Object.values(balances).reduce((s, v) => s + (parseFloat(v) || 0), 0)
+                : (parseFloat(balances[activeTopic]) || 0);
+            const currentBalance = startingBalance + parseFloat(stats.netPnL);
+            const balanceEl = document.getElementById('banner-balance');
+            if (balanceEl) {
+                balanceEl.innerText = `$${currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                balanceEl.className = `text-lg font-black font-mono mt-0.5 ${currentBalance >= startingBalance ? 'text-emerald-400' : 'text-rose-400'}`;
+            }
+
             document.getElementById('journal-count-badge').innerText = stats.total;
             document.getElementById('metric-total').innerText = stats.total;
             document.getElementById('metric-winrate').innerText = `${stats.winRate}%`;
@@ -2313,6 +2353,10 @@
             };
             const timeframeGroups = groupByArray('timeframes');
             const confluenceGroups = groupByArray('confluences');
+            const rawTypes = groupBy('type');
+            const typeGroups = {};
+            if (rawTypes['LONG']) typeGroups['BUY (Long)'] = rawTypes['LONG'];
+            if (rawTypes['SHORT']) typeGroups['SELL (Short)'] = rawTypes['SHORT'];
 
             /* ---------- 1) Summary strip ---------- */
             const total = data.length;
@@ -2457,9 +2501,11 @@
             renderRank('an-session', sessions, 'linear-gradient(90deg,#22C55E,#86EFAC)');
             renderRank('an-timeframe', timeframeGroups, 'linear-gradient(90deg,#B08D4B,#D9BD86)');
             renderRank('an-confluence', confluenceGroups, 'linear-gradient(90deg,#C5A059,#86EFAC)');
+            renderRank('an-type', typeGroups, 'linear-gradient(90deg,#3B82F6,#93C5FD)');
 
             if (Object.keys(timeframeGroups).length === 0) document.getElementById('an-timeframe').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Timeframe (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
             if (Object.keys(confluenceGroups).length === 0) document.getElementById('an-confluence').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Confluence (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
+            if (Object.keys(typeGroups).length === 0) document.getElementById('an-type').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
 
             /* ---------- 4) Daily tiles ---------- */
             const dayKeys = Object.keys(daily).sort().reverse();
