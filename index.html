@@ -379,6 +379,12 @@
             *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
         }
 
+        /* ===== Performance ===== */
+        .backdrop-blur-md, .backdrop-blur-sm { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+        .jn-card { content-visibility: auto; contain-intrinsic-size: auto 480px; }
+        body::before, body::after { will-change: transform; }
+        aside img[alt="PlayerX Logo"], #login-overlay img[alt="PlayerX Logo"] { animation: none; filter: drop-shadow(0 0 8px rgba(197,160,89,.4)); }
+
         /* ===== Loading Skeleton ===== */
         .skeleton-pulse {
             background: linear-gradient(90deg, #18181B 25%, #232326 37%, #18181B 63%);
@@ -710,7 +716,7 @@
 
                 <!-- Filters & Search -->
                 <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                    <input type="text" id="search-journal" oninput="renderJournalView()" placeholder="ค้นหาทุกไม้ (Symbol, Setup, Note, Confluence...)" class="bg-dark-panel border border-dark-border rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500 flex-1 md:w-64">
+                    <input type="text" id="search-journal" oninput="debouncedJournalRender()" placeholder="ค้นหาทุกไม้ (Symbol, Setup, Note, Confluence...)" class="bg-dark-panel border border-dark-border rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500 flex-1 md:w-64">
                     
                     <select id="filter-outcome" onchange="renderJournalView()" class="bg-dark-panel border border-dark-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
                         <option value="ALL">ผลลัพธ์ทั้งหมด</option>
@@ -1576,6 +1582,7 @@
             borderCyan: '#3B82F6'
         };
         Chart.defaults.color = '#9CA3AF';
+        if (Chart.defaults.animation) Chart.defaults.animation.duration = 600;
         Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
         Chart.defaults.scale.grid.color = 'rgba(30, 51, 32, 0.3)';
 
@@ -1871,6 +1878,18 @@
             document.getElementById('lightboxModal').classList.remove('hidden');
         }
 
+        let _jrTimer = null;
+        function debouncedJournalRender() {
+            clearTimeout(_jrTimer);
+            _jrTimer = setTimeout(renderJournalView, 180);
+        }
+
+        function openTradeImage(id, which) {
+            const t = trades.find(x => x.id === id);
+            if (!t) return;
+            openLightbox(which === 'after' ? t.imageAfter : (t.imageBefore || t.image));
+        }
+
         function closeLightbox() {
             document.getElementById('lightboxModal').classList.add('hidden');
         }
@@ -2074,6 +2093,7 @@
 
         function switchTab(tabId) {
             const overlay = document.getElementById('tab-loading-overlay');
+            const clickedAt = performance.now();
             tabTimers.forEach(clearTimeout); tabTimers = [];
             if (overlay) overlay.classList.remove('hidden', 'fading');
 
@@ -2083,23 +2103,29 @@
                 el.classList.remove('tab-animate');
                 document.getElementById(`nav-${id}`).classList.remove('active');
             });
-            
+
             const tabEl = document.getElementById(`tab-${tabId}`);
             tabEl.classList.remove('hidden');
             document.getElementById(`nav-${tabId}`).classList.add('active');
-            
-            if (tabId === 'analytics') renderAnalytics();
-            if (tabId === 'dashboard') updateDashboard();
-            if (tabId === 'calendar') renderCalendar();
 
-            tabTimers.push(setTimeout(() => {
-                if (overlay) overlay.classList.add('fading');
-                void tabEl.offsetWidth;
-                tabEl.classList.add('tab-animate');
-                if (tabId === 'calendar') animateCalendar();
-            }, 170));
-            tabTimers.push(setTimeout(() => { if (overlay) { overlay.classList.add('hidden'); overlay.classList.remove('fading'); } }, 480));
-            tabTimers.push(setTimeout(() => tabEl.classList.remove('tab-animate'), 1900));
+            // Let the skeleton paint first, then do the heavy rendering so the click feels instant
+            requestAnimationFrame(() => {
+                tabTimers.push(setTimeout(() => {
+                    if (tabId === 'analytics') renderAnalytics();
+                    if (tabId === 'dashboard') updateDashboard();
+                    if (tabId === 'calendar') renderCalendar();
+
+                    const wait = Math.max(0, 140 - (performance.now() - clickedAt));
+                    tabTimers.push(setTimeout(() => {
+                        if (overlay) overlay.classList.add('fading');
+                        void tabEl.offsetWidth;
+                        tabEl.classList.add('tab-animate');
+                        if (tabId === 'calendar') animateCalendar();
+                    }, wait));
+                    tabTimers.push(setTimeout(() => { if (overlay) { overlay.classList.add('hidden'); overlay.classList.remove('fading'); } }, wait + 320));
+                    tabTimers.push(setTimeout(() => tabEl.classList.remove('tab-animate'), wait + 1700));
+                }, 20));
+            });
         }
 
         function setJournalLayout(layout) {
@@ -2218,7 +2244,7 @@
                         <td class="p-3 text-right font-mono">${t.rr >= 0 ? '+'+t.rr : t.rr} R</td>
                         <td class="p-3 text-right font-mono ${t.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">$${t.pnl}</td>
                         <td class="p-3 text-center">
-                            ${(t.imageBefore || t.image) ? `<button onclick="openLightbox('${t.imageBefore || t.image}')" class="text-xs text-brand-500 hover:underline">📸 ดูรูป</button>` : '-'}
+                            ${(t.imageBefore || t.image) ? `<button onclick="openTradeImage('${t.id}','before')" class="text-xs text-brand-500 hover:underline">📸 ดูรูป</button>` : '-'}
                         </td>
                     </tr>
                 `;
@@ -2297,15 +2323,15 @@
                     const typeColor = t.type === 'LONG' ? 'text-emerald-500' : 'text-rose-500';
                     const beforeImg = t.imageBefore || t.image || '';
                     const afterImg = t.imageAfter || '';
-                    const imgTile = (src, tag) => src
-                        ? `<div class="relative rounded-xl overflow-hidden border border-dark-border h-28 bg-dark-panel group cursor-pointer" onclick="openLightbox('${src}')">
-                               <img src="${src}" loading="lazy" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-300">
+                    const imgTile = (src, tag, which) => src
+                        ? `<div class="relative rounded-xl overflow-hidden border border-dark-border h-28 bg-dark-panel group cursor-pointer" onclick="openTradeImage('${t.id}','${which}')">
+                               <img src="${src}" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-300">
                                <span class="absolute bottom-1 left-1.5 text-[9px] font-bold text-white bg-black/60 px-1.5 py-0.5 rounded">${tag}</span>
-                               <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition backdrop-blur-sm text-white font-bold text-[10px]">🔍 ดูรูปขยาย</div>
+                               <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition text-white font-bold text-[10px]">🔍 ดูรูปขยาย</div>
                            </div>`
                         : `<div class="h-28 rounded-xl flex items-center justify-center border border-dark-border border-dashed text-slate-500 text-[10px] bg-dark-panel">ไม่มีภาพ ${tag}</div>`;
                     const imgPreview = (beforeImg || afterImg)
-                        ? `<div class="grid grid-cols-2 gap-2 mb-4">${imgTile(beforeImg, 'BEFORE')}${imgTile(afterImg, 'AFTER')}</div>`
+                        ? `<div class="grid grid-cols-2 gap-2 mb-4">${imgTile(beforeImg, 'BEFORE', 'before')}${imgTile(afterImg, 'AFTER', 'after')}</div>`
                         : `<div class="w-full h-12 bg-dark-panel mb-4 rounded-xl flex items-center justify-center border border-dark-border border-dashed text-slate-500 text-[10px]">ไม่มีรูปภาพประกอบ</div>`;
                     const tfLine = (t.timeframes && t.timeframes.length)
                         ? `<div class="mb-2 flex items-center gap-1.5 flex-wrap">${t.timeframes.map(tf => `<span class="an-chip bg-dark-panel text-slate-300 border border-dark-border">${tf}</span>`).join('')}</div>`
@@ -2427,8 +2453,8 @@
                     const afterImg = t.imageAfter || '';
                     const chartCell = (beforeImg || afterImg)
                         ? `<div class="flex items-center justify-center gap-1.5">
-                            ${beforeImg ? `<button onclick="openLightbox('${beforeImg}')" title="Before" class="w-6 h-6 rounded-md bg-dark-panel border border-dark-border hover:border-brand-500 text-[10px] flex items-center justify-center transition">B</button>` : ''}
-                            ${afterImg ? `<button onclick="openLightbox('${afterImg}')" title="After" class="w-6 h-6 rounded-md bg-dark-panel border border-dark-border hover:border-brand-500 text-[10px] flex items-center justify-center transition">A</button>` : ''}
+                            ${beforeImg ? `<button onclick="openTradeImage('${t.id}','before')" title="Before" class="w-6 h-6 rounded-md bg-dark-panel border border-dark-border hover:border-brand-500 text-[10px] flex items-center justify-center transition">B</button>` : ''}
+                            ${afterImg ? `<button onclick="openTradeImage('${t.id}','after')" title="After" class="w-6 h-6 rounded-md bg-dark-panel border border-dark-border hover:border-brand-500 text-[10px] flex items-center justify-center transition">A</button>` : ''}
                            </div>`
                         : '<span class="text-slate-600 block text-center">-</span>';
 
@@ -2936,8 +2962,8 @@
                             </div>
                         </div>
                         ${(before || after) ? `<div class="grid grid-cols-2 gap-1.5 mb-2">
-                            ${before ? `<img src="${before}" onclick="openLightbox('${before}')" class="h-16 w-full object-cover rounded-lg border border-dark-border cursor-pointer">` : `<div class="h-16 rounded-lg border border-dashed border-dark-border"></div>`}
-                            ${after ? `<img src="${after}" onclick="openLightbox('${after}')" class="h-16 w-full object-cover rounded-lg border border-dark-border cursor-pointer">` : `<div class="h-16 rounded-lg border border-dashed border-dark-border"></div>`}
+                            ${before ? `<img src="${before}" loading="lazy" decoding="async" onclick="openTradeImage('${t.id}','before')" class="h-16 w-full object-cover rounded-lg border border-dark-border cursor-pointer">` : `<div class="h-16 rounded-lg border border-dashed border-dark-border"></div>`}
+                            ${after ? `<img src="${after}" loading="lazy" decoding="async" onclick="openTradeImage('${t.id}','after')" class="h-16 w-full object-cover rounded-lg border border-dark-border cursor-pointer">` : `<div class="h-16 rounded-lg border border-dashed border-dark-border"></div>`}
                         </div>` : ''}
                         <div class="flex justify-between items-center pt-2 border-t border-dark-border">
                             <span class="text-xs font-mono font-bold ${rrColor(t.rr)}">${fmtRR(t.rr)}</span>
