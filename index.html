@@ -27,16 +27,16 @@
                         brand: {
                             50: '#FDFBF7',
                             100: '#F8F4E9',
-                            500: '#C5A059', // Metallic Gold (matches logo)
-                            600: '#B08D4B',
-                            900: '#4A3D24',
-                            950: '#2A2214',
+                            500: '#FBBF24', // Metallic Gold (matches logo)
+                            600: '#F59E0B',
+                            900: '#78350F',
+                            950: '#2A1A05',
                         },
                         dark: {
-                            bg: '#09090B',      // Neutral Black (Logo Background)
-                            card: '#121214',    // Secondary Background
-                            panel: '#18181B',   // Elevated Panel
-                            border: '#27272A',  // Subtle Gray Border
+                            bg: '#000000',      // Neutral Black (Logo Background)
+                            card: '#0A0A0A',    // Secondary Background
+                            panel: '#101012',   // Elevated Panel
+                            border: '#1F1F23',  // Subtle Gray Border
                             muted: '#9CA3AF',   // Muted gray text
                         },
                         accent: {
@@ -65,40 +65,40 @@
     
     <style>
         body { 
-            background-color: #09090B; 
+            background-color: #000000; 
             color: #E5E7EB; 
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         
         /* Glassmorphism & Custom Glows */
         .glass-card { 
-            background: #121214; 
-            border: 1px solid #27272A; 
+            background: #0A0A0A; 
+            border: 1px solid #1F1F23; 
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
         .glass-card-hover {
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-card-hover:hover {
-            border-color: #C5A059;
+            border-color: #FBBF24;
             transform: translateY(-2px);
-            box-shadow: 0 15px 35px -10px rgba(197, 160, 89, 0.15);
+            box-shadow: 0 15px 35px -10px rgba(251, 191, 36, 0.15);
         }
         
         .glow-brand {
-            box-shadow: 0 0 20px -3px rgba(197, 160, 89, 0.3);
+            box-shadow: 0 0 20px -3px rgba(251, 191, 36, 0.3);
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #09090B; }
-        ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #4A3D24; }
+        ::-webkit-scrollbar-track { background: #000000; }
+        ::-webkit-scrollbar-thumb { background: #1F1F23; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #78350F; }
         
         .tab-btn.active {
-            background-color: #18181B;
-            color: #C5A059;
-            border-left: 3px solid #C5A059;
+            background-color: #101012;
+            color: #FBBF24;
+            border-left: 3px solid #FBBF24;
         }
 
         /* Progress Bar Animation */
@@ -108,44 +108,44 @@
 
         /* ===== Analytics & Statistics (card-based, no charts) ===== */
         .an-hero {
-            background: #121214;
-            border: 1px solid #27272A;
+            background: #0A0A0A;
+            border: 1px solid #1F1F23;
             box-shadow: 0 4px 16px -8px rgba(0,0,0,0.5);
         }
         .an-sort-btn { color: #9CA3AF; }
         .an-sort-btn:hover { color: #F3F4F6; }
-        .an-sort-btn.active { background: #C5A059; color: #09090B; box-shadow: 0 4px 14px -4px rgba(197,160,89,0.5); }
+        .an-sort-btn.active { background: #FBBF24; color: #000000; box-shadow: 0 4px 14px -4px rgba(251,191,36,0.5); }
         .an-stat {
             position: relative; overflow: hidden;
-            background: #121214;
-            border: 1px solid #27272A; border-radius: 1rem; padding: 1rem 1.1rem;
+            background: #0A0A0A;
+            border: 1px solid #1F1F23; border-radius: 1rem; padding: 1rem 1.1rem;
             transition: transform .25s ease, border-color .25s ease;
         }
-        .an-stat:hover { transform: translateY(-2px); border-color: rgba(197,160,89,0.5); }
+        .an-stat:hover { transform: translateY(-2px); border-color: rgba(251,191,36,0.5); }
         .an-stat::before {
             content: ''; position: absolute; left: 0; top: 0; height: 2px; width: 100%;
-            background: linear-gradient(90deg, var(--an-accent, #C5A059), transparent);
+            background: linear-gradient(90deg, var(--an-accent, #FBBF24), transparent);
         }
         .an-hl {
             position: relative; overflow: hidden; border-radius: 1rem; padding: 1.1rem;
-            border: 1px solid #27272A;
-            background: radial-gradient(120% 120% at 100% 0%, var(--an-glow, rgba(197,160,89,0.12)) 0%, #121214 60%);
+            border: 1px solid #1F1F23;
+            background: radial-gradient(120% 120% at 100% 0%, var(--an-glow, rgba(251,191,36,0.12)) 0%, #0A0A0A 60%);
             transition: transform .25s ease, border-color .25s ease;
         }
-        .an-hl:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(197,160,89,0.5)); }
+        .an-hl:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(251,191,36,0.5)); }
         .an-row {
             position: relative; border-radius: .85rem; padding: .7rem .8rem .8rem;
-            background: #18181B; border: 1px solid #27272A;
+            background: #101012; border: 1px solid #1F1F23;
             transition: border-color .2s ease, background .2s ease;
         }
-        .an-row:hover { border-color: rgba(197,160,89,0.45); background: #1F1F23; }
+        .an-row:hover { border-color: rgba(251,191,36,0.45); background: #1F1F23; }
         .an-meter { height: 3px; border-radius: 999px; background: rgba(148,163,184,0.15); overflow: hidden; }
         .an-meter > span { display: block; height: 100%; border-radius: 999px; }
         .an-tile { border-radius: .85rem; padding: .7rem .8rem; border: 1px solid; transition: transform .2s ease; }
         .an-tile:hover { transform: translateY(-2px) scale(1.02); }
         .an-month {
-            border-radius: 1.1rem; padding: 1.2rem; border: 1px solid #27272A; position: relative; overflow: hidden;
-            background: radial-gradient(110% 110% at 100% 0%, var(--an-glow, rgba(16,185,129,0.10)) 0%, #121214 55%);
+            border-radius: 1.1rem; padding: 1.2rem; border: 1px solid #1F1F23; position: relative; overflow: hidden;
+            background: radial-gradient(110% 110% at 100% 0%, var(--an-glow, rgba(16,185,129,0.10)) 0%, #0A0A0A 55%);
             transition: transform .25s ease, border-color .25s ease;
         }
         .an-month:hover { transform: translateY(-2px); border-color: var(--an-line, rgba(16,185,129,0.5)); }
@@ -153,17 +153,17 @@
 
         /* ===== Modern restyle: Dashboard / Journal / Goals ===== */
         #tab-dashboard .glass-card, #tab-journal .glass-card, #tab-goals .glass-card {
-            background: #121214;
-            border-color: #27272A; border-radius: 1.25rem; position: relative;
+            background: #0A0A0A;
+            border-color: #1F1F23; border-radius: 1.25rem; position: relative;
         }
         #tab-dashboard .dx-hero, #tab-journal > .glass-card:first-child, #tab-goals > .glass-card:first-child {
-            background: #121214;
+            background: #0A0A0A;
             overflow: hidden; box-shadow: 0 4px 16px -8px rgba(0,0,0,0.5);
         }
         #tab-dashboard .dx-hero h2 { color: #fff; }
 
         .dx-metrics > div { overflow:hidden; padding:1.2rem 1.25rem; }
-        .dx-metrics > div::before { content:''; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg,var(--a,#C5A059),transparent); }
+        .dx-metrics > div::before { content:''; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg,var(--a,#FBBF24),transparent); }
         .dx-metrics > div::after { position:absolute; right:1rem; top:1rem; font-size:1.25rem; opacity:.55; }
         .dx-metrics > div:nth-child(1){--a:#9CA3AF} .dx-metrics > div:nth-child(1)::after{content:'📒'}
         .dx-metrics > div:nth-child(2){--a:#3B82F6} .dx-metrics > div:nth-child(2)::after{content:'🎯'}
@@ -174,11 +174,11 @@
 
         #tab-dashboard table thead, #tab-journal table thead { background:rgba(11,18,33,.6); }
         #tab-dashboard tbody tr, #tab-journal tbody tr { transition: background .15s ease; }
-        #tab-dashboard tbody tr:hover, #tab-journal tbody tr:hover { background: rgba(197,160,89,.06); }
+        #tab-dashboard tbody tr:hover, #tab-journal tbody tr:hover { background: rgba(251,191,36,.06); }
         #tab-journal .overflow-x-auto { border-radius:1rem; }
 
-        #tab-journal input, #tab-journal select { background:#18181B; border-radius:.8rem; }
-        #tab-journal input:focus, #tab-journal select:focus { box-shadow:0 0 0 3px rgba(197,160,89,.15); }
+        #tab-journal input, #tab-journal select { background:#101012; border-radius:.8rem; }
+        #tab-journal input:focus, #tab-journal select:focus { box-shadow:0 0 0 3px rgba(251,191,36,.15); }
         .jn-card { overflow:hidden; }
         .jn-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:#64748B; }
         .jn-card[data-outcome="WIN"]::before { background:linear-gradient(180deg,#22C55E,#15803D); }
@@ -186,8 +186,8 @@
         .jn-card:hover { box-shadow:0 18px 40px -16px rgba(0,0,0,.7); }
 
         #tab-goals > .grid > .glass-card { padding:1.6rem; }
-        #tab-goals > .grid > .glass-card:hover { border-color:rgba(197,160,89,.4); }
-        #tab-goals .h-4 { height:.8rem; background:#18181B; }
+        #tab-goals > .grid > .glass-card:hover { border-color:rgba(251,191,36,.4); }
+        #tab-goals .h-4 { height:.8rem; background:#101012; }
         #tab-goals .progress-bar { box-shadow:0 0 14px -2px currentColor; position:relative; }
         #tab-goals #goal-progress-rr { color:rgba(34,197,94,.7); }
         #tab-goals #goal-progress-wr { color:rgba(59,130,246,.7); }
@@ -201,21 +201,21 @@
         #tab-goals label.flex { border-radius:.9rem; padding:.9rem 1rem; transition:all .2s ease; }
         #tab-goals label.flex:has(input:checked) { border-color:rgba(16,185,129,.5); background:rgba(16,185,129,.07); }
         #tab-goals label.flex:has(input:checked) span { color:#9CA3AF; text-decoration:line-through; text-decoration-color:rgba(148,163,184,.4); }
-        #tab-goals input[type=number] { background:#18181B; }
+        #tab-goals input[type=number] { background:#101012; }
 
         /* ===== Confluence chips ===== */
         .cf-chip { cursor: pointer; }
         .cf-chip-inner {
             display: inline-flex; align-items: center; gap: .4rem;
             padding: .4rem .8rem; border-radius: .7rem; font-size: 11px; font-weight: 600;
-            background: #18181B; border: 1px solid #27272A; color: #9CA3AF;
+            background: #101012; border: 1px solid #1F1F23; color: #9CA3AF;
             transition: all .15s ease;
         }
         .cf-chip-inner::before { content: '○'; font-size: 9px; }
         .cf-chip:has(input:checked) .cf-chip-inner {
-            background: rgba(197,160,89,.15); border-color: rgba(197,160,89,.55); color: #C5A059;
+            background: rgba(251,191,36,.15); border-color: rgba(251,191,36,.55); color: #FBBF24;
         }
-        .cf-chip:has(input:checked) .cf-chip-inner::before { content: '●'; color: #C5A059; }
+        .cf-chip:has(input:checked) .cf-chip-inner::before { content: '●'; color: #FBBF24; }
 
         /* ===== Calendar ===== */
         .cal-grid-wrap { display: flex; flex-direction: column; gap: .4rem; }
@@ -223,7 +223,7 @@
         .cal-row-head { margin-bottom: .1rem; }
         .cal-cell {
             aspect-ratio: 1 / 0.72; border-radius: .65rem; padding: .4rem .5rem;
-            background: rgba(255,255,255,0.02); border: 1px solid #27272A; position: relative; overflow: hidden;
+            background: rgba(255,255,255,0.02); border: 1px solid #1F1F23; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: space-between;
             transition: transform .15s ease, border-color .15s ease;
         }
@@ -235,13 +235,13 @@
         .cal-cell.win { background: linear-gradient(155deg, #16803D, #0E5C2C 80%); border-color: #1B9A4A; }
         .cal-cell.loss { background: linear-gradient(155deg, #9F1239, #6E0D28 80%); border-color: #C11B4C; }
         .cal-cell.be { background: linear-gradient(155deg, #2D3B2F, #1B241C 80%); border-color: #3A4D3C; }
-        .cal-cell.selected { outline: 2px solid #C5A059; outline-offset: 1px; }
+        .cal-cell.selected { outline: 2px solid #FBBF24; outline-offset: 1px; }
         .cal-daynum { font-size: 11px; font-weight: 700; color: #9CA3AF; }
         .cal-cell.win .cal-daynum, .cal-cell.loss .cal-daynum { color: rgba(255,255,255,.75); }
         .cal-cell .cal-pnl { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 800; color: #fff; text-align: center; line-height: 1.15; }
         .cal-cell .cal-n { font-size: 9px; color: rgba(255,255,255,.75); text-align: center; }
         .cal-week-cell {
-            border-radius: .65rem; padding: .4rem .3rem; background: #121214; border: 1px solid #27272A;
+            border-radius: .65rem; padding: .4rem .3rem; background: #0A0A0A; border: 1px solid #1F1F23;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
         }
         .cal-week-cell .cal-week-pnl { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; }
@@ -255,8 +255,8 @@
         @keyframes calPop { from { opacity: 0; transform: scale(.82); } to { opacity: 1; transform: none; } }
         @keyframes modalPop { from { opacity: 0; transform: translateY(20px) scale(.94); } to { opacity: 1; transform: none; } }
         @keyframes logoGlow {
-            0%, 100% { filter: drop-shadow(0 0 4px rgba(197,160,89,.25)); }
-            50% { filter: drop-shadow(0 0 13px rgba(197,160,89,.65)); }
+            0%, 100% { filter: drop-shadow(0 0 4px rgba(251,191,36,.25)); }
+            50% { filter: drop-shadow(0 0 13px rgba(251,191,36,.65)); }
         }
         @keyframes blobDrift {
             0%, 100% { transform: translate3d(0,0,0) scale(1); }
@@ -267,7 +267,7 @@
         body::before, body::after { content: ''; position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; }
         body::before {
             width: 520px; height: 520px; top: -160px; right: -100px;
-            background: radial-gradient(circle, rgba(197,160,89,.10), transparent 70%);
+            background: radial-gradient(circle, rgba(251,191,36,.10), transparent 70%);
             animation: blobDrift 18s ease-in-out infinite;
         }
         body::after {
@@ -367,10 +367,10 @@
         /* Micro-interactions */
         button { transition: transform .15s ease, background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease, opacity .2s ease; }
         button:active:not(:disabled) { transform: scale(.96); }
-        button.bg-brand-600:not(:disabled):hover { box-shadow: 0 10px 26px -8px rgba(197,160,89,.5); transform: translateY(-1px); }
-        button.bg-brand-500:not(:disabled):hover { box-shadow: 0 10px 26px -8px rgba(197,160,89,.5); }
+        button.bg-brand-600:not(:disabled):hover { box-shadow: 0 10px 26px -8px rgba(251,191,36,.5); transform: translateY(-1px); }
+        button.bg-brand-500:not(:disabled):hover { box-shadow: 0 10px 26px -8px rgba(251,191,36,.5); }
         .tab-btn:hover:not(.active) { transform: translateX(3px); }
-        input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 3px rgba(197,160,89,.14); }
+        input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 3px rgba(251,191,36,.14); }
         input, select, textarea { transition: border-color .2s ease, box-shadow .25s ease; }
         aside img[alt="PlayerX Logo"], #login-overlay img[alt="PlayerX Logo"] { animation: logoGlow 3.2s ease-in-out infinite; }
         #toast-container > div { transition: transform .45s cubic-bezier(.34,1.56,.64,1), opacity .3s ease !important; }
@@ -383,11 +383,24 @@
         .backdrop-blur-md, .backdrop-blur-sm { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
         .jn-card { content-visibility: auto; contain-intrinsic-size: auto 480px; }
         body::before, body::after { will-change: transform; }
-        aside img[alt="PlayerX Logo"], #login-overlay img[alt="PlayerX Logo"] { animation: none; filter: drop-shadow(0 0 8px rgba(197,160,89,.4)); }
+        aside img[alt="PlayerX Logo"], #login-overlay img[alt="PlayerX Logo"] { animation: none; filter: drop-shadow(0 0 8px rgba(251,191,36,.4)); }
+
+        /* ===== FreeTradeJournal-style skin ===== */
+        body::before, body::after { display: none; }
+        .glass-card { background: #0A0A0A !important; border: 1px solid #1F1F23 !important; border-radius: 1rem !important; box-shadow: none !important; }
+        .glass-card-hover:hover { border-color: rgba(251,191,36,.45) !important; box-shadow: 0 0 0 1px rgba(251,191,36,.12) !important; transform: none; }
+        aside { background: #050505 !important; border-right: 1px solid #1F1F23 !important; }
+        .glow-brand { box-shadow: none !important; }
+        .sb-label { font-size: 11px; font-weight: 600; color: #6B7280; padding: .9rem .75rem .35rem; letter-spacing: .02em; }
+        .tab-btn.active { background-color: rgba(251,191,36,.10) !important; color: #FBBF24 !important; border-left: none !important; }
+        .dx-metrics > div::before, .dx-metrics > div::after, .an-stat::before { display: none; }
+        button.bg-brand-600, button.bg-brand-500 { color: #000 !important; font-weight: 700; }
+        button.bg-brand-600:not(:disabled):hover, button.bg-brand-500:not(:disabled):hover { background: #FCD34D; }
+        .an-hero, #tab-dashboard .dx-hero, #tab-journal > .glass-card:first-child, #tab-goals > .glass-card:first-child { background: #0A0A0A !important; }
 
         /* ===== Loading Skeleton ===== */
         .skeleton-pulse {
-            background: linear-gradient(90deg, #18181B 25%, #232326 37%, #18181B 63%);
+            background: linear-gradient(90deg, #101012 25%, #232326 37%, #101012 63%);
             background-size: 400% 100%;
             animation: skeletonShine 1.4s ease infinite;
         }
@@ -402,7 +415,7 @@
     <!-- ========================================== -->
     <!-- LOGIN OVERLAY SYSTEM (ระบบที่เพิ่มใหม่) -->
     <!-- ========================================== -->
-    <div id="login-overlay" class="fixed inset-0 z-[9999] bg-[#09090B] flex items-center justify-center backdrop-blur-md">
+    <div id="login-overlay" class="fixed inset-0 z-[9999] bg-[#000000] flex items-center justify-center backdrop-blur-md">
         <div class="glass-card w-full max-w-md rounded-3xl p-8 space-y-6 border-dark-border relative overflow-hidden shadow-2xl">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-900 via-brand-500 to-brand-900"></div>
             
@@ -461,24 +474,7 @@
             </div>
 
             <!-- Main Menu -->
-            <nav class="space-y-1.5 font-medium pt-2">
-                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="tab-btn active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition">
-                    <span>Dashboard</span>
-                </button>
-                <button onclick="switchTab('journal')" id="nav-journal" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition">
-                    <span class="flex items-center gap-3"><span>Trading Journal</span></span>
-                    <span id="journal-count-badge" class="px-2 py-0.5 text-[10px] font-mono rounded-full bg-brand-950 text-brand-500 border border-brand-500/30">0</span>
-                </button>
-                <button onclick="switchTab('analytics')" id="nav-analytics" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition">
-                    <span>Analytics & Stats</span>
-                </button>
-                <button onclick="switchTab('goals')" id="nav-goals" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition">
-                    <span>Trading Goals</span>
-                </button>
-                <button onclick="switchTab('calendar')" id="nav-calendar" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition">
-                    <span>Calendar</span>
-                </button>
-            </nav>
+            <nav class="space-y-1 font-medium pt-2"><p class="sb-label">Main</p><button onclick="switchTab('dashboard')" id="nav-dashboard" class="tab-btn active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="flex-1 text-left">Dashboard</span></button><button onclick="switchTab('journal')" id="nav-journal" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg><span class="flex-1 text-left">Trading Journal</span><span id="journal-count-badge" class="px-2 py-0.5 text-[10px] font-mono rounded-full bg-brand-950 text-brand-500 border border-brand-500/30">0</span></button><button onclick="switchTab('calendar')" id="nav-calendar" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg><span class="flex-1 text-left">Calendar</span></button><p class="sb-label">Tools</p><button onclick="switchTab('analytics')" id="nav-analytics" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span class="flex-1 text-left">Analytics &amp; Stats</span></button><button onclick="switchTab('goals')" id="nav-goals" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-dark-panel/60 transition"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span class="flex-1 text-left">Trading Goals</span></button></nav>
         </div>
 
         <!-- Quick Actions & Data Controls -->
@@ -526,6 +522,9 @@
             <div class="skeleton-pulse h-40 rounded-2xl"></div>
         </div>
 
+        <div class="flex items-center gap-2 text-sm text-slate-400 pb-3 border-b border-dark-border">
+            <span>Home</span><span class="text-slate-600">›</span><span id="breadcrumb-page" class="text-brand-500 font-semibold">Dashboard</span>
+        </div>
         <!-- Mobile Header Navigation -->
         <div class="flex lg:hidden flex-wrap gap-2 justify-between items-center bg-dark-card p-4 rounded-xl border border-dark-border mb-4">
             <div class="flex items-center gap-2 w-full justify-between mb-2">
@@ -2104,6 +2103,8 @@
                 document.getElementById(`nav-${id}`).classList.remove('active');
             });
 
+            const crumbs = { dashboard: 'Dashboard', journal: 'Trading Journal', analytics: 'Analytics & Stats', goals: 'Trading Goals', calendar: 'Calendar' };
+            const bcEl = document.getElementById('breadcrumb-page'); if (bcEl) bcEl.innerText = crumbs[tabId];
             const tabEl = document.getElementById(`tab-${tabId}`);
             tabEl.classList.remove('hidden');
             document.getElementById(`nav-${tabId}`).classList.add('active');
@@ -2631,13 +2632,13 @@
             const hl = [];
             const bSetup = best(setups, g => wrPct(g) * 1000 + g.total);
             if (bSetup) hl.push(hlCard('🎯', 'Setup ที่แม่นที่สุด', bSetup, `${wrPct(setups[bSetup]).toFixed(1)}%`, 'text-accent-cyan',
-                `Win Rate · ${setups[bSetup].total} เทรด · ${fmtRR(setups[bSetup].rr)}`, 'rgba(197,160,89,0.14)', 'rgba(197,160,89,0.5)'));
+                `Win Rate · ${setups[bSetup].total} เทรด · ${fmtRR(setups[bSetup].rr)}`, 'rgba(251,191,36,0.14)', 'rgba(251,191,36,0.5)'));
             const bSym = best(symbols, g => g.rr);
             if (bSym) hl.push(hlCard('💱', 'คู่เงินที่ทำกำไรสูงสุด', bSym, fmtRR(symbols[bSym].rr), rrColor(symbols[bSym].rr),
                 `${symbols[bSym].total} เทรด · Win Rate ${wrPct(symbols[bSym]).toFixed(0)}%`, 'rgba(59,130,246,0.14)', 'rgba(59,130,246,0.5)'));
             const bSes = best(sessions, g => g.rr);
             if (bSes) hl.push(hlCard('🕐', 'Session ที่ดีที่สุด', bSes, fmtRR(sessions[bSes].rr), rrColor(sessions[bSes].rr),
-                `${sessions[bSes].total} เทรด · Win Rate ${wrPct(sessions[bSes]).toFixed(0)}%`, 'rgba(197,160,89,0.14)', 'rgba(197,160,89,0.5)'));
+                `${sessions[bSes].total} เทรด · Win Rate ${wrPct(sessions[bSes]).toFixed(0)}%`, 'rgba(251,191,36,0.14)', 'rgba(251,191,36,0.5)'));
             const bDay = best(daily, g => g.rr);
             if (bDay) hl.push(hlCard('🔥', 'วันที่ดีที่สุด', dayLabel(bDay), fmtRR(daily[bDay].rr), rrColor(daily[bDay].rr),
                 `${daily[bDay].total} เทรด · PNL ${fmtMoney(daily[bDay].pnl)}`, 'rgba(16,185,129,0.14)', 'rgba(16,185,129,0.5)'));
@@ -2687,8 +2688,8 @@
                 rr: (a, b) => b[1].rr - a[1].rr,
                 n:  (a, b) => b[1].total - a[1].total
             };
-            const rankStyle = (i) => i === 0 ? 'background:linear-gradient(135deg,#C5A059,#8a6d32);color:#09090B'
-                : (i === 1 ? 'background:#3F3F46;color:#E4E4E7' : (i === 2 ? 'background:#4A3D24;color:#D4D4D8' : 'background:#18181B;color:#9CA3AF'));
+            const rankStyle = (i) => i === 0 ? 'background:linear-gradient(135deg,#FBBF24,#B45309);color:#000000'
+                : (i === 1 ? 'background:#3F3F46;color:#E4E4E7' : (i === 2 ? 'background:#78350F;color:#D4D4D8' : 'background:#101012;color:#9CA3AF'));
 
             const renderRank = (elId, obj, barColor) => {
                 const entries = Object.entries(obj).sort(sorters[anSort]);
@@ -2716,11 +2717,11 @@
                     </div>`;
                 }).join('');
             };
-            renderRank('an-setup', setups, 'linear-gradient(90deg,#B08D4B,#D9BD86)');
+            renderRank('an-setup', setups, 'linear-gradient(90deg,#F59E0B,#FCD34D)');
             renderRank('an-symbol', symbols, 'linear-gradient(90deg,#3B82F6,#93C5FD)');
             renderRank('an-session', sessions, 'linear-gradient(90deg,#22C55E,#86EFAC)');
-            renderRank('an-timeframe', timeframeGroups, 'linear-gradient(90deg,#B08D4B,#D9BD86)');
-            renderRank('an-confluence', confluenceGroups, 'linear-gradient(90deg,#C5A059,#86EFAC)');
+            renderRank('an-timeframe', timeframeGroups, 'linear-gradient(90deg,#F59E0B,#FCD34D)');
+            renderRank('an-confluence', confluenceGroups, 'linear-gradient(90deg,#FBBF24,#86EFAC)');
             renderRank('an-type', typeGroups, 'linear-gradient(90deg,#3B82F6,#93C5FD)');
 
             if (Object.keys(timeframeGroups).length === 0) document.getElementById('an-timeframe').innerHTML = '<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีข้อมูล Timeframe (บันทึกไม้ใหม่เพื่อดูสถิติ)</p>';
