@@ -398,6 +398,12 @@
         button.bg-brand-600:not(:disabled):hover, button.bg-brand-500:not(:disabled):hover { background: #FCD34D; }
         .an-hero, #tab-dashboard .dx-hero, #tab-journal > .glass-card:first-child, #tab-goals > .glass-card:first-child { background: #0A0A0A !important; }
 
+        /* ===== Insights ===== */
+        .donut { border-radius: 50%; position: relative; flex-shrink: 0; }
+        .donut::after { content: ''; position: absolute; inset: var(--in, 12px); border-radius: 50%; background: #0A0A0A; }
+        .donut-c { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1; }
+        .dx-metrics { display: none !important; }
+
         /* ===== Loading Skeleton ===== */
         .skeleton-pulse {
             background: linear-gradient(90deg, #101012 25%, #232326 37%, #101012 63%);
@@ -547,6 +553,18 @@
 
         <!-- TAB 1: DASHBOARD -->
         <div id="tab-dashboard" class="space-y-6">
+            <!-- Greeting + Period -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <p id="greet-date" class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase"></p>
+                    <h2 id="greet-title" class="text-2xl md:text-3xl font-extrabold text-brand-500 tracking-tight">Good evening</h2>
+                    <div id="greet-chips" class="flex flex-wrap gap-2 mt-3"></div>
+                </div>
+                <div id="period-switch" class="flex p-1 rounded-xl border border-dark-border bg-dark-card text-xs font-semibold self-start md:self-auto">
+                    <button onclick="setPeriod('7')" data-p="7" class="px-3 py-1.5 rounded-lg text-slate-400">7D</button><button onclick="setPeriod('30')" data-p="30" class="px-3 py-1.5 rounded-lg text-slate-400">30D</button><button onclick="setPeriod('90')" data-p="90" class="px-3 py-1.5 rounded-lg text-slate-400">90D</button><button onclick="setPeriod('YTD')" data-p="YTD" class="px-3 py-1.5 rounded-lg text-slate-400">YTD</button><button onclick="setPeriod('ALL')" data-p="ALL" class="px-3 py-1.5 rounded-lg text-slate-400">ALL</button>
+                </div>
+            </div>
+
             <!-- Hero Banner -->
             <div class="dx-hero glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-brand-500/20 bg-gradient-to-r from-dark-card via-dark-card to-brand-950/20">
                 <div class="space-y-2 z-10 w-full md:w-auto">
@@ -608,6 +626,8 @@
                     <p class="text-[11px] text-slate-500 mt-1">กำไร/ขาดทุน ตัวเงิน ($)</p>
                 </div>
             </div>
+
+            <div id="insights" class="space-y-6"></div>
 
             <!-- Streak / Extremes Row -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1566,6 +1586,7 @@
         let calMonth = new Date().getMonth();
         let calSelectedDay = null;
         let editingTradeId = null;
+        let activePeriod = 'ALL';
         let backupMeta = { lastBackupDate: null, tradeCountAtBackup: 0, lastDismissed: null };
         const BACKUP_META_KEY = 'playerx_backup_meta_v1';
 
@@ -1910,8 +1931,13 @@
         }
 
         function getFilteredTrades() {
-            if (activeTopic === 'ALL') return trades;
-            return trades.filter(t => t.topic === activeTopic);
+            let list = activeTopic === 'ALL' ? trades : trades.filter(t => t.topic === activeTopic);
+            if (activePeriod !== 'ALL') {
+                const now = new Date();
+                const from = activePeriod === 'YTD' ? new Date(now.getFullYear(), 0, 1) : new Date(now.getTime() - parseInt(activePeriod) * 86400000);
+                list = list.filter(t => new Date(t.date) >= from);
+            }
+            return list;
         }
 
         function getStats() {
@@ -2038,6 +2064,73 @@
         }
 
         /* ------------------ NAVIGATION (TABS) ------------------ */
+        /* ------------------ INSIGHTS UI (KPI visuals, symbols, distribution, time, sessions) ------------------ */
+        function setPeriod(p) { activePeriod = p; renderAll(); }
+
+        function renderInsights() {
+            const el = document.getElementById('insights');
+            if (!el) return;
+            document.querySelectorAll('#period-switch button').forEach(b => {
+                const on = b.dataset.p === activePeriod;
+                b.className = 'px-3 py-1.5 rounded-lg ' + (on ? 'bg-dark-panel text-white' : 'text-slate-400 hover:text-white');
+            });
+            const now = new Date(), h = now.getHours();
+            document.getElementById('greet-date').innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+            document.getElementById('greet-title').innerText = h < 12 ? 'Good morning' : (h < 18 ? 'Good afternoon' : 'Good evening');
+
+            const d = getFilteredTrades(), n = d.length;
+            const sum = a => a.reduce((s, t) => s + (t.pnl || 0), 0);
+            const money = v => `${v < 0 ? '-' : '+'}$${Math.abs(v).toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+            const tone = v => v >= 0 ? 'text-emerald-400' : 'text-rose-400';
+            const wins = d.filter(t => t.outcome === 'WIN').length, losses = d.filter(t => t.outcome === 'LOSS').length;
+            const net = sum(d), gw = sum(d.filter(t => t.pnl > 0)), gl = -sum(d.filter(t => t.pnl < 0));
+            const wr = n ? wins / n * 100 : 0;
+            const days = new Set(d.map(t => t.date.slice(0, 10))).size;
+            const chip = (a, b, c = '') => `<span class="px-3 py-1.5 rounded-xl border border-dark-border bg-dark-card text-xs"><b class="text-white ${c}">${a}</b> <span class="text-slate-400">${b}</span></span>`;
+            document.getElementById('greet-chips').innerHTML = chip(n, 'trades') + chip(days, 'trading days') + chip(money(net), 'P&L', tone(net)) + chip(wr.toFixed(0) + '%', 'win rate');
+
+            if (!n) { el.innerHTML = '<div class="glass-card p-10 text-center text-sm text-slate-400">ยังไม่มีเทรดในช่วงเวลานี้ — เลือกช่วงอื่น หรือบันทึกไม้ใหม่</div>'; return; }
+
+            // equity stats + sparkline
+            const asc = [...d].sort((a, b) => new Date(a.date) - new Date(b.date));
+            let c = 0, peak = 0, dip = 0; const pts = asc.map(t => { c += t.pnl || 0; peak = Math.max(peak, c); dip = Math.min(dip, c - peak); return c; });
+            const mn = Math.min(...pts, 0), mx = Math.max(...pts, 0);
+            const spark = pts.length > 1 ? `<svg viewBox="0 0 120 40" class="w-28 h-10"><polyline fill="none" stroke="${net >= 0 ? '#34D399' : '#FB7185'}" stroke-width="1.8" points="${pts.map((v, i) => `${(i / (pts.length - 1) * 120).toFixed(1)},${(36 - (v - mn) / ((mx - mn) || 1) * 32).toFixed(1)}`).join(' ')}"/></svg>` : '';
+            const donut = (parts, size = 56, inner = 12) => `<div class="donut" style="width:${size}px;height:${size}px;--in:${inner}px;background:conic-gradient(${parts})"></div>`;
+            let acc = 0; const wrParts = `#34D399 0 ${wr}%, #FB7185 ${wr}% 100%`;
+            const pf = gl > 0 ? (gw / gl).toFixed(2) : (gw > 0 ? '∞' : '-');
+            const pfPct = gw + gl ? gw / (gw + gl) * 100 : 0;
+            const kpi = (t, badge, big, cls, sub, vis) => `<div class="glass-card p-5"><div class="flex justify-between items-start"><span class="text-sm text-slate-300">${t}</span><span class="text-[10px] px-2 py-0.5 rounded-full border border-dark-border text-slate-400">${badge}</span></div><div class="flex items-center justify-between mt-4"><div><p class="text-3xl font-bold font-mono ${cls}">${big}</p><p class="text-[11px] text-slate-400 mt-2">${sub}</p></div>${vis}</div></div>`;
+            const kpis = `<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                ${kpi('Total P&L', (net >= 0 ? '+' : '') + (gw + gl ? (net / (Math.abs(gw) + gl) * 100).toFixed(1) : 0) + '%', money(net), tone(net), `Avg ${money(net / n)} per trade`, spark)}
+                ${kpi('Win Rate', `${wins}W / ${losses}L`, wr.toFixed(1) + '%', 'text-emerald-400', `${(wr - 50).toFixed(0)}pts ${wr >= 50 ? 'above' : 'below'} 50%`, donut(wrParts))}
+                ${kpi('Total Trades', `${days} days`, n, 'text-white', `<span class="text-emerald-400">${wins} winners</span>, <span class="text-rose-400">${losses} losers</span>`, `<div class="w-16 h-2 rounded-full overflow-hidden flex"><span style="width:${wr}%" class="bg-emerald-400"></span><span class="flex-1 bg-rose-400"></span></div>`)}
+                ${kpi('Profit Factor', pf === '-' ? 'No data' : (parseFloat(pf) >= 1.5 ? 'Excellent' : (parseFloat(pf) >= 1 ? 'OK' : 'Weak')), pf + (pf !== '-' && pf !== '∞' ? 'x' : ''), 'text-emerald-400', `${money(gw)} won / $${gl.toFixed(0)} lost`, donut(`#34D399 0 ${pfPct}%, #FB7185 ${pfPct}% 100%`))}
+            </div>`;
+            const eq = `<div class="glass-card px-5 py-4 grid grid-cols-3 gap-4"><div><p class="text-[10px] tracking-wider text-slate-400">NET</p><p class="font-mono font-bold ${tone(net)}">${money(net)}</p></div><div><p class="text-[10px] tracking-wider text-slate-400">PEAK</p><p class="font-mono font-bold text-emerald-400">${money(peak)}</p></div><div><p class="text-[10px] tracking-wider text-slate-400">DEEPEST DIP</p><p class="font-mono font-bold text-rose-400">${money(dip)}</p></div></div>`;
+
+            const group = (fn) => { const g = {}; d.forEach(t => { const k = fn(t); if (k == null) return; (g[k] = g[k] || { pnl: 0, n: 0 }); g[k].pnl += t.pnl || 0; g[k].n++; }); return g; };
+            const hbars = (rows) => { const m = Math.max(...rows.map(r => Math.abs(r[1])), 1); return rows.map(([k, v]) => `<div class="flex items-center gap-3 text-xs"><span class="w-20 text-right text-slate-400 truncate">${k}</span><div class="flex-1 h-5 bg-dark-panel/40 rounded"><div class="h-5 rounded ${v >= 0 ? 'bg-emerald-400/90' : 'bg-rose-400/90'}" style="width:${Math.max(3, Math.abs(v) / m * 100)}%"></div></div><span class="w-16 font-mono ${tone(v)}">${money(v)}</span></div>`).join(''); };
+            const card = (t, sub, body) => `<div class="glass-card p-5"><h4 class="text-base font-bold text-white">${t}</h4><p class="text-[11px] text-slate-400 mb-4">${sub}</p>${body}</div>`;
+
+            const sym = Object.entries(group(t => t.symbol)).sort((a, b) => b[1].pnl - a[1].pnl);
+            const palette = ['#FBBF24', '#34D399', '#60A5FA', '#A78BFA', '#F472B6', '#2DD4BF', '#6B7280'];
+            const byCount = [...sym].sort((a, b) => b[1].n - a[1].n); const top = byCount.slice(0, 6), other = byCount.slice(6).reduce((s, e) => s + e[1].n, 0);
+            const slices = top.map(e => [e[0], e[1].n]).concat(other ? [['Other', other]] : []);
+            let a0 = 0; const dp = slices.map(([, v], i) => { const s0 = a0; a0 += v / n * 100; return `${palette[i]} ${s0}% ${a0}%`; }).join(',');
+            const dist = `<div class="flex items-center gap-6 flex-wrap"><div class="relative">${donut(dp, 150, 28)}<div class="donut-c"><b class="text-2xl text-white">${n}</b><span class="text-[11px] text-slate-400">Trades</span></div></div><div class="space-y-1.5 text-xs">${slices.map(([k, v], i) => `<div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm" style="background:${palette[i]}"></span><b class="text-white w-16">${k}</b><span class="text-slate-400">${(v / n * 100).toFixed(0)}% · ${v} trades</span></div>`).join('')}</div></div>`;
+
+            const hrs = Object.entries(group(t => t.date.slice(11, 13) ? parseInt(t.date.slice(11, 13)) : null)).sort((a, b) => a[0] - b[0]);
+            const hm = Math.max(...hrs.map(e => Math.abs(e[1].pnl)), 1);
+            const tod = `<div class="flex items-end gap-2 h-36">${hrs.map(([k, g]) => `<div class="flex-1 flex flex-col items-center justify-end gap-1 h-full"><span class="text-[9px] font-mono ${tone(g.pnl)}">${money(g.pnl)}</span><div class="w-full rounded-t ${g.pnl >= 0 ? 'bg-emerald-400/90' : 'bg-rose-400/90'}" style="height:${Math.max(3, Math.abs(g.pnl) / hm * 70)}%"></div><span class="text-[10px] text-slate-500">${k}h</span></div>`).join('')}</div>`;
+            const bestH = hrs.length ? hrs.reduce((a, b) => b[1].pnl > a[1].pnl ? b : a) : null;
+            const ses = Object.entries(group(t => t.session)).sort((a, b) => b[1].pnl - a[1].pnl).map(([k, g]) => [k, g.pnl]);
+
+            el.innerHTML = kpis + eq +
+                `<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">${card('Symbols Performance', 'P&L breakdown by symbol · top 8', `<div class="space-y-2">${hbars(sym.slice(0, 8).map(e => [e[0], e[1].pnl]))}</div>`)}${card('Trade Distribution', 'Trade count distribution across symbols', dist)}</div>` +
+                `<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">${card('Time of Day', 'P&L by entry hour', tod + (bestH ? `<p class="text-[11px] text-slate-400 mt-3">Best hour ${bestH[0]}:00 at ${money(bestH[1].pnl)} from ${bestH[1].n} trades.</p>` : ''))}${card('Trading Sessions', 'P&L by session', `<div class="space-y-3">${hbars(ses)}</div>`)}</div>`;
+        }
+
         /* ------------------ COUNT-UP NUMBER ANIMATION ------------------ */
         function countUp(el, text, duration = 850) {
             if (!el) return;
@@ -2145,6 +2238,7 @@
         /* ------------------ 1. DASHBOARD RENDERER ------------------ */
         function updateDashboard() {
             const stats = getStats();
+            renderInsights();
 
             const balances = userSettings.topicBalances || {};
             const startingBalance = activeTopic === 'ALL'
