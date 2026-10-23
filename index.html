@@ -808,6 +808,15 @@
                     <div id="an-highlights" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3"></div>
                 </div>
 
+                <!-- Points Stats -->
+                <div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <h3 class="text-sm font-extrabold text-white tracking-wide">สถิติจุด (Points)</h3>
+                        <div class="h-px flex-1 bg-gradient-to-r from-dark-border to-transparent"></div>
+                    </div>
+                    <div id="an-points" class="space-y-4"></div>
+                </div>
+
                 <!-- Period Comparison -->
                 <div>
                     <div class="flex items-center gap-3 mb-3">
@@ -2822,6 +2831,37 @@
             if (bDay) hl.push(hlCard('🔥', 'วันที่ดีที่สุด', dayLabel(bDay), fmtRR(daily[bDay].rr), rrColor(daily[bDay].rr),
                 `${daily[bDay].total} เทรด · PNL ${fmtMoney(daily[bDay].pnl)}`, 'rgba(16,185,129,0.14)', 'rgba(16,185,129,0.5)'));
             document.getElementById('an-highlights').innerHTML = hl.join('');
+
+            /* ---------- 2a) Points stats (TP / SL) ---------- */
+            {
+                const winsP = data.filter(t => t.outcome === 'WIN'), lossP = data.filter(t => t.outcome === 'LOSS');
+                const gainPts = winsP.reduce((a, t) => a + (parseFloat(t.tpPoints) || 0), 0);
+                const lossPts = lossP.reduce((a, t) => a + (parseFloat(t.slPoints) || 0), 0);
+                const netPts = gainPts - lossPts;
+                const withPts = data.filter(t => t.tpPoints || t.slPoints).length;
+                const per = data.map(ptsOf);
+                const bestPts = per.length ? Math.max(...per) : 0, worstPts = per.length ? Math.min(...per) : 0;
+                const ptsFactor = lossPts > 0 ? (gainPts / lossPts).toFixed(2) + 'x' : (gainPts > 0 ? '∞' : '-');
+                const tonePt = v => v > 0 ? 'text-emerald-400' : (v < 0 ? 'text-rose-400' : 'text-white');
+                const ptGroup = fn => { const g = {}; data.forEach(t => { const k = fn(t); if (!k) return; g[k] = (g[k] || 0) + ptsOf(t); }); return Object.entries(g).sort((a, b) => b[1] - a[1]); };
+                const ptRows = rows => {
+                    if (!rows.length) return '<p class="text-xs text-slate-500 text-center py-3">ยังไม่มีข้อมูล</p>';
+                    const m = Math.max(...rows.map(r => Math.abs(r[1])), 1);
+                    return rows.slice(0, 8).map(([k, v]) => `<div class="flex items-center gap-3 text-xs"><span class="w-24 text-right text-slate-400 truncate" title="${esc(k)}">${esc(k)}</span><div class="flex-1 h-4 rounded bg-dark-panel/40"><div class="h-4 rounded ${v >= 0 ? 'bg-emerald-400/90' : 'bg-rose-400/90'}" style="width:${Math.max(3, Math.abs(v) / m * 100)}%"></div></div><span class="w-20 font-mono ${tonePt(v)}">${fmtPt(v)}</span></div>`).join('');
+                };
+                const box = (t, rows) => `<div class="glass-card p-5"><h4 class="text-sm font-extrabold text-white mb-3">${t}</h4><div class="space-y-2">${ptRows(rows)}</div></div>`;
+                document.getElementById('an-points').innerHTML =
+                    `<div class="grid grid-cols-2 xl:grid-cols-6 gap-3">`
+                    + statCard('Total Points', fmtPt(netPts), `Best ${fmtPt(bestPts)} · Worst ${fmtPt(worstPts)}`, tonePt(netPts), '#FBBF24')
+                    + statCard('Points จาก TP', fmtPt(gainPts), `${winsP.length} ไม้ที่ชนะ`, 'text-emerald-400', '#34D399')
+                    + statCard('Points เสียจาก SL', fmtPt(-lossPts), `${lossP.length} ไม้ที่แพ้`, 'text-rose-400', '#FB7185')
+                    + statCard('Avg Win', fmtPt(winsP.length ? gainPts / winsP.length : 0), 'ค่าเฉลี่ยต่อไม้ที่ชนะ', 'text-emerald-400', '#34D399')
+                    + statCard('Avg Loss', fmtPt(lossP.length ? -lossPts / lossP.length : 0), 'ค่าเฉลี่ยต่อไม้ที่แพ้', 'text-rose-400', '#FB7185')
+                    + statCard('Points Factor', ptsFactor, 'จุดที่ได้ ÷ จุดที่เสีย', 'text-white', '#FBBF24')
+                    + `</div><div class="grid grid-cols-1 lg:grid-cols-3 gap-4">${box('Points ตาม Symbol', ptGroup(t => t.symbol))}${box('Points ตาม Session', ptGroup(t => t.session))}${box('Points ตาม Setup', ptGroup(t => t.setup))}</div>`
+                    + `<p class="text-[11px] text-slate-500">นับจากไม้ที่กรอก Points ที่ TP/SL แล้ว ${withPts} จาก ${data.length} ไม้ · WIN นับเป็น +จุด TP, LOSS นับเป็น -จุด SL</p>`;
+            }
+
 
             /* ---------- 2b) Period Comparison: this month vs last month ---------- */
             const monthKeysSorted = Object.keys(monthly).sort();
