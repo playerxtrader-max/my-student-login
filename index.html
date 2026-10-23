@@ -404,6 +404,15 @@
         .donut-c { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1; }
         .dx-metrics { display: none !important; }
 
+        /* ===== Trade Log / Calendar / Goals redesign ===== */
+        .cal-cell.win.strong { background: linear-gradient(155deg, #34D399, #10B981 85%); border-color: #6EE7B7; }
+        .cal-cell.loss.strong { background: linear-gradient(155deg, #EF4444, #B91C1C 85%); border-color: #FCA5A5; }
+        .cal-cell.is-today:not(.pad) { border-color: #FBBF24 !important; box-shadow: 0 0 0 1px #FBBF24 !important; }
+        .cal-cell.is-today:not(.pad)::after { content: ''; position: absolute; top: 8px; right: 8px; width: 6px; height: 6px; border-radius: 50%; background: #FBBF24; }
+        #tab-journal thead th { font-size: 10px; letter-spacing: .08em; color: #6B7280; }
+        #tab-journal tbody td { padding-top: .85rem; padding-bottom: .85rem; }
+        #tab-goals .h-2 { height: 6px; }
+
         /* ===== Loading Skeleton ===== */
         .skeleton-pulse {
             background: linear-gradient(90deg, #101012 25%, #232326 37%, #101012 63%);
@@ -723,35 +732,32 @@
 
         <!-- TAB 2: DEDICATED TRADING JOURNAL -->
         <div id="tab-journal" class="space-y-6 hidden">
-            <!-- Journal Control Bar -->
-            <div class="glass-card p-5 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
-                <div>
-                    <p class="text-[10px] font-mono font-semibold tracking-[0.25em] text-brand-500 mb-1.5">TRADE LOG</p>
-                    <h2 class="text-2xl font-extrabold text-white flex items-center gap-2 tracking-tight">
-                        Trading Setup Journal
-                    </h2>
-                    <p class="text-xs text-slate-400">บันทึกรายละเอียดการเทรดพร้อมรูปภาพกราฟเพื่อการทบทวน</p>
+            <!-- Trade Log Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-brand-950 border border-brand-500/30 text-brand-500 flex items-center justify-center text-lg">📈</div>
+                    <div><h2 class="text-2xl font-extrabold text-brand-500 tracking-tight">Trade Log</h2><p class="text-xs text-slate-400">บันทึกและทบทวนประวัติการเทรดของคุณ</p></div>
                 </div>
-
-                <!-- Filters & Search -->
-                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                    <input type="text" id="search-journal" oninput="debouncedJournalRender()" placeholder="ค้นหาทุกไม้ (Symbol, Setup, Note, Confluence...)" class="bg-dark-panel border border-dark-border rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500 flex-1 md:w-64">
-                    
-                    <select id="filter-outcome" onchange="renderJournalView()" class="bg-dark-panel border border-dark-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
-                        <option value="ALL">ผลลัพธ์ทั้งหมด</option>
-                        <option value="WIN">WIN</option>
-                        <option value="LOSS">LOSS</option>
-                        <option value="BE">BE</option>
-                    </select>
-
-                    <div class="flex bg-dark-panel p-1 rounded-xl border border-dark-border">
-                        <button onclick="setJournalLayout('grid')" id="btn-layout-grid" class="px-3 py-1 rounded-lg text-xs font-semibold bg-brand-600 text-white">Grid View</button>
-                        <button onclick="setJournalLayout('table')" id="btn-layout-table" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white">Table View</button>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="openModal()" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-black font-bold text-xs">+ Add Trade</button>
+                    <button onclick="exportData()" class="px-4 py-2.5 rounded-xl border border-dark-border text-xs font-semibold text-slate-200 hover:border-brand-500">Export</button>
+                    <div class="flex p-1 rounded-xl border border-dark-border bg-dark-card text-xs font-semibold"><button data-unit="USD" onclick="setUnit('USD')" class="px-3 py-1.5 rounded-lg">$</button><button data-unit="PT" onclick="setUnit('PT')" class="px-3 py-1.5 rounded-lg">Pt</button></div>
+                </div>
+            </div>
+            <div id="journal-kpis" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"></div>
+            <div class="glass-card p-5 space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">All Trades <span id="journal-total-badge" class="px-2 py-0.5 rounded-full bg-dark-panel text-xs text-slate-300 font-mono">0</span></h3>
+                    <input type="text" id="search-journal" oninput="debouncedJournalRender()" placeholder="Search symbol, setup, notes, confluence..." class="bg-dark-panel border border-dark-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500 md:w-80">
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                    <span class="text-slate-400 mr-1">Filter</span>
+                    <select id="filter-outcome" onchange="renderJournalView()" class="bg-dark-panel border border-dark-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"><option value="ALL">Outcome</option><option value="WIN">WIN</option><option value="LOSS">LOSS</option><option value="BE">BE</option></select>
+                    <select id="filter-side" onchange="renderJournalView()" class="bg-dark-panel border border-dark-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"><option value="ALL">Side</option><option value="LONG">Long (Buy)</option><option value="SHORT">Short (Sell)</option></select>
+                    <div class="flex bg-dark-panel p-1 rounded-xl border border-dark-border ml-auto">
+                        <button onclick="setJournalLayout('grid')" id="btn-layout-grid" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white">Grid</button>
+                        <button onclick="setJournalLayout('table')" id="btn-layout-table" class="px-3 py-1 rounded-lg text-xs font-semibold bg-brand-600 text-white">Table</button>
                     </div>
-
-                    <button onclick="openModal()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-lg shadow-brand-900/40">
-                        + เพิ่มข้อมูล
-                    </button>
                 </div>
             </div>
 
@@ -924,12 +930,12 @@
             <div class="glass-card p-6 rounded-2xl">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
                     <div>
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2">🛡️ Risk Guard</h3>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">Risk</h3>
                         <p class="text-[10px] text-slate-400 mt-1">ขีดจำกัดความเสี่ยงต่อวัน เพื่อป้องกันการเทรดเกินตัว</p>
                     </div>
                     <span id="risk-guard-status" class="self-start sm:self-auto px-3 py-1 rounded-full text-[11px] font-bold border border-emerald-500/40 bg-emerald-950/40 text-emerald-400">✅ ปลอดภัยวันนี้</span>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="p-4 rounded-xl bg-dark-panel border border-dark-border">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-xs text-slate-300 font-semibold">Max Daily Loss</span>
@@ -956,10 +962,17 @@
                             <div id="risk-progress-pertrade" class="absolute top-0 left-0 h-full rounded-full bg-brand-500 transition-all duration-500" style="width:0%"></div>
                         </div>
                     </div>
+                    <div class="p-4 rounded-xl bg-dark-panel border border-dark-border">
+                        <div class="flex justify-between items-center mb-2"><span class="text-xs text-slate-300 font-semibold">Max Drawdown</span>
+                            <div class="flex items-center gap-1"><input type="number" id="risk-input-dd" value="500" class="w-16 bg-dark-card border border-dark-border rounded-lg px-2 py-1 text-[11px] text-white font-mono focus:border-brand-500 outline-none"><span class="text-[10px] text-slate-500">$</span></div></div>
+                        <p><span id="risk-current-dd" class="text-lg font-mono font-bold text-white">$0</span> <span class="text-xs text-slate-500">of $<span id="risk-target-dd">500</span></span></p>
+                        <div class="relative w-full h-2 bg-dark-card rounded-full overflow-hidden border border-dark-border mt-2"><div id="risk-progress-dd" class="absolute top-0 left-0 h-full rounded-full bg-emerald-500 transition-all duration-500" style="width:0%"></div></div>
+                    </div>
                 </div>
                 <button onclick="saveRiskLimits()" class="mt-4 px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs transition">บันทึกขีดจำกัด</button>
             </div>
 
+            <h3 class="text-lg font-bold text-white pt-2">Goals <span class="text-xs font-normal text-slate-400 ml-2">เป้าหมายประจำช่วง</span></h3>
             <div class="glass-card p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
                     <p class="text-[10px] font-mono font-semibold tracking-[0.25em] text-brand-500 mb-1.5">GOALS &amp; DISCIPLINE</p>
@@ -1103,6 +1116,7 @@
                             <button onclick="changeCalMonth(1)" class="w-7 h-7 rounded-md flex items-center justify-center text-sm text-slate-300 hover:text-brand-500 transition">›</button>
                         </div>
                         <button onclick="goCalToday()" class="px-3.5 py-2 rounded-lg bg-brand-500 text-dark-bg text-xs font-extrabold hover:bg-brand-600 transition">Today</button>
+                        <div class="flex p-1 rounded-xl border border-dark-border bg-dark-card text-xs font-semibold"><button data-unit="USD" onclick="setUnit('USD')" class="px-3 py-1.5 rounded-lg">$</button><button data-unit="PT" onclick="setUnit('PT')" class="px-3 py-1.5 rounded-lg">Pt</button></div>
                     </div>
                 </div>
 
@@ -1141,6 +1155,12 @@
                         <div class="text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 py-1">Week</div>
                     </div>
                     <div id="cal-grid"></div>
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 pt-4 mt-3 border-t border-dark-border text-[11px] text-slate-400">
+                        <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full bg-emerald-400"></i>Profit</span>
+                        <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full bg-rose-400"></i>Loss</span>
+                        <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full bg-slate-500"></i>Breakeven</span>
+                        <span class="flex items-center gap-1.5 ml-auto">Less <i class="w-2.5 h-2.5 rounded-full bg-emerald-900"></i><i class="w-2.5 h-2.5 rounded-full bg-emerald-700"></i><i class="w-2.5 h-2.5 rounded-full bg-emerald-500"></i><i class="w-2.5 h-2.5 rounded-full bg-emerald-300"></i> More</span>
+                    </div>
                 </div>
             </div>
 
@@ -1346,6 +1366,14 @@
                         <label class="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block mb-1">Take Profit</label>
                         <input type="number" id="field-tp-price" step="any" placeholder="0.00000" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono">
                     </div>
+                </div>
+
+                <!-- Row 2.7: Points at TP / SL -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block mb-1">Points ที่ TP</label>
+                        <input type="number" id="field-tp-points" step="any" oninput="autoRR()" placeholder="0" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono"></div>
+                    <div><label class="text-[11px] font-semibold text-rose-400 uppercase tracking-wider block mb-1">Points ที่ SL</label>
+                        <input type="number" id="field-sl-points" step="any" oninput="autoRR()" placeholder="0" class="w-full bg-dark-card border border-dark-border rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 font-mono"></div>
                 </div>
 
                 <!-- Row 3: Result, RR, PnL -->
@@ -1564,7 +1592,7 @@
         const SETTINGS_KEY = 'playerx_settings_v1';
 
         let trades = [];
-        let goals = { targetRR: 50, targetWR: 50, targetPNL: 1000, maxDailyLoss: 100, maxLossPerTrade: 50 };
+        let goals = { targetRR: 50, targetWR: 50, targetPNL: 1000, maxDailyLoss: 100, maxLossPerTrade: 50, maxDrawdown: 500 };
         let disciplineLog = { logs: {} };
         const DISCIPLINE_KEY = 'playerx_discipline_v1';
         
@@ -1580,7 +1608,7 @@
         let tempConfluences = [];
         let tempTopicBalances = {};
         let activeTopic = 'ALL';
-        let journalLayout = 'grid'; 
+        let journalLayout = 'table'; 
         let charts = {};
         let calYear = new Date().getFullYear();
         let calMonth = new Date().getMonth();
@@ -1620,6 +1648,7 @@
                 if (savedSettings) userSettings = savedSettings;
                 if (goals.maxDailyLoss === undefined) goals.maxDailyLoss = 100;
                 if (goals.maxLossPerTrade === undefined) goals.maxLossPerTrade = 50;
+                if (goals.maxDrawdown === undefined) goals.maxDrawdown = 500;
                 const savedDiscipline = await localforage.getItem(DISCIPLINE_KEY);
                 if (savedDiscipline) disciplineLog = savedDiscipline;
                 if (!userSettings.confluences || !userSettings.confluences.length) {
@@ -1928,6 +1957,8 @@
             renderDashboardTips();
             renderRiskGuard();
             renderDisciplineStreak();
+            renderRiskDD();
+            syncUnitButtons();
         }
 
         function getFilteredTrades() {
@@ -1987,6 +2018,8 @@
             document.getElementById('field-entry-price').value = t.entryPrice || '';
             document.getElementById('field-sl-price').value = t.slPrice || '';
             document.getElementById('field-tp-price').value = t.tpPrice || '';
+            document.getElementById('field-tp-points').value = t.tpPoints || '';
+            document.getElementById('field-sl-points').value = t.slPoints || '';
             document.getElementById('field-outcome').value = t.outcome;
             document.getElementById('field-rr').value = t.rr;
             document.getElementById('field-pnl').value = t.pnl;
@@ -2039,6 +2072,8 @@
                 entryPrice: document.getElementById('field-entry-price').value,
                 slPrice: document.getElementById('field-sl-price').value,
                 tpPrice: document.getElementById('field-tp-price').value,
+                tpPoints: document.getElementById('field-tp-points').value,
+                slPoints: document.getElementById('field-sl-points').value,
                 confluences: Array.from(document.querySelectorAll('#field-confluence-container input[type=checkbox]:checked')).map(cb => cb.value),
                 outcome: document.getElementById('field-outcome').value,
                 rr: parseFloat(document.getElementById('field-rr').value),
@@ -2064,6 +2099,53 @@
         }
 
         /* ------------------ NAVIGATION (TABS) ------------------ */
+        /* ------------------ POINTS / UNIT MODE ------------------ */
+        let unitMode = 'USD';
+        const ptsOf = t => t.outcome === 'WIN' ? (parseFloat(t.tpPoints) || 0) : (t.outcome === 'LOSS' ? -(parseFloat(t.slPoints) || 0) : 0);
+        const tradeVal = t => unitMode === 'PT' ? ptsOf(t) : (t.pnl || 0);
+        const fmtPt = v => `${v >= 0 ? '+' : '-'}${Math.abs(v).toLocaleString('en-US', { maximumFractionDigits: 1 })}pt`;
+        function setUnit(u) { unitMode = u; renderAll(); }
+        function syncUnitButtons() {
+            document.querySelectorAll('[data-unit]').forEach(b => { b.className = 'px-3 py-1.5 rounded-lg ' + (b.dataset.unit === unitMode ? 'bg-dark-panel text-white' : 'text-slate-400 hover:text-white'); });
+        }
+        function autoRR() {
+            const tp = parseFloat(document.getElementById('field-tp-points').value), sl = parseFloat(document.getElementById('field-sl-points').value), r = document.getElementById('field-rr');
+            if (tp > 0 && sl > 0 && r && document.getElementById('field-outcome').value === 'WIN' && (!r.value || r.dataset.auto === '1')) { r.value = (tp / sl).toFixed(2); r.dataset.auto = '1'; }
+        }
+
+        function renderJournalKpis() {
+            const el = document.getElementById('journal-kpis'); if (!el) return;
+            const d = getFilteredTrades(), n = d.length;
+            const wins = d.filter(t => t.outcome === 'WIN'), losses = d.filter(t => t.outcome === 'LOSS');
+            const pnl = d.reduce((s, t) => s + (t.pnl || 0), 0), pts = d.reduce((s, t) => s + ptsOf(t), 0);
+            const main = unitMode === 'PT' ? pts : pnl, mainTxt = unitMode === 'PT' ? fmtPt(pts) : `${pnl >= 0 ? '+' : '-'}$${Math.abs(pnl).toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
+            const wr = n ? wins.length / n * 100 : 0;
+            const avg = a => a.length ? a.reduce((s, t) => s + ptsOf(t), 0) / a.length : 0;
+            const gw = d.filter(t => t.pnl > 0).reduce((s, t) => s + t.pnl, 0), gl = -d.filter(t => t.pnl < 0).reduce((s, t) => s + t.pnl, 0);
+            const pf = gl > 0 ? (gw / gl).toFixed(2) + 'x' : (gw > 0 ? '∞' : '-');
+            const tone = v => v >= 0 ? 'text-emerald-400' : 'text-rose-400';
+            const card = (t, b, big, cls, sub) => `<div class="glass-card p-5"><div class="flex justify-between items-start"><span class="text-sm text-slate-300">${t}</span><span class="text-[10px] px-2 py-0.5 rounded-full border border-dark-border text-slate-400">${b}</span></div><p class="text-3xl font-bold font-mono mt-4 ${cls}">${big}</p><p class="text-[11px] text-slate-400 mt-2">${sub}</p></div>`;
+            el.innerHTML = card('Total P&L', unitMode === 'PT' ? 'Points' : 'USD', mainTxt, tone(main), `Avg ${n ? (unitMode === 'PT' ? fmtPt(pts / n) : '$' + (pnl / n).toFixed(2)) : '-'} per trade`)
+                + card('Win Rate', `${wins.length}W / ${losses.length}L`, wr.toFixed(1) + '%', 'text-emerald-400', `${n} trades`)
+                + card('Points', 'TP / SL', fmtPt(pts), tone(pts), `Avg win <span class="text-emerald-400">${fmtPt(avg(wins))}</span> · Avg loss <span class="text-rose-400">${fmtPt(avg(losses))}</span>`)
+                + card('Profit Factor', gl > 0 && gw / gl >= 1.5 ? 'Excellent' : '', pf, 'text-emerald-400', `Won $${gw.toFixed(0)} · Lost $${gl.toFixed(0)}`);
+            const badge = document.getElementById('journal-total-badge'); if (badge) badge.innerText = n;
+        }
+        const _rjv = renderJournalView;
+        renderJournalView = function () { _rjv(); renderJournalKpis(); };
+
+        function renderRiskDD() {
+            const inp = document.getElementById('risk-input-dd'); if (!inp) return;
+            inp.value = goals.maxDrawdown;
+            document.getElementById('risk-target-dd').innerText = goals.maxDrawdown;
+            let c = 0, pk = 0, dd = 0;
+            [...getFilteredTrades()].sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(t => { c += t.pnl || 0; pk = Math.max(pk, c); dd = Math.max(dd, pk - c); });
+            const pct = Math.min(100, dd / goals.maxDrawdown * 100);
+            document.getElementById('risk-current-dd').innerText = `$${dd.toFixed(2)}`;
+            const bar = document.getElementById('risk-progress-dd'); bar.style.width = pct + '%';
+            bar.className = `absolute top-0 left-0 h-full rounded-full transition-all duration-500 ${pct >= 100 ? 'bg-rose-500' : (pct >= 70 ? 'bg-rose-400' : 'bg-emerald-500')}`;
+        }
+
         /* ------------------ INSIGHTS UI (KPI visuals, symbols, distribution, time, sessions) ------------------ */
         function setPeriod(p) { activePeriod = p; renderAll(); }
 
@@ -2391,6 +2473,7 @@
             const container = document.getElementById('journal-container');
             const search = document.getElementById('search-journal').value.toLowerCase();
             const filterOutcome = document.getElementById('filter-outcome').value;
+            const filterSide = document.getElementById('filter-side').value;
 
             const filteredData = getFilteredTrades().filter(t => {
                 const matchSearch = !search || [
@@ -2399,7 +2482,7 @@
                     ...(t.confluences || []), ...(t.timeframes || [])
                 ].some(field => field && String(field).toLowerCase().includes(search));
                 const matchOutcome = filterOutcome === 'ALL' || t.outcome === filterOutcome;
-                return matchSearch && matchOutcome;
+                return matchSearch && matchOutcome && (filterSide === 'ALL' || t.type === filterSide);
             });
 
             if (filteredData.length === 0) {
@@ -2505,6 +2588,7 @@
                                         <th class="p-3 text-center">Confluence</th>
                                         <th class="p-3 text-center">Result</th>
                                         <th class="p-3 text-right">RR</th>
+                                        <th class="p-3 text-right">Points</th>
                                         <th class="p-3 text-right">PnL</th>
                                         <th class="p-3 text-center">Notes</th>
                                         <th class="p-3 text-center">Chart</th>
@@ -2570,7 +2654,8 @@
                             <td class="p-3 text-center">${confCell}</td>
                             <td class="p-3 text-center">${outcomeBadge}</td>
                             <td class="p-3 text-right font-mono font-semibold ${t.rr >= 0 ? 'text-emerald-400' : 'text-rose-500'}">${t.rr >= 0 ? '+'+t.rr : t.rr}R</td>
-                            <td class="p-3 text-right font-mono font-semibold ${t.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">$${t.pnl}</td>
+                            <td class="p-3 text-right">${(t.tpPoints || t.slPoints) ? `<div class="text-[10px] font-mono leading-tight"><span class="text-emerald-400">TP ${t.tpPoints || '-'}</span><br><span class="text-rose-400">SL ${t.slPoints || '-'}</span></div>` : '<span class="text-slate-600">-</span>'}</td>
+                            <td class="p-3 text-right font-mono font-semibold ${tradeVal(t) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${unitMode === 'PT' ? fmtPt(ptsOf(t)) : '$' + t.pnl}</td>
                             <td class="p-3 text-center">${notesCell}</td>
                             <td class="p-3 text-center">${chartCell}</td>
                             <td class="p-3 text-center pr-4">
@@ -2926,11 +3011,11 @@
 
             const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
             const fmtRR = (v) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}R`;
-            const fmtMoney = (v) => `${v >= 0 ? '+' : '-'}$${Math.abs(v).toFixed(2)}`;
+            const fmtMoney = (v) => unitMode === 'PT' ? fmtPt(v) : `${v >= 0 ? '+' : '-'}$${Math.abs(v).toFixed(2)}`;
             const fmtMoneyShort = (v) => {
                 const abs = Math.abs(v);
                 const val = abs >= 1000 ? `${(abs / 1000).toFixed(abs >= 10000 ? 0 : 1)}k` : abs.toFixed(0);
-                return `${v >= 0 ? '+' : '-'}$${val}`;
+                return unitMode === 'PT' ? `${v >= 0 ? '+' : '-'}${val}pt` : `${v >= 0 ? '+' : '-'}$${val}`;
             };
             const rrColor = (v) => v > 0 ? 'text-emerald-400' : (v < 0 ? 'text-rose-400' : 'text-slate-400');
 
@@ -2949,7 +3034,7 @@
                 const g = byDay[dayKey];
                 g.trades.push(t);
                 g.rr += (t.rr || 0);
-                g.pnl += (t.pnl || 0);
+                g.pnl += tradeVal(t);
                 if (t.outcome === 'WIN') g.wins++; else if (t.outcome === 'LOSS') g.losses++; else g.be++;
             });
 
@@ -3015,7 +3100,7 @@
                     }
                     weekPnl += g.pnl;
                     weekN += g.trades.length;
-                    cls += g.pnl > 0 ? ' win has-trades' : (g.pnl < 0 ? ' loss has-trades' : ' be has-trades');
+                    cls += (g.pnl > 0 ? ' win has-trades' : (g.pnl < 0 ? ' loss has-trades' : ' be has-trades')) + (Math.abs(g.pnl) >= 0.6 * Math.max(1, ...Object.values(byDay).map(x => Math.abs(x.pnl))) ? ' strong' : '');
                     return `<div class="${cls}" onclick="selectCalDay('${cell.dayKey}')">
                         <span class="cal-daynum">${cell.num}</span>
                         <div><p class="cal-pnl">${fmtMoneyShort(g.pnl)}</p><p class="cal-n">${g.trades.length} trade${g.trades.length > 1 ? 's' : ''}</p></div>
@@ -3062,7 +3147,7 @@
                         </div>` : ''}
                         <div class="flex justify-between items-center pt-2 border-t border-dark-border">
                             <span class="text-xs font-mono font-bold ${rrColor(t.rr)}">${fmtRR(t.rr)}</span>
-                            <span class="text-xs font-mono font-bold ${t.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${fmtMoney(t.pnl)}</span>
+                            <span class="text-xs font-mono font-bold ${tradeVal(t) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${fmtMoney(tradeVal(t))}</span>
                         </div>
                     </div>`;
                 }).join('');
@@ -3232,8 +3317,10 @@
         async function saveRiskLimits() {
             goals.maxDailyLoss = parseFloat(document.getElementById('risk-input-daily').value) || 100;
             goals.maxLossPerTrade = parseFloat(document.getElementById('risk-input-pertrade').value) || 50;
+            goals.maxDrawdown = parseFloat(document.getElementById('risk-input-dd').value) || 500;
             await localforage.setItem(GOALS_KEY, goals);
             renderRiskGuard();
+            renderRiskDD();
             showToast('บันทึกขีดจำกัดความเสี่ยงเรียบร้อยแล้ว', 'success');
         }
 
