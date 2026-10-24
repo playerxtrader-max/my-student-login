@@ -2110,9 +2110,9 @@
         /* ------------------ NAVIGATION (TABS) ------------------ */
         /* ------------------ POINTS / UNIT MODE ------------------ */
         let unitMode = 'USD';
-        const ptsOf = t => t.outcome === 'WIN' ? (parseFloat(t.tpPoints) || 0) : (t.outcome === 'LOSS' ? -(parseFloat(t.slPoints) || 0) : 0);
+        const ptsOf = t => t.outcome === 'WIN' ? Math.abs(parseFloat(t.tpPoints) || 0) : (t.outcome === 'LOSS' ? -Math.abs(parseFloat(t.slPoints) || 0) : 0);
         const tradeVal = t => unitMode === 'PT' ? ptsOf(t) : (t.pnl || 0);
-        const fmtPt = v => `${v >= 0 ? '+' : '-'}${Math.abs(v).toLocaleString('en-US', { maximumFractionDigits: 1 })}pt`;
+        const fmtPt = v => v === 0 ? '0pt' : `${v > 0 ? '+' : '-'}${Math.abs(v).toLocaleString('en-US', { maximumFractionDigits: 1 })}pt`;
         function setUnit(u) { unitMode = u; renderAll(); }
         function syncUnitButtons() {
             document.querySelectorAll('[data-unit]').forEach(b => { b.className = 'px-3 py-1.5 rounded-lg ' + (b.dataset.unit === unitMode ? 'bg-dark-panel text-white' : 'text-slate-400 hover:text-white'); });
@@ -2136,7 +2136,7 @@
             const card = (t, b, big, cls, sub) => `<div class="glass-card p-5"><div class="flex justify-between items-start"><span class="text-sm text-slate-300">${t}</span><span class="text-[10px] px-2 py-0.5 rounded-full border border-dark-border text-slate-400">${b}</span></div><p class="text-3xl font-bold font-mono mt-4 ${cls}">${big}</p><p class="text-[11px] text-slate-400 mt-2">${sub}</p></div>`;
             el.innerHTML = card('Total P&L', unitMode === 'PT' ? 'Points' : 'USD', mainTxt, tone(main), `Avg ${n ? (unitMode === 'PT' ? fmtPt(pts / n) : '$' + (pnl / n).toFixed(2)) : '-'} per trade`)
                 + card('Win Rate', `${wins.length}W / ${losses.length}L`, wr.toFixed(1) + '%', 'text-emerald-400', `${n} trades`)
-                + card('Points', 'TP / SL', fmtPt(pts), tone(pts), `Avg win <span class="text-emerald-400">${fmtPt(avg(wins))}</span> · Avg loss <span class="text-rose-400">${fmtPt(avg(losses))}</span>`)
+                + card('Points ที่ TP', 'TP / SL', fmtPt(wins.reduce((a, t) => a + ptsOf(t), 0)), 'text-emerald-400', `Points ที่ SL <span class="text-rose-400">${fmtPt(losses.reduce((a, t) => a + ptsOf(t), 0))}</span> · Avg win <span class="text-emerald-400">${fmtPt(avg(wins))}</span> · Avg loss <span class="text-rose-400">${fmtPt(avg(losses))}</span>`)
                 + card('Profit Factor', gl > 0 && gw / gl >= 1.5 ? 'Excellent' : '', pf, 'text-emerald-400', `Won $${gw.toFixed(0)} · Lost $${gl.toFixed(0)}`);
             const badge = document.getElementById('journal-total-badge'); if (badge) badge.innerText = n;
         }
@@ -2663,7 +2663,7 @@
                             <td class="p-3 text-center">${confCell}</td>
                             <td class="p-3 text-center">${outcomeBadge}</td>
                             <td class="p-3 text-right font-mono font-semibold ${t.rr >= 0 ? 'text-emerald-400' : 'text-rose-500'}">${t.rr >= 0 ? '+'+t.rr : t.rr}R</td>
-                            <td class="p-3 text-right">${(t.tpPoints || t.slPoints) ? `<div class="text-[10px] font-mono leading-tight"><span class="text-emerald-400">TP ${t.tpPoints || '-'}</span><br><span class="text-rose-400">SL ${t.slPoints || '-'}</span></div>` : '<span class="text-slate-600">-</span>'}</td>
+                            <td class="p-3 text-right">${(t.tpPoints || t.slPoints) ? `<div class="text-[10px] font-mono leading-tight"><span class="text-emerald-400">TP ${t.tpPoints ? '+' + Math.abs(parseFloat(t.tpPoints)) : '-'}</span><br><span class="text-rose-400">SL ${t.slPoints ? '-' + Math.abs(parseFloat(t.slPoints)) : '-'}</span></div>` : '<span class="text-slate-600">-</span>'}</td>
                             <td class="p-3 text-right font-mono font-semibold ${tradeVal(t) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${unitMode === 'PT' ? fmtPt(ptsOf(t)) : '$' + t.pnl}</td>
                             <td class="p-3 text-center">${notesCell}</td>
                             <td class="p-3 text-center">${chartCell}</td>
@@ -2835,8 +2835,8 @@
             /* ---------- 2a) Points stats (TP / SL) ---------- */
             {
                 const winsP = data.filter(t => t.outcome === 'WIN'), lossP = data.filter(t => t.outcome === 'LOSS');
-                const gainPts = winsP.reduce((a, t) => a + (parseFloat(t.tpPoints) || 0), 0);
-                const lossPts = lossP.reduce((a, t) => a + (parseFloat(t.slPoints) || 0), 0);
+                const gainPts = winsP.reduce((a, t) => a + Math.abs(parseFloat(t.tpPoints) || 0), 0);
+                const lossPts = lossP.reduce((a, t) => a + Math.abs(parseFloat(t.slPoints) || 0), 0);
                 const netPts = gainPts - lossPts;
                 const withPts = data.filter(t => t.tpPoints || t.slPoints).length;
                 const per = data.map(ptsOf);
@@ -2852,12 +2852,12 @@
                 const box = (t, rows) => `<div class="glass-card p-5"><h4 class="text-sm font-extrabold text-white mb-3">${t}</h4><div class="space-y-2">${ptRows(rows)}</div></div>`;
                 document.getElementById('an-points').innerHTML =
                     `<div class="grid grid-cols-2 xl:grid-cols-6 gap-3">`
-                    + statCard('Total Points', fmtPt(netPts), `Best ${fmtPt(bestPts)} · Worst ${fmtPt(worstPts)}`, tonePt(netPts), '#FBBF24')
-                    + statCard('Points จาก TP', fmtPt(gainPts), `${winsP.length} ไม้ที่ชนะ`, 'text-emerald-400', '#34D399')
-                    + statCard('Points เสียจาก SL', fmtPt(-lossPts), `${lossP.length} ไม้ที่แพ้`, 'text-rose-400', '#FB7185')
+                    + statCard('Total Points ที่ TP', fmtPt(gainPts), `${winsP.length} ไม้ที่ชนะ`, 'text-emerald-400', '#34D399')
+                    + statCard('Total Points ที่ SL', fmtPt(-lossPts), `${lossP.length} ไม้ที่แพ้`, 'text-rose-400', '#FB7185')
+                    + statCard('Best Trade', fmtPt(bestPts), 'จุดที่ได้มากสุดในไม้เดียว', 'text-emerald-400', '#34D399')
                     + statCard('Avg Win', fmtPt(winsP.length ? gainPts / winsP.length : 0), 'ค่าเฉลี่ยต่อไม้ที่ชนะ', 'text-emerald-400', '#34D399')
                     + statCard('Avg Loss', fmtPt(lossP.length ? -lossPts / lossP.length : 0), 'ค่าเฉลี่ยต่อไม้ที่แพ้', 'text-rose-400', '#FB7185')
-                    + statCard('Points Factor', ptsFactor, 'จุดที่ได้ ÷ จุดที่เสีย', 'text-white', '#FBBF24')
+                    + statCard('Worst Trade', fmtPt(worstPts), 'จุดที่เสียมากสุดในไม้เดียว', 'text-rose-400', '#FB7185')
                     + `</div><div class="grid grid-cols-1 lg:grid-cols-3 gap-4">${box('Points ตาม Symbol', ptGroup(t => t.symbol))}${box('Points ตาม Session', ptGroup(t => t.session))}${box('Points ตาม Setup', ptGroup(t => t.setup))}</div>`
                     + `<p class="text-[11px] text-slate-500">นับจากไม้ที่กรอก Points ที่ TP/SL แล้ว ${withPts} จาก ${data.length} ไม้ · WIN นับเป็น +จุด TP, LOSS นับเป็น -จุด SL</p>`;
             }
