@@ -1423,28 +1423,10 @@
                 <!-- Row 4: Before / After Screenshots & Notes -->
                 <div class="space-y-4">
                     <div>
-                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">📸 Before / After Screenshots</label>
-                        <p class="text-[10px] text-slate-500 mb-2">แนบภาพกราฟตอนกดเข้าเทรด และภาพตอนปิดออเดอร์เรียบร้อยแล้ว</p>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <span class="text-[10px] font-bold text-slate-300 block mb-1">ก่อนเข้าเทรด (Before)</span>
-                                <input type="file" id="field-image-before-file" accept="image/*" onchange="handleImageUpload(event, 'before')" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-brand-950 file:text-brand-500 file:border file:border-brand-500/30 hover:file:bg-brand-900/50 cursor-pointer">
-                                <input type="hidden" id="field-image-before">
-                                <div id="image-preview-before-container" class="hidden relative group w-full h-24 rounded-xl overflow-hidden border border-dark-border mt-2">
-                                    <img id="image-preview-before-img" src="" class="w-full h-full object-cover">
-                                    <button type="button" onclick="removeUploadedImage('before')" class="absolute top-1 right-1 bg-rose-600/80 hover:bg-rose-600 text-white p-1 rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition">✕</button>
-                                </div>
-                            </div>
-                            <div>
-                                <span class="text-[10px] font-bold text-slate-300 block mb-1">หลังปิดออเดอร์ (After)</span>
-                                <input type="file" id="field-image-after-file" accept="image/*" onchange="handleImageUpload(event, 'after')" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-brand-950 file:text-brand-500 file:border file:border-brand-500/30 hover:file:bg-brand-900/50 cursor-pointer">
-                                <input type="hidden" id="field-image-after">
-                                <div id="image-preview-after-container" class="hidden relative group w-full h-24 rounded-xl overflow-hidden border border-dark-border mt-2">
-                                    <img id="image-preview-after-img" src="" class="w-full h-full object-cover">
-                                    <button type="button" onclick="removeUploadedImage('after')" class="absolute top-1 right-1 bg-rose-600/80 hover:bg-rose-600 text-white p-1 rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition">✕</button>
-                                </div>
-                            </div>
-                        </div>
+                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">📸 รูปภาพประกอบ (เพิ่มได้หลายรูป)</label>
+                        <p class="text-[10px] text-slate-500 mb-2">เลือกได้ครั้งละหลายไฟล์ หรือกดเพิ่มทีละรอบก็ได้ ระบบย่อขนาดให้อัตโนมัติ</p>
+                        <input type="file" id="field-images-file" accept="image/*" multiple onchange="handleImagesUpload(event)" class="w-full text-[11px] text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-brand-950 file:text-brand-500 file:border file:border-brand-500/30 hover:file:bg-brand-900/50 cursor-pointer">
+                        <div id="image-preview-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-2"></div>
                     </div>
                     <div>
                         <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">บันทึกช่วยจำ (Trading Notes / Mistakes)</label>
@@ -1468,6 +1450,9 @@
                 ✕ ปิดหน้าต่าง (ESC)
             </button>
             <img id="lightboxImage" src="" class="max-w-full max-h-[85vh] object-contain rounded-xl border border-dark-border shadow-2xl">
+            <button id="lb-prev" onclick="lbStep(-1, event)" class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 text-white text-xl hover:bg-black/80">‹</button>
+            <button id="lb-next" onclick="lbStep(1, event)" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 text-white text-xl hover:bg-black/80">›</button>
+            <span id="lb-count" class="absolute -bottom-8 text-xs text-slate-300 font-mono"></span>
         </div>
     </div>
 
@@ -1678,8 +1663,7 @@
                         needsSave = true;
                     }
                     if(!t.confluences) { t.confluences = []; needsSave = true; }
-                    if(t.imageBefore === undefined) { t.imageBefore = t.image || ''; needsSave = true; }
-                    if(t.imageAfter === undefined) { t.imageAfter = ''; needsSave = true; }
+                    if (t.images === undefined) { t.images = [t.imageBefore || t.image, t.imageAfter].filter(Boolean); delete t.imageBefore; delete t.imageAfter; delete t.image; needsSave = true; }
                     if(t.entryPrice === undefined) { t.entryPrice = ''; needsSave = true; }
                     if(t.slPrice === undefined) { t.slPrice = ''; needsSave = true; }
                     if(t.tpPrice === undefined) { t.tpPrice = ''; needsSave = true; }
@@ -1887,54 +1871,53 @@
         }
 
         /* ------------------ IMAGE UPLOAD & COMPRESSION ------------------ */
-        function handleImageUpload(event, target) {
-            target = target || 'before';
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function(e) {
-                const img = new Image();
-                img.src = e.target.result;
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1200;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > MAX_WIDTH) {
-                        height = Math.round((height * MAX_WIDTH) / width);
-                        width = MAX_WIDTH;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
-                    document.getElementById(`field-image-${target}`).value = compressedBase64;
-                    document.getElementById(`image-preview-${target}-img`).src = compressedBase64;
-                    document.getElementById(`image-preview-${target}-container`).classList.remove('hidden');
-                };
-            };
+        let formImages = [];
+        const imgsOf = t => t.images || [];
+        function renderFormImages() {
+            const box = document.getElementById('image-preview-grid'); if (!box) return;
+            box.innerHTML = formImages.map((src, i) => `<div class="relative group h-20 rounded-xl overflow-hidden border border-dark-border"><img src="${src}" class="w-full h-full object-cover"><button type="button" onclick="removeFormImage(${i})" class="absolute top-1 right-1 bg-rose-600/80 hover:bg-rose-600 text-white w-5 h-5 rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition">✕</button></div>`).join('');
         }
-
-        function removeUploadedImage(target) {
-            target = target || 'before';
-            const fileInput = document.getElementById(`field-image-${target}-file`);
-            if (fileInput) fileInput.value = '';
-            document.getElementById(`field-image-${target}`).value = '';
-            document.getElementById(`image-preview-${target}-container`).classList.add('hidden');
+        function removeFormImage(i) { formImages.splice(i, 1); renderFormImages(); }
+        function resetFormImages(imgs) {
+            formImages = imgs ? [...imgs] : [];
+            const f = document.getElementById('field-images-file'); if (f) f.value = '';
+            renderFormImages();
+        }
+        function compressImage(file) {
+            return new Promise(resolve => {
+                const r = new FileReader();
+                r.onload = e => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const c = document.createElement('canvas'), M = 1200;
+                        let w = img.width, h = img.height;
+                        if (w > M) { h = Math.round(h * M / w); w = M; }
+                        c.width = w; c.height = h;
+                        c.getContext('2d').drawImage(img, 0, 0, w, h);
+                        resolve(c.toDataURL('image/jpeg', 0.7));
+                    };
+                    img.src = e.target.result;
+                };
+                r.readAsDataURL(file);
+            });
+        }
+        async function handleImagesUpload(event) {
+            for (const f of [...event.target.files]) { formImages.push(await compressImage(f)); renderFormImages(); }
+            event.target.value = '';
         }
 
         /* ------------------ LIGHTBOX CONTROLS ------------------ */
-        function openLightbox(imgSrc) {
-            if (!imgSrc) return;
-            document.getElementById('lightboxImage').src = imgSrc;
+        let lbList = [], lbIndex = 0;
+        function showLightbox() {
+            if (!lbList.length) return;
+            document.getElementById('lightboxImage').src = lbList[lbIndex];
+            const multi = lbList.length > 1;
+            ['lb-prev', 'lb-next', 'lb-count'].forEach(id => document.getElementById(id).classList.toggle('hidden', !multi));
+            document.getElementById('lb-count').innerText = `${lbIndex + 1} / ${lbList.length}`;
             document.getElementById('lightboxModal').classList.remove('hidden');
         }
+        function openLightbox(imgSrc) { if (!imgSrc) return; lbList = [imgSrc]; lbIndex = 0; showLightbox(); }
+        function lbStep(d, e) { if (e) e.stopPropagation(); lbIndex = (lbIndex + d + lbList.length) % lbList.length; showLightbox(); }
 
         let _jrTimer = null;
         function debouncedJournalRender() {
@@ -1942,10 +1925,10 @@
             _jrTimer = setTimeout(renderJournalView, 180);
         }
 
-        function openTradeImage(id, which) {
+        function openTradeImage(id, i) {
             const t = trades.find(x => x.id === id);
-            if (!t) return;
-            openLightbox(which === 'after' ? t.imageAfter : (t.imageBefore || t.image));
+            if (!t || !imgsOf(t).length) return;
+            lbList = imgsOf(t); lbIndex = i || 0; showLightbox();
         }
 
         function closeLightbox() {
@@ -1954,6 +1937,7 @@
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeLightbox();
+            if (!document.getElementById('lightboxModal').classList.contains('hidden')) { if (e.key === 'ArrowRight') lbStep(1); if (e.key === 'ArrowLeft') lbStep(-1); }
         });
 
         /* ------------------ CORE FUNCTIONS ------------------ */
@@ -1995,8 +1979,7 @@
         function openModal() {
             editingTradeId = null;
             document.getElementById('trade-form').reset();
-            removeUploadedImage('before');
-            removeUploadedImage('after');
+            resetFormImages();
             document.querySelectorAll('#field-confluence-container input[type=checkbox]').forEach(cb => cb.checked = false);
             document.getElementById('field-date').value = new Date().toISOString().slice(0, 16);
             document.getElementById('trade-modal-title').innerText = 'บันทึกรายละเอียดการเทรด';
@@ -2011,8 +1994,7 @@
             editingTradeId = id;
 
             document.getElementById('trade-form').reset();
-            removeUploadedImage('before');
-            removeUploadedImage('after');
+            resetFormImages();
             document.querySelectorAll('#field-confluence-container input[type=checkbox]').forEach(cb => cb.checked = false);
 
             document.getElementById('field-topic').value = t.topic;
@@ -2039,18 +2021,7 @@
                 if (cb) cb.checked = true;
             });
 
-            const beforeImg = t.imageBefore || t.image || '';
-            if (beforeImg) {
-                document.getElementById('field-image-before').value = beforeImg;
-                document.getElementById('image-preview-before-img').src = beforeImg;
-                document.getElementById('image-preview-before-container').classList.remove('hidden');
-            }
-            const afterImg = t.imageAfter || '';
-            if (afterImg) {
-                document.getElementById('field-image-after').value = afterImg;
-                document.getElementById('image-preview-after-img').src = afterImg;
-                document.getElementById('image-preview-after-container').classList.remove('hidden');
-            }
+            resetFormImages(imgsOf(t));
 
             document.getElementById('trade-modal-title').innerText = `แก้ไขข้อมูลการเทรด · ${t.symbol}`;
             document.getElementById('trade-submit-btn').innerText = 'บันทึกการแก้ไข';
@@ -2061,8 +2032,7 @@
             editingTradeId = null;
             document.getElementById('trade-modal').classList.add('hidden');
             document.getElementById('trade-form').reset();
-            removeUploadedImage('before');
-            removeUploadedImage('after');
+            resetFormImages();
             document.querySelectorAll('#field-confluence-container input[type=checkbox]').forEach(cb => cb.checked = false);
             document.getElementById('field-date').value = new Date().toISOString().slice(0, 16);
         }
@@ -2087,8 +2057,7 @@
                 outcome: document.getElementById('field-outcome').value,
                 rr: parseFloat(document.getElementById('field-rr').value),
                 pnl: parseFloat(document.getElementById('field-pnl').value),
-                imageBefore: document.getElementById('field-image-before').value,
-                imageAfter: document.getElementById('field-image-after').value,
+                images: [...formImages],
                 notes: document.getElementById('field-notes').value,
             };
 
@@ -2430,7 +2399,7 @@
                         <td class="p-3 text-right font-mono">${t.rr >= 0 ? '+'+t.rr : t.rr} R</td>
                         <td class="p-3 text-right font-mono ${t.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">$${t.pnl}</td>
                         <td class="p-3 text-center">
-                            ${(t.imageBefore || t.image) ? `<button onclick="openTradeImage('${t.id}','before')" class="text-xs text-brand-500 hover:underline">📸 ดูรูป</button>` : '-'}
+                            ${imgsOf(t).length ? `<button onclick="openTradeImage('${t.id}',0)" class="text-xs text-brand-500 hover:underline">📸 ${imgsOf(t).length}</button>` : '-'}
                         </td>
                     </tr>
                 `;
@@ -2508,17 +2477,9 @@
                     if(t.outcome === 'LOSS') outcomeTag = `<span class="px-2 py-1 rounded bg-rose-900/40 text-rose-500 font-bold border border-rose-500/30 text-[10px]">LOSS</span>`;
 
                     const typeColor = t.type === 'LONG' ? 'text-emerald-500' : 'text-rose-500';
-                    const beforeImg = t.imageBefore || t.image || '';
-                    const afterImg = t.imageAfter || '';
-                    const imgTile = (src, tag, which) => src
-                        ? `<div class="relative rounded-xl overflow-hidden border border-dark-border h-28 bg-dark-panel group cursor-pointer" onclick="openTradeImage('${t.id}','${which}')">
-                               <img src="${src}" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-300">
-                               <span class="absolute bottom-1 left-1.5 text-[9px] font-bold text-white bg-black/60 px-1.5 py-0.5 rounded">${tag}</span>
-                               <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition text-white font-bold text-[10px]">🔍 ดูรูปขยาย</div>
-                           </div>`
-                        : `<div class="h-28 rounded-xl flex items-center justify-center border border-dark-border border-dashed text-slate-500 text-[10px] bg-dark-panel">ไม่มีภาพ ${tag}</div>`;
-                    const imgPreview = (beforeImg || afterImg)
-                        ? `<div class="grid grid-cols-2 gap-2 mb-4">${imgTile(beforeImg, 'BEFORE', 'before')}${imgTile(afterImg, 'AFTER', 'after')}</div>`
+                    const imgsT = imgsOf(t);
+                    const imgPreview = imgsT.length
+                        ? `<div class="grid grid-cols-${Math.min(imgsT.length, 3)} gap-2 mb-4">${imgsT.slice(0, 3).map((src, i) => `<div class="relative rounded-xl overflow-hidden border border-dark-border h-24 bg-dark-panel group cursor-pointer" onclick="openTradeImage('${t.id}',${i})"><img src="${src}" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-300">${i === 2 && imgsT.length > 3 ? `<div class="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-bold text-sm">+${imgsT.length - 2}</div>` : ''}</div>`).join('')}</div>`
                         : `<div class="w-full h-12 bg-dark-panel mb-4 rounded-xl flex items-center justify-center border border-dark-border border-dashed text-slate-500 text-[10px]">ไม่มีรูปภาพประกอบ</div>`;
                     const tfLine = (t.timeframes && t.timeframes.length)
                         ? `<div class="mb-2 flex items-center gap-1.5 flex-wrap">${t.timeframes.map(tf => `<span class="an-chip bg-dark-panel text-slate-300 border border-dark-border">${tf}</span>`).join('')}</div>`
@@ -2637,13 +2598,8 @@
                         ? `<span title="${esc(t.notes)}" class="cursor-help text-base">📝</span>`
                         : '<span class="text-slate-600">-</span>';
 
-                    const beforeImg = t.imageBefore || t.image || '';
-                    const afterImg = t.imageAfter || '';
-                    const chartCell = (beforeImg || afterImg)
-                        ? `<div class="flex items-center justify-center gap-1.5">
-                            ${beforeImg ? `<button onclick="openTradeImage('${t.id}','before')" title="Before" class="w-6 h-6 rounded-md bg-dark-panel border border-dark-border hover:border-brand-500 text-[10px] flex items-center justify-center transition">B</button>` : ''}
-                            ${afterImg ? `<button onclick="openTradeImage('${t.id}','after')" title="After" class="w-6 h-6 rounded-md bg-dark-panel border border-dark-border hover:border-brand-500 text-[10px] flex items-center justify-center transition">A</button>` : ''}
-                           </div>`
+                    const chartCell = imgsOf(t).length
+                        ? `<button onclick="openTradeImage('${t.id}',0)" class="px-2 py-1 rounded-md bg-dark-panel border border-dark-border hover:border-brand-500 text-[10px] font-semibold transition">🖼 ${imgsOf(t).length}</button>`
                         : '<span class="text-slate-600 block text-center">-</span>';
 
                     html += `
@@ -3162,8 +3118,6 @@
                 const dateLabel = new Date(calSelectedDay + 'T00:00:00').toLocaleDateString('th-TH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
                 document.getElementById('cal-day-title').innerText = `${dateLabel} · ${g.trades.length} เทรด · ${fmtMoney(g.pnl)}`;
                 document.getElementById('cal-day-trades').innerHTML = g.trades.map(t => {
-                    const before = t.imageBefore || t.image || '';
-                    const after = t.imageAfter || '';
                     const outcomeTag = t.outcome === 'WIN'
                         ? `<span class="px-2 py-1 rounded bg-emerald-900/30 text-emerald-400 font-bold border border-emerald-500/30 text-[10px]">WIN</span>`
                         : t.outcome === 'LOSS'
@@ -3181,10 +3135,7 @@
                                 <button onclick="openEditModal('${t.id}')" class="w-5 h-5 flex items-center justify-center rounded-full bg-dark-panel border border-dark-border text-slate-500 hover:text-brand-500 hover:border-brand-500 transition text-[10px]">✎</button>
                             </div>
                         </div>
-                        ${(before || after) ? `<div class="grid grid-cols-2 gap-1.5 mb-2">
-                            ${before ? `<img src="${before}" loading="lazy" decoding="async" onclick="openTradeImage('${t.id}','before')" class="h-16 w-full object-cover rounded-lg border border-dark-border cursor-pointer">` : `<div class="h-16 rounded-lg border border-dashed border-dark-border"></div>`}
-                            ${after ? `<img src="${after}" loading="lazy" decoding="async" onclick="openTradeImage('${t.id}','after')" class="h-16 w-full object-cover rounded-lg border border-dark-border cursor-pointer">` : `<div class="h-16 rounded-lg border border-dashed border-dark-border"></div>`}
-                        </div>` : ''}
+                        ${imgsOf(t).length ? `<div class="flex gap-1.5 mb-2">${imgsOf(t).slice(0, 4).map((src, i) => `<img src="${src}" loading="lazy" decoding="async" onclick="openTradeImage('${t.id}',${i})" class="h-16 flex-1 min-w-0 object-cover rounded-lg border border-dark-border cursor-pointer">`).join('')}</div>` : ''}
                         <div class="flex justify-between items-center pt-2 border-t border-dark-border">
                             <span class="text-xs font-mono font-bold ${rrColor(t.rr)}">${fmtRR(t.rr)}</span>
                             <span class="text-xs font-mono font-bold ${tradeVal(t) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${fmtMoney(tradeVal(t))}</span>
